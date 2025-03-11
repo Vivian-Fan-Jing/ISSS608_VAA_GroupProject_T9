@@ -1,5 +1,5 @@
 ---
-title: "Team"
+title: "About this project"
 author: "FAN JING, LAI MEIHAO, LIN XINYUE"
 date: "March 11, 2025"
 date-modified: "last-modified"
@@ -9,8 +9,6 @@ execute:
   warning: false
   freeze: true
 ---
-
-# **About this project**
 
 This project was developed for **ISSS608: Visual Analytics and Applications** during the **January Term of the Academic Year 2025-26** at **Singapore Management University**, under the guidance of **Dr. Kam Tin Seong, Assistant Professor of Information Systems**.
 

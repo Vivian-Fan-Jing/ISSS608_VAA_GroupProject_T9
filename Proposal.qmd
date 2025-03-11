@@ -129,6 +129,8 @@ The team intends to use the following R packages to develop and deploy the inter
 
 # Conclusion
 
+This project builds on existing dataset and research but enhances accessibility, interactivity, and predictive capabilities. By combining spatial analysis, forecasting models, and statistical validation, this analysis will provide insights to policymakers, researchers, and public health agencies for data-driven decision - making on water safety issues.
+
 # Project Schedule
 
 ```{r}
