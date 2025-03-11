@@ -11,8 +11,6 @@ website:
         text: Overview
       - href: "Proposal.html"
         text: "Proposal"
-      - href: "MeetingMinutes.html"
-        text: "Meeting Minutes"
       - text: "Team"
         menu:
         - text: "About this project"
