@@ -217,17 +217,16 @@ ul.task-list li input[type="checkbox"] {
     subgraph "Data Preparation"
       B --&gt; C(Data Cleaning)
       C --&gt; C1(Handle Missing Values)
-      C --&gt; C2(Remove Duplicates)
-      C --&gt; C3(Standardize Formats)
-    
+      C1 --&gt; C2(Remove Duplicates)
+      C2 --&gt; C3(Standardize Formats)
       C3 --&gt; D(Filtering &amp; Transformation)
       D --&gt; D1(Select Key Variables)
-    
+
       D1 --&gt; E(Data Integration)
       E --&gt; E1(Merge WHO &amp; WB Data)
-      E --&gt; E2(Geocode for Mapping)
-    
-      E2 --&gt; F(Prepare Data for Analysis)
+      E1 --&gt; E2(Geocode for Mapping)
+      E2 --&gt; E3(Final Data Processing)
+      E3 --&gt; F(Prepare Data for Analysis)
     end
 
     F --&gt; G

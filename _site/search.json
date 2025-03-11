@@ -1,19 +1,5 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Blue Pulse",
-    "section": "",
-    "text": "(still need background)\nThis project aims to analyse, visualise and forecast trends in clean water access, unsafe water exposure, and health outcome through and interactive visual analytics platform. By leveraging geospatial mapping, time series forecasting, and confirmatory data analysis, we seek to:\n\nidentify regions most affect by unsafe water and sanitation\nanalyze the historical trends in waterborne disease incidence\nconfirm statistical relationships between unsafe water and public health outcome\n\nWe aim to support efforts in ensuring universal access to clean water and improving global health outcomes."
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About this project",
-    "section": "",
-    "text": "This project was developed for ISSS608: Visual Analytics and Applications during the January Term of the Academic Year 2025-26 at Singapore Management University, under the guidance of Dr. Kam Tin Seong, Assistant Professor of Information Systems.\nMember:\n\nFAN JING\nLAI MEIHAO\nLIN XINYUE"
-  },
-  {
     "objectID": "Proposal.html#data-preparation",
     "href": "Proposal.html#data-preparation",
     "title": "Project Proposal",
@@ -40,6 +26,20 @@
     "title": "Project Proposal",
     "section": "Confirmatory Data Analysis (CDA) ",
     "text": "Confirmatory Data Analysis (CDA) \nThe objective of confirmatory data analysis is to validate the statistical relationship between water accessibility, sanitation and health outcomes.  \n\nCorrelation Analysis will be conducted to determine relationship between  \nClean water access and health outcomes  \nUnsafe water exposure and mortality rate attributed to unsafe water, sanitation.  \nHypothesis testing of t-test and ANOVA will be conducted to verify significant difference in water access between different regions  \nRegression model will be used to examine the influence of sanitation and water"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Blue Pulse",
+    "section": "",
+    "text": "(still need background)\nThis project aims to analyse, visualise and forecast trends in clean water access, unsafe water exposure, and health outcome through and interactive visual analytics platform. By leveraging geospatial mapping, time series forecasting, and confirmatory data analysis, we seek to:\n\nidentify regions most affect by unsafe water and sanitation\nanalyze the historical trends in waterborne disease incidence\nconfirm statistical relationships between unsafe water and public health outcome\n\nWe aim to support efforts in ensuring universal access to clean water and improving global health outcomes."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About this project",
+    "section": "",
+    "text": "This project was developed for ISSS608: Visual Analytics and Applications during the January Term of the Academic Year 2025-26 at Singapore Management University, under the guidance of Dr. Kam Tin Seong, Assistant Professor of Information Systems.\nMember:\n\nFAN JING\nLAI MEIHAO\nLIN XINYUE"
   },
   {
     "objectID": "MeetingMinutes.html",

@@ -27,17 +27,16 @@ flowchart TD
     subgraph "Data Preparation"
       B --> C(Data Cleaning)
       C --> C1(Handle Missing Values)
-      C --> C2(Remove Duplicates)
-      C --> C3(Standardize Formats)
-    
+      C1 --> C2(Remove Duplicates)
+      C2 --> C3(Standardize Formats)
       C3 --> D(Filtering & Transformation)
       D --> D1(Select Key Variables)
-    
+
       D1 --> E(Data Integration)
       E --> E1(Merge WHO & WB Data)
-      E --> E2(Geocode for Mapping)
-    
-      E2 --> F(Prepare Data for Analysis)
+      E1 --> E2(Geocode for Mapping)
+      E2 --> E3(Final Data Processing)
+      E3 --> F(Prepare Data for Analysis)
     end
 
     F --> G
