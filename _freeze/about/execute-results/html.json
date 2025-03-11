@@ -1,0 +1,15 @@
+{
+  "hash": "cea927242b644a941065c8bce8cd0f39",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Team\"\nauthor: \"FAN JING, LAI MEIHAO, LIN XINYUE\"\ndate: \"March 11, 2025\"\ndate-modified: \"last-modified\"\nexecute: \n  eval: true\n  echo: true\n  warning: false\n  freeze: true\n---\n\n\n\nAbout this site\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\n1 + 1\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 2\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

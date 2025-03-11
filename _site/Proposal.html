@@ -9,7 +9,7 @@
 <meta name="author" content="FAN JING, LAI MEIHAO, LIN XINYUE">
 <meta name="dcterms.date" content="2025-03-11">
 
-<title>Blue Pulse – Blue Pulse💧</title>
+<title>Project Proposal – Blue Pulse💧</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -68,6 +68,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 <link rel="stylesheet" href="styles.css">
@@ -91,11 +94,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Overview</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./Proposal.html"> 
+    <a class="nav-link active" href="./Proposal.html" aria-current="page"> 
 <span class="menu-text">Proposal</span></a>
   </li>  
   <li class="nav-item">
@@ -117,15 +120,39 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#motivation" id="toc-motivation" class="nav-link active" data-scroll-target="#motivation">Motivation</a></li>
+  <li><a href="#objectives" id="toc-objectives" class="nav-link" data-scroll-target="#objectives">Objectives</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#methodology" id="toc-methodology" class="nav-link" data-scroll-target="#methodology">Methodology</a>
+  <ul class="collapse">
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data Preparation</a>
+  <ul class="collapse">
+  <li><a href="#data-cleaning" id="toc-data-cleaning" class="nav-link" data-scroll-target="#data-cleaning">Data Cleaning: &nbsp;</a></li>
+  <li><a href="#filtering-and-transformation" id="toc-filtering-and-transformation" class="nav-link" data-scroll-target="#filtering-and-transformation">Filtering and Transformation &nbsp;</a></li>
+  <li><a href="#data-integration" id="toc-data-integration" class="nav-link" data-scroll-target="#data-integration">Data Integration</a></li>
+  </ul></li>
+  <li><a href="#geospatial-data-analysis" id="toc-geospatial-data-analysis" class="nav-link" data-scroll-target="#geospatial-data-analysis">Geospatial Data Analysis &nbsp;</a></li>
+  <li><a href="#time-series-analysis" id="toc-time-series-analysis" class="nav-link" data-scroll-target="#time-series-analysis">Time series Analysis &nbsp;</a></li>
+  <li><a href="#confirmatory-data-analysis-cda" id="toc-confirmatory-data-analysis-cda" class="nav-link" data-scroll-target="#confirmatory-data-analysis-cda">Confirmatory Data Analysis (CDA)&nbsp;</a></li>
+  </ul></li>
+  <li><a href="#prototype" id="toc-prototype" class="nav-link" data-scroll-target="#prototype">Prototype</a></li>
+  <li><a href="#r-packages" id="toc-r-packages" class="nav-link" data-scroll-target="#r-packages">R packages</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#project-schedule" id="toc-project-schedule" class="nav-link" data-scroll-target="#project-schedule">Project Schedule</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Blue Pulse</h1>
+<h1 class="title">Project Proposal</h1>
 </div>
 
 
@@ -160,17 +187,236 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><img src="images/clipboard-1382453510.png" class="img-fluid" width="167"></p>
-<p>(still need background)</p>
-<p>This project aims to analyse, visualise and forecast trends in clean water access, unsafe water exposure, and health outcome through and interactive visual analytics platform. By leveraging geospatial mapping, time series forecasting, and confirmatory data analysis, we seek to:</p>
+<section id="motivation" class="level1">
+<h1>Motivation</h1>
+</section>
+<section id="objectives" class="level1">
+<h1>Objectives</h1>
+</section>
+<section id="data" class="level1">
+<h1>Data</h1>
+</section>
+<section id="methodology" class="level1">
+<h1>Methodology</h1>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+  A(WHO &amp; WB Dataset) --&gt; B
+
+  subgraph "Data Preparation"
+    B(Read Input) --&gt; C(Clean Data)
+    C --&gt; D(Extract Subset/Variables)
+    C --&gt; E(Filter by date/region)
+    C --&gt; F(Out:Supportwork/db)
+    D --&gt; G(Combine based on requirements)
+    E --&gt; G
+    G --&gt; H(Transform to proper graph)
+  end
+
+  H --&gt; I
+  H --&gt; J
+  H --&gt; K
+
+  subgraph "Statistical Analysis"
+    I(Calculate degree centrality)
+    J(Calculate betweenness centrality)
+    K(Calculate pagerank centrality)
+  end
+
+  I --&gt; L
+  J --&gt; M
+  K --&gt; N
+
+  subgraph "Data Exploration &amp; Visualization"
+    L(Plot network graphs)
+    M(Plot corporate structures)
+    N(Plot influence)
+    L --&gt; O(Combine plots)
+    M --&gt; O
+    N --&gt; O
+    O --&gt; P(Shiny App)
+  end
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<section id="data-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="data-preparation">Data Preparation</h2>
+<p>Before conducting any analysis, we will ensure that the dataset is clean, structured for analysis, and suitable for visualization. The following steps will be taken:&nbsp;</p>
+<section id="data-cleaning" class="level3">
+<h3 class="anchored" data-anchor-id="data-cleaning">Data Cleaning: &nbsp;</h3>
 <ul>
-<li><p>identify regions most affect by unsafe water and sanitation</p></li>
-<li><p>analyze the historical trends in waterborne disease incidence</p></li>
-<li><p>confirm statistical relationships between unsafe water and public health outcome</p></li>
+<li>Handling Missing value (removal of incomplete records)&nbsp;</li>
 </ul>
-<p>We aim to support efforts in ensuring universal access to clean water and improving global health outcomes.</p>
+<!-- -->
+<ul>
+<li>Identify and remove duplicate records&nbsp;</li>
+</ul>
+<!-- -->
+<ul>
+<li>Standardize data formats (date formats, numerical conversions)&nbsp;</li>
+</ul>
+</section>
+<section id="filtering-and-transformation" class="level3">
+<h3 class="anchored" data-anchor-id="filtering-and-transformation">Filtering and Transformation &nbsp;</h3>
+<ul>
+<li>Select key variables relevant to the study, such as clean water access, death rate per 100,000 population &nbsp;</li>
+</ul>
+</section>
+<section id="data-integration" class="level3">
+<h3 class="anchored" data-anchor-id="data-integration">Data Integration</h3>
+<ul>
+<li>Merge WHO water data with World Bank sanitation statistic for understanding the relationship between waterborne disease and access to unsafe water source &nbsp;</li>
+</ul>
+<!-- -->
+<ul>
+<li>Geocode data for geospatial visualization &nbsp;</li>
+</ul>
+</section>
+</section>
+<section id="geospatial-data-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="geospatial-data-analysis">Geospatial Data Analysis &nbsp;</h2>
+<p>The objective of the geospatial Data Analysis is to understand and identify spatial disparities in water accessibility and unsafe water-related deaths. &nbsp;</p>
+<ul>
+<li>Interactive heatmap will be developed that represents:&nbsp;</li>
+</ul>
+<!-- -->
+<ul>
+<li>Areas with low access to clean water &nbsp;</li>
+</ul>
+<!-- -->
+<ul>
+<li>High Concentration of unsafe water usage &nbsp;</li>
+</ul>
+<!-- -->
+<ul>
+<li>Death rate due to unsafe water usage and sanitation &nbsp;</li>
+</ul>
+<p>The choropleth maps will be used where different color intensities represent severity level.&nbsp;</p>
+</section>
+<section id="time-series-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="time-series-analysis">Time series Analysis &nbsp;</h2>
+<p>The object of this analysis is to identify the trend and predict future patterns in water safety and sanitation overtime &nbsp;</p>
+<ul>
+<li>Incorporate forecasting models using Autoregressive Integrated Moving Average (ARIMA), Seasonal Decomposition of Time Series (STL) and Seasonal Autoregressive Integrated Moving Average (SARIMA) to project future trends in: &nbsp;</li>
+</ul>
+<!-- -->
+<ul>
+<li>Water accessibility improvements over the years &nbsp;</li>
+</ul>
+<!-- -->
+<ul>
+<li>Death rates related to unsafe water &nbsp;</li>
+</ul>
+<!-- -->
+<ul>
+<li>Sanitation coverage change (People with basic handwashing facilities including soap and water % of population) over time &nbsp;</li>
+</ul>
+<!-- -->
+<ul>
+<li>Identify in seasonal spikes, long-term trends in water safety &nbsp;</li>
+</ul>
+<!-- -->
+<ul>
+<li>Design interactive time sliders for temporal exploration &nbsp;</li>
+</ul>
+<!-- -->
+<ul>
+<li>Evaluate and compare different forecasting model&nbsp;</li>
+</ul>
+</section>
+<section id="confirmatory-data-analysis-cda" class="level2">
+<h2 class="anchored" data-anchor-id="confirmatory-data-analysis-cda">Confirmatory Data Analysis (CDA)&nbsp;</h2>
+<p>The objective of confirmatory data analysis is to validate the statistical relationship between water accessibility, sanitation and health outcomes. &nbsp;</p>
+<ul>
+<li>Correlation Analysis will be conducted to determine relationship between &nbsp;</li>
+</ul>
+<!-- -->
+<ul>
+<li>Clean water access and health outcomes &nbsp;</li>
+</ul>
+<!-- -->
+<ul>
+<li>Unsafe water exposure and&nbsp;mortality rate attributed to unsafe water, sanitation. &nbsp;</li>
+</ul>
+<!-- -->
+<ul>
+<li>Hypothesis testing of t-test and ANOVA will be conducted to verify significant difference in water access between different regions &nbsp;</li>
+</ul>
+<!-- -->
+<ul>
+<li>Regression model will be used to examine the influence of sanitation and water &nbsp;</li>
+</ul>
+</section>
+</section>
+<section id="prototype" class="level1">
+<h1>Prototype</h1>
+</section>
+<section id="r-packages" class="level1">
+<h1>R packages</h1>
+<p>The team intends to use the following R packages to develop and deploy the interactive visual analytics application</p>
+<ul>
+<li><strong>tidyverse</strong>: A family of modern R packages specially designed to support data science, analysis, and communication tasks, including creating static statistical graphs.</li>
+</ul>
+<!-- -->
+<ul>
+<li><strong>knitr</strong>: A report generation tool that facilitates dynamic document creation in R.</li>
+</ul>
+<!-- -->
+<ul>
+<li><strong>dplyr</strong>: An R package for data manipulation and working with data frames efficiently.</li>
+</ul>
+<!-- -->
+<ul>
+<li><strong>plotly</strong>: An R library for plotting interactive statistical graphs and visualizing data dynamically.</li>
+</ul>
+<!-- -->
+<ul>
+<li><strong>DT</strong>: An R interface to the JavaScript library <strong>DataTables</strong>, which creates interactive tables for HTML pages.</li>
+</ul>
+<!-- -->
+<ul>
+<li><strong>lubridate</strong>: An R package that simplifies working with <strong>dates and time elements</strong>.</li>
+</ul>
+<!-- -->
+<ul>
+<li><strong>ggforce</strong>: An extension of <strong>ggplot2</strong> that provides additional geoms and stats for advanced visual data analysis.</li>
+</ul>
+<!-- -->
+<ul>
+<li><strong>highcharter</strong>: A wrapper around the ‘Highcharts’ JavaScript library, allowing for highly interactive and customizable plotting of R objects.</li>
+</ul>
+<!-- -->
+<ul>
+<li><strong>sf</strong>: An R package that supports the <strong>importing, managing, and processing of geospatial data</strong>, essential for mapping analysis.</li>
+</ul>
+<!-- -->
+<ul>
+<li><strong>spdep</strong>: An R package that facilitates spatial analysis by handling geospatial data dependencies and relationships.</li>
+</ul>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+</section>
+<section id="project-schedule" class="level1">
+<h1>Project Schedule</h1>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Proposal_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

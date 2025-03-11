@@ -2,23 +2,31 @@ project:
   type: website
 
 website:
-  title: "ISSS608_VAA_GroupProject_T9"
+  title: "Blue Pulse💧"
   navbar:
-    left:
-    - text: "Proposal"
-      menu:
-        - text: "Proposal"
-          href: "Proposal.html"
+
+
     right: 
       - href: index.qmd
-        text: Home
-      - about.qmd
- 
+        text: Overview
+      - href: "Proposal.html"
+        text: "Proposal"
+      - href: "MeetingMinutes.html"
+        text: "Meeting Minutes"
+      - text: "Team"
+        menu:
+        - text: "About this project"
+          href: about.qmd
+        - text: "Meeting Minutes"
+          href: "MeetingMinutes.html"
+
+
 format:
   html:
+    css: styles.css  # Reference external CSS file
     theme: darkly
-    css: styles.css
     toc: true
 
 editor: visual
+
 

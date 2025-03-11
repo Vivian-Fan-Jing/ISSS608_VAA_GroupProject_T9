@@ -1,0 +1,294 @@
+---
+title: "Project Proposal"
+author: "FAN JING, LAI MEIHAO, LIN XINYUE"
+date: "March 11, 2025"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+# Motivation 
+
+# Objectives 
+
+# Data 
+
+#  Methodology 
+
+```{mermaid}
+%%| echo: false
+flowchart TD
+  A(WHO & WB Dataset) --> B
+
+  subgraph "Data Preparation"
+    B(Read Input) --> C(Clean Data)
+    C --> D(Extract Subset/Variables)
+    C --> E(Filter by date/region)
+    C --> F(Out:Supportwork/db)
+    D --> G(Combine based on requirements)
+    E --> G
+    G --> H(Transform to proper graph)
+  end
+
+  H --> I
+  H --> J
+  H --> K
+
+  subgraph "Statistical Analysis"
+    I(Calculate degree centrality)
+    J(Calculate betweenness centrality)
+    K(Calculate pagerank centrality)
+  end
+
+  I --> L
+  J --> M
+  K --> N
+
+  subgraph "Data Exploration & Visualization"
+    L(Plot network graphs)
+    M(Plot corporate structures)
+    N(Plot influence)
+    L --> O(Combine plots)
+    M --> O
+    N --> O
+    O --> P(Shiny App)
+  end
+```
+
+## Data Preparation
+
+Before conducting any analysis, we will ensure that the dataset is clean, structured for analysis, and suitable for visualization. The following steps will be taken: 
+
+### Data Cleaning:  
+
+-   Handling Missing value (removal of incomplete records) 
+
+<!-- -->
+
+-   Identify and remove duplicate records 
+
+<!-- -->
+
+-   Standardize data formats (date formats, numerical conversions) 
+
+### Filtering and Transformation  
+
+-   Select key variables relevant to the study, such as clean water access, death rate per 100,000 population  
+
+### Data Integration
+
+-   Merge WHO water data with World Bank sanitation statistic for understanding the relationship between waterborne disease and access to unsafe water source  
+
+<!-- -->
+
+-   Geocode data for geospatial visualization  
+
+##  Geospatial Data Analysis  
+
+The objective of the geospatial Data Analysis is to understand and identify spatial disparities in water accessibility and unsafe water-related deaths.  
+
+-   Interactive heatmap will be developed that represents: 
+
+<!-- -->
+
+-   Areas with low access to clean water  
+
+<!-- -->
+
+-   High Concentration of unsafe water usage  
+
+<!-- -->
+
+-   Death rate due to unsafe water usage and sanitation  
+
+The choropleth maps will be used where different color intensities represent severity level. 
+
+## Time series Analysis  
+
+The object of this analysis is to identify the trend and predict future patterns in water safety and sanitation overtime  
+
+-   Incorporate forecasting models using Autoregressive Integrated Moving Average (ARIMA), Seasonal Decomposition of Time Series (STL) and Seasonal Autoregressive Integrated Moving Average (SARIMA) to project future trends in:  
+
+<!-- -->
+
+-   Water accessibility improvements over the years  
+
+<!-- -->
+
+-   Death rates related to unsafe water  
+
+<!-- -->
+
+-   Sanitation coverage change (People with basic handwashing facilities including soap and water % of population) over time  
+
+<!-- -->
+
+-   Identify in seasonal spikes, long-term trends in water safety  
+
+<!-- -->
+
+-   Design interactive time sliders for temporal exploration  
+
+<!-- -->
+
+-   Evaluate and compare different forecasting model 
+
+## Confirmatory Data Analysis (CDA) 
+
+The objective of confirmatory data analysis is to validate the statistical relationship between water accessibility, sanitation and health outcomes.  
+
+-   Correlation Analysis will be conducted to determine relationship between  
+
+<!-- -->
+
+-   Clean water access and health outcomes  
+
+<!-- -->
+
+-   Unsafe water exposure and mortality rate attributed to unsafe water, sanitation.  
+
+<!-- -->
+
+-   Hypothesis testing of t-test and ANOVA will be conducted to verify significant difference in water access between different regions  
+
+<!-- -->
+
+-   Regression model will be used to examine the influence of sanitation and water  
+
+# Prototype 
+
+# R packages 
+
+The team intends to use the following R packages to develop and deploy the interactive visual analytics application
+
+-   **tidyverse**: A family of modern R packages specially designed to support data science, analysis, and communication tasks, including creating static statistical graphs.
+
+<!-- -->
+
+-   **knitr**: A report generation tool that facilitates dynamic document creation in R.
+
+<!-- -->
+
+-   **dplyr**: An R package for data manipulation and working with data frames efficiently.
+
+<!-- -->
+
+-   **plotly**: An R library for plotting interactive statistical graphs and visualizing data dynamically.
+
+<!-- -->
+
+-   **DT**: An R interface to the JavaScript library **DataTables**, which creates interactive tables for HTML pages.
+
+<!-- -->
+
+-   **lubridate**: An R package that simplifies working with **dates and time elements**.
+
+<!-- -->
+
+-   **ggforce**: An extension of **ggplot2** that provides additional geoms and stats for advanced visual data analysis.
+
+<!-- -->
+
+-   **highcharter**: A wrapper around the ‘Highcharts’ JavaScript library, allowing for highly interactive and customizable plotting of R objects.
+
+<!-- -->
+
+-   **sf**: An R package that supports the **importing, managing, and processing of geospatial data**, essential for mapping analysis.
+
+<!-- -->
+
+-   **spdep**: An R package that facilitates spatial analysis by handling geospatial data dependencies and relationships.
+
+# Conclusion 
+
+# Project Schedule
+
+```{r}
+#| echo: false
+#| results: hide
+Sys.setlocale("LC_TIME", "C")
+pacman::p_load(vistime, ggplot2)
+
+data <- read.csv(text="event,group,start,end,color
+,Project Proposal,2025-02-22,2025-03-12,#5B8FF9
+,Exploratory data analysis,2025-03-10,2025-03-24,#5B8FF9
+,Confirmatory data analysis,2025-03-24,2025-04-06,#65B687
+,R Quarto/ Netlify,2025-03-10,2025-03-24,#5B8FF9
+,R Quarto/ Netlify,2025-03-24,2025-04-06,#65B687
+,R Shiny App,2025-03-24,2025-04-06,#65B687
+,Poster,2025-03-25,2025-04-02,#65B687
+,User Guide,2025-04-01,2025-04-06,#65B687"
+)
+
+proposal_deadline <- as.Date("2025-03-12")
+poster_deadline <- as.Date("2025-04-02") 
+final_submission <- as.Date("2025-04-06")
+
+p <- gg_vistime(data, 
+                title = "Water Analytics Project Timeline",
+                subtitle = "Visual Analytics Project - Spring 2025",
+                linewidth = 12,
+                show_labels = FALSE) 
+
+p + 
+  geom_vline(xintercept = as.numeric(as.POSIXct(proposal_deadline)), 
+             color = "#1A5E63", size = 1, linetype = "dashed") +
+  geom_vline(xintercept = as.numeric(as.POSIXct(poster_deadline)), 
+             color = "#1A5E63", size = 1, linetype = "dashed") +
+  geom_vline(xintercept = as.numeric(as.POSIXct(final_submission)), 
+             color = "#1A5E63", size = 1, linetype = "dashed") +
+  # Date labels under each deadline line
+  annotate("text", 
+           x = as.POSIXct(proposal_deadline), 
+           y = -0.7, 
+           label = "Mar 12", 
+           size = 2.8,
+           color = "#1A5E63") +
+  annotate("text", 
+           x = as.POSIXct(poster_deadline), 
+           y = -0.7, 
+           label = "Apr 2", 
+           size = 2.8,
+           color = "#1A5E63") +
+  annotate("text", 
+           x = as.POSIXct(final_submission), 
+           y = -0.7, 
+           label = "Apr 6", 
+           size = 2.8,
+           color = "#1A5E63") +
+  annotate("text", 
+           x = as.POSIXct(proposal_deadline) - 60*60*24*2, 
+           y = 2.8, 
+           label = "Proposal Due", 
+           hjust = 1,
+           size = 3.2,
+           fontface = "bold",
+           color = "#1A5E63") +
+  annotate("text", 
+           x = as.POSIXct(poster_deadline) - 60*60*24*2, 
+           y = 1.5, 
+           label = "Poster Due", 
+           hjust = 1,
+           size = 3.2,
+           fontface = "bold",
+           color = "#1A5E63") +
+  annotate("text", 
+           x = as.POSIXct(final_submission) - 60*60*24*2, 
+           y = 0.5, 
+           label = "Final Submission", 
+           hjust = 1,
+           size = 3.2,
+           fontface = "bold",
+           color = "#1A5E63") +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold", size = 16, color = "#212121"),
+        plot.subtitle = element_text(face = "italic", size = 12, color = "#616161"),
+        axis.text = element_text(size = 10),
+        panel.grid.major = element_line(color = "#E0E0E0"),
+        panel.grid.minor = element_line(color = "#F5F5F5"),
+        plot.margin = margin(10, 30, 10, 10)) +
+  coord_cartesian(clip = "off")
+```

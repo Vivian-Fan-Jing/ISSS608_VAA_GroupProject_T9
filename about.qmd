@@ -1,9 +1,23 @@
 ---
-title: "About"
+title: "Team"
+author: "FAN JING, LAI MEIHAO, LIN XINYUE"
+date: "March 11, 2025"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
 ---
 
-About this site
+# **About this project**
 
-```{r}
-1 + 1
-```
+This project was developed for **ISSS608: Visual Analytics and Applications** during the **January Term of the Academic Year 2025-26** at **Singapore Management University**, under the guidance of **Dr. Kam Tin Seong, Assistant Professor of Information Systems**.
+
+**Member:**
+
+-   FAN JING
+
+-    LAI MEIHAO
+
+-   LIN XINYUE

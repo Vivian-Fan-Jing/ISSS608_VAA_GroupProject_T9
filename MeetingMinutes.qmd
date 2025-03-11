@@ -1,0 +1,105 @@
+---
+title: "Meeting Minutes"
+author: "FAN JING, LAI MEIHAO, LIN XINYUE"
+date: "March 11, 2025"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+# Meeting Minutes 1
+
+**Date:** March 11, 2025\
+**Time:** 14:00 - 17:30\
+**In Attendance:** Fan Jing, Lin Xinyue, Lai Meihao
+
+**Agenda:**
+
+1.  Discussion on the project topic
+
+2.  Division of tasks for project proposal
+
+3.  Action Items
+
+**1. Discussion on the Project Topic**
+
+Prior to the meeting, we reviewed senior work and explored possible topic areas.
+
+**Proposed Ideas**
+
+**Xinyue:**
+
+-   Tropical rainforest dynamics coverage analysis (rejected due to lack of data)
+
+-   SDG Goal 2 - Zero Hunger, focusing on food waste and world hunger statistics (initially agreed upon but later rejected due to difficulties collecting food waste data)
+
+-   World health issues (considered but rejected as most data only covered 2019 and 2022 with many missing values, making time series forecasting difficult)
+
+**Jing:**
+
+-   Singapore population demographics analysis and forecast (rejected due to decreasing fertility rates and unpredictable immigration numbers)
+
+-   German population demographic shift analysis alongside policies for foreigners and immigrants (rejected due to unfamiliarity with German policies)
+
+-   World GDP analysis and time series forecast (rejected due to varying industry focuses across countries and the associated workload
+
+-   The future of AI and workplace (rejected due to limited available data)
+
+**Meihao:**
+
+-   Maritime port import/export analysis focusing on Singapore's trading relationships (rejected due to unclear motivation)
+
+-   Tourism and CPI/exchange rate analysis for seasonal changes and tourist season forecasting (initially agreed upon but rejected due to difficulties obtaining historical exchange rates)
+
+-   How do jet fuel price effect Singapore Airline Group’s Revenue( rejected due to difficulties obtaining historical Oil Price for a reliable source)
+
+**Selected Topic**
+
+After reviewing Xinyue's data, the team generated the idea of exploring water-related issues. Relevant datasets were found, and the topic was selected. The team agreed to work on water sanitation issues such as:
+
+-   Sufficient data is available for analysis
+
+-   The topic includes appropriate variables for study
+
+**2. Division of Tasks for Project Proposal**
+
+After reviewing senior work, the team decided on the proposal structure and distributed responsibilities:
+
+**Jing:**
+
+-   Motivation
+
+-   Objectives
+
+-   Problem statement
+
+-   Data
+
+-   GitHub and Netlify setup
+
+**Xinyue:**
+
+-   Sketch of the prototypes and Explanation
+
+-   Expected contribution and impact
+
+-   Conclusion
+
+**Meihao:**
+
+-   Methodology
+
+-   Project schedule
+
+-   Relevant work
+
+-   R package list
+
+**3. Action Items**
+
+-   All members to push their work to GitHub for peer review
+
+-   Jing will handle the final submission on Wednesday

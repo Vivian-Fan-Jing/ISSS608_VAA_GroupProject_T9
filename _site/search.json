@@ -2,15 +2,50 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "ISSS608_VAA_GroupProject_T9",
+    "title": "Blue Pulse",
     "section": "",
-    "text": "Welcome to ISS608 Visual Analytics and Applications Team 9 Group Project homepage. In this website, you will find our project.\nMember: FAN JING, LAI MEIHAO, LIN XINYUE\nInstructor: PROF. KAM"
+    "text": "(still need background)\nThis project aims to analyse, visualise and forecast trends in clean water access, unsafe water exposure, and health outcome through and interactive visual analytics platform. By leveraging geospatial mapping, time series forecasting, and confirmatory data analysis, we seek to:\n\nidentify regions most affect by unsafe water and sanitation\nanalyze the historical trends in waterborne disease incidence\nconfirm statistical relationships between unsafe water and public health outcome\n\nWe aim to support efforts in ensuring universal access to clean water and improving global health outcomes."
   },
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "Team",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "text": "About this project\nThis project was developed for ISSS608: Visual Analytics and Applications during the January Term of the Academic Year 2025-26 at Singapore Management University, under the guidance of Dr. Kam Tin Seong, Assistant Professor of Information Systems.\nMember:\n\nFAN JING\nLAI MEIHAO\nLIN XINYUE"
+  },
+  {
+    "objectID": "Proposal.html#data-preparation",
+    "href": "Proposal.html#data-preparation",
+    "title": "Project Proposal",
+    "section": "Data Preparation",
+    "text": "Data Preparation\nBefore conducting any analysis, we will ensure that the dataset is clean, structured for analysis, and suitable for visualization. The following steps will be taken: \n\nData Cleaning:  \n\nHandling Missing value (removal of incomplete records) \n\n\n\nIdentify and remove duplicate records \n\n\n\nStandardize data formats (date formats, numerical conversions) \n\n\n\nFiltering and Transformation  \n\nSelect key variables relevant to the study, such as clean water access, death rate per 100,000 population  \n\n\n\nData Integration\n\nMerge WHO water data with World Bank sanitation statistic for understanding the relationship between waterborne disease and access to unsafe water source  \n\n\n\nGeocode data for geospatial visualization"
+  },
+  {
+    "objectID": "Proposal.html#geospatial-data-analysis",
+    "href": "Proposal.html#geospatial-data-analysis",
+    "title": "Project Proposal",
+    "section": "Geospatial Data Analysis  ",
+    "text": "Geospatial Data Analysis  \nThe objective of the geospatial Data Analysis is to understand and identify spatial disparities in water accessibility and unsafe water-related deaths.  \n\nInteractive heatmap will be developed that represents: \n\n\n\nAreas with low access to clean water  \n\n\n\nHigh Concentration of unsafe water usage  \n\n\n\nDeath rate due to unsafe water usage and sanitation  \n\nThe choropleth maps will be used where different color intensities represent severity level."
+  },
+  {
+    "objectID": "Proposal.html#time-series-analysis",
+    "href": "Proposal.html#time-series-analysis",
+    "title": "Project Proposal",
+    "section": "Time series Analysis  ",
+    "text": "Time series Analysis  \nThe object of this analysis is to identify the trend and predict future patterns in water safety and sanitation overtime  \n\nIncorporate forecasting models using Autoregressive Integrated Moving Average (ARIMA), Seasonal Decomposition of Time Series (STL) and Seasonal Autoregressive Integrated Moving Average (SARIMA) to project future trends in:  \n\n\n\nWater accessibility improvements over the years  \n\n\n\nDeath rates related to unsafe water  \n\n\n\nSanitation coverage change (People with basic handwashing facilities including soap and water % of population) over time  \n\n\n\nIdentify in seasonal spikes, long-term trends in water safety  \n\n\n\nDesign interactive time sliders for temporal exploration  \n\n\n\nEvaluate and compare different forecasting model"
+  },
+  {
+    "objectID": "Proposal.html#confirmatory-data-analysis-cda",
+    "href": "Proposal.html#confirmatory-data-analysis-cda",
+    "title": "Project Proposal",
+    "section": "Confirmatory Data Analysis (CDA) ",
+    "text": "Confirmatory Data Analysis (CDA) \nThe objective of confirmatory data analysis is to validate the statistical relationship between water accessibility, sanitation and health outcomes.  \n\nCorrelation Analysis will be conducted to determine relationship between  \n\n\n\nClean water access and health outcomes  \n\n\n\nUnsafe water exposure and mortality rate attributed to unsafe water, sanitation.  \n\n\n\nHypothesis testing of t-test and ANOVA will be conducted to verify significant difference in water access between different regions  \n\n\n\nRegression model will be used to examine the influence of sanitation and water"
+  },
+  {
+    "objectID": "MeetingMinutes.html",
+    "href": "MeetingMinutes.html",
+    "title": "Meeting Minutes",
+    "section": "",
+    "text": "Meeting Minutes 1\nDate: March 11, 2025\nTime: 14:00 - 17:30\nIn Attendance: Fan Jing, Lin Xinyue, Lai Meihao\nAgenda:\n\nDiscussion on the project topic\nDivision of tasks for project proposal\nAction Items\n\n1. Discussion on the Project Topic\nPrior to the meeting, we reviewed senior work and explored possible topic areas.\nProposed Ideas\nXinyue:\n\nTropical rainforest dynamics coverage analysis (rejected due to lack of data)\nSDG Goal 2 - Zero Hunger, focusing on food waste and world hunger statistics (initially agreed upon but later rejected due to difficulties collecting food waste data)\nWorld health issues (considered but rejected as most data only covered 2019 and 2022 with many missing values, making time series forecasting difficult)\n\nJing:\n\nSingapore population demographics analysis and forecast (rejected due to decreasing fertility rates and unpredictable immigration numbers)\nGerman population demographic shift analysis alongside policies for foreigners and immigrants (rejected due to unfamiliarity with German policies)\nWorld GDP analysis and time series forecast (rejected due to varying industry focuses across countries and the associated workload\nThe future of AI and workplace (rejected due to limited available data)\n\nMeihao:\n\nMaritime port import/export analysis focusing on Singapore’s trading relationships (rejected due to unclear motivation)\nTourism and CPI/exchange rate analysis for seasonal changes and tourist season forecasting (initially agreed upon but rejected due to difficulties obtaining historical exchange rates)\nHow do jet fuel price effect Singapore Airline Group’s Revenue( rejected due to difficulties obtaining historical Oil Price for a reliable source)\n\nSelected Topic\nAfter reviewing Xinyue’s data, the team generated the idea of exploring water-related issues. Relevant datasets were found, and the topic was selected. The team agreed to work on water sanitation issues such as:\n\nSufficient data is available for analysis\nThe topic includes appropriate variables for study\n\n2. Division of Tasks for Project Proposal\nAfter reviewing senior work, the team decided on the proposal structure and distributed responsibilities:\nJing:\n\nMotivation\nObjectives\nProblem statement\nData\nGitHub and Netlify setup\n\nXinyue:\n\nSketch of the prototypes and Explanation\nExpected contribution and impact\nConclusion\n\nMeihao:\n\nMethodology\nProject schedule\nRelevant work\nR package list\n\n3. Action Items\n\nAll members to push their work to GitHub for peer review\nJing will handle the final submission on Wednesday"
   }
 ]

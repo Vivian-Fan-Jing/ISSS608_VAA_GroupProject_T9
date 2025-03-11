@@ -9,7 +9,7 @@
 <meta name="author" content="FAN JING, LAI MEIHAO, LIN XINYUE">
 <meta name="dcterms.date" content="2025-03-11">
 
-<title>Blue Pulse – Blue Pulse💧</title>
+<title>Meeting Minutes – Blue Pulse💧</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -91,7 +91,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Overview</span></a>
   </li>  
   <li class="nav-item">
@@ -99,13 +99,24 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Proposal</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./MeetingMinutes.html"> 
+    <a class="nav-link active" href="./MeetingMinutes.html" aria-current="page"> 
 <span class="menu-text">Meeting Minutes</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
-<span class="menu-text">The Team</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-team" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Team</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-team">    
+        <li>
+    <a class="dropdown-item" href="./about.html">
+ <span class="dropdown-text">About this project</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./MeetingMinutes.html">
+ <span class="dropdown-text">Meeting Minutes</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -117,15 +128,21 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#meeting-minutes-1" id="toc-meeting-minutes-1" class="nav-link active" data-scroll-target="#meeting-minutes-1">Meeting Minutes 1</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Blue Pulse</h1>
+<h1 class="title">Meeting Minutes</h1>
 </div>
 
 
@@ -160,17 +177,76 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><img src="images/clipboard-1382453510.png" class="img-fluid" width="167"></p>
-<p>(still need background)</p>
-<p>This project aims to analyse, visualise and forecast trends in clean water access, unsafe water exposure, and health outcome through and interactive visual analytics platform. By leveraging geospatial mapping, time series forecasting, and confirmatory data analysis, we seek to:</p>
+<section id="meeting-minutes-1" class="level1">
+<h1>Meeting Minutes 1</h1>
+<p><strong>Date:</strong> March 11, 2025<br>
+<strong>Time:</strong> 14:00 - 17:30<br>
+<strong>In Attendance:</strong> Fan Jing, Lin Xinyue, Lai Meihao</p>
+<p><strong>Agenda:</strong></p>
+<ol type="1">
+<li><p>Discussion on the project topic</p></li>
+<li><p>Division of tasks for project proposal</p></li>
+<li><p>Action Items</p></li>
+</ol>
+<p><strong>1. Discussion on the Project Topic</strong></p>
+<p>Prior to the meeting, we reviewed senior work and explored possible topic areas.</p>
+<p><strong>Proposed Ideas</strong></p>
+<p><strong>Xinyue:</strong></p>
 <ul>
-<li><p>identify regions most affect by unsafe water and sanitation</p></li>
-<li><p>analyze the historical trends in waterborne disease incidence</p></li>
-<li><p>confirm statistical relationships between unsafe water and public health outcome</p></li>
+<li><p>Tropical rainforest dynamics coverage analysis (rejected due to lack of data)</p></li>
+<li><p>SDG Goal 2 - Zero Hunger, focusing on food waste and world hunger statistics (initially agreed upon but later rejected due to difficulties collecting food waste data)</p></li>
+<li><p>World health issues (considered but rejected as most data only covered 2019 and 2022 with many missing values, making time series forecasting difficult)</p></li>
 </ul>
-<p>We aim to support efforts in ensuring universal access to clean water and improving global health outcomes.</p>
+<p><strong>Jing:</strong></p>
+<ul>
+<li><p>Singapore population demographics analysis and forecast (rejected due to decreasing fertility rates and unpredictable immigration numbers)</p></li>
+<li><p>German population demographic shift analysis alongside policies for foreigners and immigrants (rejected due to unfamiliarity with German policies)</p></li>
+<li><p>World GDP analysis and time series forecast (rejected due to varying industry focuses across countries and the associated workload</p></li>
+<li><p>The future of AI and workplace (rejected due to limited available data)</p></li>
+</ul>
+<p><strong>Meihao:</strong></p>
+<ul>
+<li><p>Maritime port import/export analysis focusing on Singapore’s trading relationships (rejected due to unclear motivation)</p></li>
+<li><p>Tourism and CPI/exchange rate analysis for seasonal changes and tourist season forecasting (initially agreed upon but rejected due to difficulties obtaining historical exchange rates)</p></li>
+<li><p>How do jet fuel price effect Singapore Airline Group’s Revenue( rejected due to difficulties obtaining historical Oil Price for a reliable source)</p></li>
+</ul>
+<p><strong>Selected Topic</strong></p>
+<p>After reviewing Xinyue’s data, the team generated the idea of exploring water-related issues. Relevant datasets were found, and the topic was selected. The team agreed to work on water sanitation issues such as:</p>
+<ul>
+<li><p>Sufficient data is available for analysis</p></li>
+<li><p>The topic includes appropriate variables for study</p></li>
+</ul>
+<p><strong>2. Division of Tasks for Project Proposal</strong></p>
+<p>After reviewing senior work, the team decided on the proposal structure and distributed responsibilities:</p>
+<p><strong>Jing:</strong></p>
+<ul>
+<li><p>Motivation</p></li>
+<li><p>Objectives</p></li>
+<li><p>Problem statement</p></li>
+<li><p>Data</p></li>
+<li><p>GitHub and Netlify setup</p></li>
+</ul>
+<p><strong>Xinyue:</strong></p>
+<ul>
+<li><p>Sketch of the prototypes and Explanation</p></li>
+<li><p>Expected contribution and impact</p></li>
+<li><p>Conclusion</p></li>
+</ul>
+<p><strong>Meihao:</strong></p>
+<ul>
+<li><p>Methodology</p></li>
+<li><p>Project schedule</p></li>
+<li><p>Relevant work</p></li>
+<li><p>R package list</p></li>
+</ul>
+<p><strong>3. Action Items</strong></p>
+<ul>
+<li><p>All members to push their work to GitHub for peer review</p></li>
+<li><p>Jing will handle the final submission on Wednesday</p></li>
+</ul>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -1,11 +1,25 @@
 ---
-title: "ISSS608_VAA_GroupProject_T9"
+title: "Blue Pulse"
+author: "FAN JING, LAI MEIHAO, LIN XINYUE"
+date: "March 11, 2025"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
 ---
 
-Welcome to ISS608 Visual Analytics and Applications **Team 9** **Group Project** homepage. In this website, you will find our project.
+![](images/clipboard-1382453510.png){width="167"}
 
+(still need background)
 
+This project aims to analyse, visualise and forecast trends in clean water access, unsafe water exposure, and health outcome through and interactive visual analytics platform. By leveraging geospatial mapping, time series forecasting, and confirmatory data analysis, we seek to:
 
-**Member:**  FAN JING,     LAI MEIHAO,      LIN XINYUE
+-   identify regions most affect by unsafe water and sanitation
 
-**Instructor:** PROF. KAM
+-   analyze the historical trends in waterborne disease incidence
+
+-   confirm statistical relationships between unsafe water and public health outcome
+
+We aim to support efforts in ensuring universal access to clean water and improving global health outcomes.
