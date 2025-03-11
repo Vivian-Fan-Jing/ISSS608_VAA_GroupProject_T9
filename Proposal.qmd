@@ -10,13 +10,13 @@ execute:
   freeze: true
 ---
 
-# Motivation 
+# Motivation
 
-# Objectives 
+# Objectives
 
-# Data 
+# Data
 
-#  Methodology 
+# Methodology
 
 ```{mermaid}
 %%| echo: false
@@ -65,13 +65,7 @@ Before conducting any analysis, we will ensure that the dataset is clean, struct
 ### Data Cleaning:  
 
 -   Handling Missing value (removal of incomplete records) 
-
-<!-- -->
-
 -   Identify and remove duplicate records 
-
-<!-- -->
-
 -   Standardize data formats (date formats, numerical conversions) 
 
 ### Filtering and Transformation  
@@ -81,27 +75,15 @@ Before conducting any analysis, we will ensure that the dataset is clean, struct
 ### Data Integration
 
 -   Merge WHO water data with World Bank sanitation statistic for understanding the relationship between waterborne disease and access to unsafe water source  
-
-<!-- -->
-
 -   Geocode data for geospatial visualization  
 
-##  Geospatial Data Analysis  
+## Geospatial Data Analysis  
 
 The objective of the geospatial Data Analysis is to understand and identify spatial disparities in water accessibility and unsafe water-related deaths.  
 
--   Interactive heatmap will be developed that represents: 
-
-<!-- -->
-
+-   Interactive heat map will be developed that represents: 
 -   Areas with low access to clean water  
-
-<!-- -->
-
 -   High Concentration of unsafe water usage  
-
-<!-- -->
-
 -   Death rate due to unsafe water usage and sanitation  
 
 The choropleth maps will be used where different color intensities represent severity level. 
@@ -111,29 +93,11 @@ The choropleth maps will be used where different color intensities represent sev
 The object of this analysis is to identify the trend and predict future patterns in water safety and sanitation overtime  
 
 -   Incorporate forecasting models using Autoregressive Integrated Moving Average (ARIMA), Seasonal Decomposition of Time Series (STL) and Seasonal Autoregressive Integrated Moving Average (SARIMA) to project future trends in:  
-
-<!-- -->
-
 -   Water accessibility improvements over the years  
-
-<!-- -->
-
 -   Death rates related to unsafe water  
-
-<!-- -->
-
 -   Sanitation coverage change (People with basic handwashing facilities including soap and water % of population) over time  
-
-<!-- -->
-
 -   Identify in seasonal spikes, long-term trends in water safety  
-
-<!-- -->
-
 -   Design interactive time sliders for temporal exploration  
-
-<!-- -->
-
 -   Evaluate and compare different forecasting model 
 
 ## Confirmatory Data Analysis (CDA) 
@@ -141,68 +105,29 @@ The object of this analysis is to identify the trend and predict future patterns
 The objective of confirmatory data analysis is to validate the statistical relationship between water accessibility, sanitation and health outcomes.  
 
 -   Correlation Analysis will be conducted to determine relationship between  
-
-<!-- -->
-
 -   Clean water access and health outcomes  
-
-<!-- -->
-
 -   Unsafe water exposure and mortality rate attributed to unsafe water, sanitation.  
-
-<!-- -->
-
 -   Hypothesis testing of t-test and ANOVA will be conducted to verify significant difference in water access between different regions  
-
-<!-- -->
-
 -   Regression model will be used to examine the influence of sanitation and water  
 
-# Prototype 
+# Prototype
 
-# R packages 
+# R packages
 
 The team intends to use the following R packages to develop and deploy the interactive visual analytics application
 
 -   **tidyverse**: A family of modern R packages specially designed to support data science, analysis, and communication tasks, including creating static statistical graphs.
-
-<!-- -->
-
 -   **knitr**: A report generation tool that facilitates dynamic document creation in R.
-
-<!-- -->
-
 -   **dplyr**: An R package for data manipulation and working with data frames efficiently.
-
-<!-- -->
-
 -   **plotly**: An R library for plotting interactive statistical graphs and visualizing data dynamically.
-
-<!-- -->
-
 -   **DT**: An R interface to the JavaScript library **DataTables**, which creates interactive tables for HTML pages.
-
-<!-- -->
-
 -   **lubridate**: An R package that simplifies working with **dates and time elements**.
-
-<!-- -->
-
 -   **ggforce**: An extension of **ggplot2** that provides additional geoms and stats for advanced visual data analysis.
-
-<!-- -->
-
 -   **highcharter**: A wrapper around the ‘Highcharts’ JavaScript library, allowing for highly interactive and customizable plotting of R objects.
-
-<!-- -->
-
 -   **sf**: An R package that supports the **importing, managing, and processing of geospatial data**, essential for mapping analysis.
-
-<!-- -->
-
 -   **spdep**: An R package that facilitates spatial analysis by handling geospatial data dependencies and relationships.
 
-# Conclusion 
+# Conclusion
 
 # Project Schedule
 
@@ -210,6 +135,8 @@ The team intends to use the following R packages to develop and deploy the inter
 #| echo: false
 #| results: hide
 Sys.setlocale("LC_TIME", "C")
+
+
 pacman::p_load(vistime, ggplot2)
 
 data <- read.csv(text="event,group,start,end,color

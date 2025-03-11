@@ -105,10 +105,21 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link" href="./MeetingMinutes.html"> 
 <span class="menu-text">Meeting Minutes</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
-<span class="menu-text">The Team</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-team" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Team</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-team">    
+        <li>
+    <a class="dropdown-item" href="./about.html">
+ <span class="dropdown-text">About this project</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./MeetingMinutes.html">
+ <span class="dropdown-text">Meeting Minutes</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -252,13 +263,7 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="data-cleaning">Data Cleaning: &nbsp;</h3>
 <ul>
 <li>Handling Missing value (removal of incomplete records)&nbsp;</li>
-</ul>
-<!-- -->
-<ul>
 <li>Identify and remove duplicate records&nbsp;</li>
-</ul>
-<!-- -->
-<ul>
 <li>Standardize data formats (date formats, numerical conversions)&nbsp;</li>
 </ul>
 </section>
@@ -272,9 +277,6 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="data-integration">Data Integration</h3>
 <ul>
 <li>Merge WHO water data with World Bank sanitation statistic for understanding the relationship between waterborne disease and access to unsafe water source &nbsp;</li>
-</ul>
-<!-- -->
-<ul>
 <li>Geocode data for geospatial visualization &nbsp;</li>
 </ul>
 </section>
@@ -283,18 +285,9 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="geospatial-data-analysis">Geospatial Data Analysis &nbsp;</h2>
 <p>The objective of the geospatial Data Analysis is to understand and identify spatial disparities in water accessibility and unsafe water-related deaths. &nbsp;</p>
 <ul>
-<li>Interactive heatmap will be developed that represents:&nbsp;</li>
-</ul>
-<!-- -->
-<ul>
+<li>Interactive heat map will be developed that represents:&nbsp;</li>
 <li>Areas with low access to clean water &nbsp;</li>
-</ul>
-<!-- -->
-<ul>
 <li>High Concentration of unsafe water usage &nbsp;</li>
-</ul>
-<!-- -->
-<ul>
 <li>Death rate due to unsafe water usage and sanitation &nbsp;</li>
 </ul>
 <p>The choropleth maps will be used where different color intensities represent severity level.&nbsp;</p>
@@ -304,29 +297,11 @@ ul.task-list li input[type="checkbox"] {
 <p>The object of this analysis is to identify the trend and predict future patterns in water safety and sanitation overtime &nbsp;</p>
 <ul>
 <li>Incorporate forecasting models using Autoregressive Integrated Moving Average (ARIMA), Seasonal Decomposition of Time Series (STL) and Seasonal Autoregressive Integrated Moving Average (SARIMA) to project future trends in: &nbsp;</li>
-</ul>
-<!-- -->
-<ul>
 <li>Water accessibility improvements over the years &nbsp;</li>
-</ul>
-<!-- -->
-<ul>
 <li>Death rates related to unsafe water &nbsp;</li>
-</ul>
-<!-- -->
-<ul>
 <li>Sanitation coverage change (People with basic handwashing facilities including soap and water % of population) over time &nbsp;</li>
-</ul>
-<!-- -->
-<ul>
 <li>Identify in seasonal spikes, long-term trends in water safety &nbsp;</li>
-</ul>
-<!-- -->
-<ul>
 <li>Design interactive time sliders for temporal exploration &nbsp;</li>
-</ul>
-<!-- -->
-<ul>
 <li>Evaluate and compare different forecasting model&nbsp;</li>
 </ul>
 </section>
@@ -335,21 +310,9 @@ ul.task-list li input[type="checkbox"] {
 <p>The objective of confirmatory data analysis is to validate the statistical relationship between water accessibility, sanitation and health outcomes. &nbsp;</p>
 <ul>
 <li>Correlation Analysis will be conducted to determine relationship between &nbsp;</li>
-</ul>
-<!-- -->
-<ul>
 <li>Clean water access and health outcomes &nbsp;</li>
-</ul>
-<!-- -->
-<ul>
 <li>Unsafe water exposure and&nbsp;mortality rate attributed to unsafe water, sanitation. &nbsp;</li>
-</ul>
-<!-- -->
-<ul>
 <li>Hypothesis testing of t-test and ANOVA will be conducted to verify significant difference in water access between different regions &nbsp;</li>
-</ul>
-<!-- -->
-<ul>
 <li>Regression model will be used to examine the influence of sanitation and water &nbsp;</li>
 </ul>
 </section>
@@ -362,41 +325,14 @@ ul.task-list li input[type="checkbox"] {
 <p>The team intends to use the following R packages to develop and deploy the interactive visual analytics application</p>
 <ul>
 <li><strong>tidyverse</strong>: A family of modern R packages specially designed to support data science, analysis, and communication tasks, including creating static statistical graphs.</li>
-</ul>
-<!-- -->
-<ul>
 <li><strong>knitr</strong>: A report generation tool that facilitates dynamic document creation in R.</li>
-</ul>
-<!-- -->
-<ul>
 <li><strong>dplyr</strong>: An R package for data manipulation and working with data frames efficiently.</li>
-</ul>
-<!-- -->
-<ul>
 <li><strong>plotly</strong>: An R library for plotting interactive statistical graphs and visualizing data dynamically.</li>
-</ul>
-<!-- -->
-<ul>
 <li><strong>DT</strong>: An R interface to the JavaScript library <strong>DataTables</strong>, which creates interactive tables for HTML pages.</li>
-</ul>
-<!-- -->
-<ul>
 <li><strong>lubridate</strong>: An R package that simplifies working with <strong>dates and time elements</strong>.</li>
-</ul>
-<!-- -->
-<ul>
 <li><strong>ggforce</strong>: An extension of <strong>ggplot2</strong> that provides additional geoms and stats for advanced visual data analysis.</li>
-</ul>
-<!-- -->
-<ul>
 <li><strong>highcharter</strong>: A wrapper around the ‘Highcharts’ JavaScript library, allowing for highly interactive and customizable plotting of R objects.</li>
-</ul>
-<!-- -->
-<ul>
 <li><strong>sf</strong>: An R package that supports the <strong>importing, managing, and processing of geospatial data</strong>, essential for mapping analysis.</li>
-</ul>
-<!-- -->
-<ul>
 <li><strong>spdep</strong>: An R package that facilitates spatial analysis by handling geospatial data dependencies and relationships.</li>
 </ul>
 </section>
