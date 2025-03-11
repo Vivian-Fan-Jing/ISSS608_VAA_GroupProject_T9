@@ -211,41 +211,64 @@ ul.task-list li input[type="checkbox"] {
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart TD
-  A(WHO &amp; WB Dataset) --&gt; B
+  subgraph "Water Accessibility and Safety Analysis"
+    A(WHO &amp; WB Dataset) --&gt; B(Read Input)
 
-  subgraph "Data Preparation"
-    B(Read Input) --&gt; C(Clean Data)
-    C --&gt; D(Extract Subset/Variables)
-    C --&gt; E(Filter by date/region)
-    C --&gt; F(Out:Supportwork/db)
-    D --&gt; G(Combine based on requirements)
-    E --&gt; G
-    G --&gt; H(Transform to proper graph)
+    subgraph "Data Preparation"
+      B --&gt; C(Data Cleaning)
+      C --&gt; C1(Handle Missing Values)
+      C --&gt; C2(Remove Duplicates)
+      C --&gt; C3(Standardize Formats)
+    
+      C3 --&gt; D(Filtering &amp; Transformation)
+      D --&gt; D1(Select Key Variables)
+    
+      D1 --&gt; E(Data Integration)
+      E --&gt; E1(Merge WHO &amp; WB Data)
+      E --&gt; E2(Geocode for Mapping)
+    
+      E2 --&gt; F(Prepare Data for Analysis)
+    end
+
+    F --&gt; G
+    F --&gt; H
+    F --&gt; I
+    F --&gt; J
+
+    subgraph "Geospatial Data Analysis"
+      G(Create Heat Maps)
+      H(Create Choropleth Maps)
+      I(Identify Spatial Disparities)
+      G --&gt; L(Geospatial Insights)
+      H --&gt; L
+      I --&gt; L
+    end
+
+    subgraph "Time Series Analysis"
+      J(Trend &amp; Forecasting) --&gt; L1(ARIMA, STL, SARIMA)
+      L1 --&gt; M(Project Future Trends)
+      M --&gt; N(Interactive Time Sliders)
+      M --&gt; O(Evaluate Forecasting Models)
+    end
+
+    L --&gt; P
+    N --&gt; P
+    O --&gt; P
+
+    subgraph "Confirmatory Data Analysis"
+      P(Correlation Analysis)
+      P --&gt; Q(Hypothesis Testing: t-test, ANOVA)
+      P --&gt; R(Regression Models)
+    end
+
+    Q --&gt; S
+    R --&gt; S
+
+    subgraph "Data Exploration &amp; Visualization"
+      S(Interactive Dashboard - Shiny App)
+    end
   end
 
-  H --&gt; I
-  H --&gt; J
-  H --&gt; K
-
-  subgraph "Statistical Analysis"
-    I(Calculate degree centrality)
-    J(Calculate betweenness centrality)
-    K(Calculate pagerank centrality)
-  end
-
-  I --&gt; L
-  J --&gt; M
-  K --&gt; N
-
-  subgraph "Data Exploration &amp; Visualization"
-    L(Plot network graphs)
-    M(Plot corporate structures)
-    N(Plot influence)
-    L --&gt; O(Combine plots)
-    M --&gt; O
-    N --&gt; O
-    O --&gt; P(Shiny App)
-  end
 </pre>
 </div>
 <p></p></figure><p></p>

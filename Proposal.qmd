@@ -21,41 +21,64 @@ execute:
 ```{mermaid}
 %%| echo: false
 flowchart TD
-  A(WHO & WB Dataset) --> B
+  subgraph "Water Accessibility and Safety Analysis"
+    A(WHO & WB Dataset) --> B(Read Input)
 
-  subgraph "Data Preparation"
-    B(Read Input) --> C(Clean Data)
-    C --> D(Extract Subset/Variables)
-    C --> E(Filter by date/region)
-    C --> F(Out:Supportwork/db)
-    D --> G(Combine based on requirements)
-    E --> G
-    G --> H(Transform to proper graph)
+    subgraph "Data Preparation"
+      B --> C(Data Cleaning)
+      C --> C1(Handle Missing Values)
+      C --> C2(Remove Duplicates)
+      C --> C3(Standardize Formats)
+    
+      C3 --> D(Filtering & Transformation)
+      D --> D1(Select Key Variables)
+    
+      D1 --> E(Data Integration)
+      E --> E1(Merge WHO & WB Data)
+      E --> E2(Geocode for Mapping)
+    
+      E2 --> F(Prepare Data for Analysis)
+    end
+
+    F --> G
+    F --> H
+    F --> I
+    F --> J
+
+    subgraph "Geospatial Data Analysis"
+      G(Create Heat Maps)
+      H(Create Choropleth Maps)
+      I(Identify Spatial Disparities)
+      G --> L(Geospatial Insights)
+      H --> L
+      I --> L
+    end
+
+    subgraph "Time Series Analysis"
+      J(Trend & Forecasting) --> L1(ARIMA, STL, SARIMA)
+      L1 --> M(Project Future Trends)
+      M --> N(Interactive Time Sliders)
+      M --> O(Evaluate Forecasting Models)
+    end
+
+    L --> P
+    N --> P
+    O --> P
+
+    subgraph "Confirmatory Data Analysis"
+      P(Correlation Analysis)
+      P --> Q(Hypothesis Testing: t-test, ANOVA)
+      P --> R(Regression Models)
+    end
+
+    Q --> S
+    R --> S
+
+    subgraph "Data Exploration & Visualization"
+      S(Interactive Dashboard - Shiny App)
+    end
   end
 
-  H --> I
-  H --> J
-  H --> K
-
-  subgraph "Statistical Analysis"
-    I(Calculate degree centrality)
-    J(Calculate betweenness centrality)
-    K(Calculate pagerank centrality)
-  end
-
-  I --> L
-  J --> M
-  K --> N
-
-  subgraph "Data Exploration & Visualization"
-    L(Plot network graphs)
-    M(Plot corporate structures)
-    N(Plot influence)
-    L --> O(Combine plots)
-    M --> O
-    N --> O
-    O --> P(Shiny App)
-  end
 ```
 
 ## Data Preparation
