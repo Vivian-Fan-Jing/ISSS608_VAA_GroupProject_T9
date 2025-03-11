@@ -2,10 +2,10 @@
 title: "ISSS608_VAA_GroupProject_T9"
 ---
 
-This is a Quarto website.
+Welcome to ISS608 Visual Analytics and Applications **Team 9** **Group Project** homepage. In this website, you will find our project.
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 
-```{r}
-1 + 1
-```
+
+**Member:**  FAN JING,     LAI MEIHAO,      LIN XINYUE
+
+**Instructor:** PROF. KAM
