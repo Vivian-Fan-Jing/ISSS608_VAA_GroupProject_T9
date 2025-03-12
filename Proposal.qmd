@@ -134,7 +134,17 @@ The objective of confirmatory data analysis is to validate the statistical relat
 
 # Prototype
 
-good morning good afternoon good evening
+-   Geospatial Data Analysis
+
+![](images/1871269457c1f72b36efd4e29951bbc.jpg){width="420"}
+
+-   Time series Analysis
+
+![](images/10eb0b424332b246c9e6d517157e520.jpg){width="420"}
+
+-   Confirmatory Data Analysis (CDA) 
+
+![](images/3a15416b3910b816c7c2937bf9f063b.jpg){width="420"}
 
 # R packages
 
