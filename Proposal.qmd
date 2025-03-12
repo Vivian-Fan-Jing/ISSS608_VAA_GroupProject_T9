@@ -26,7 +26,7 @@ Image source: The guardian
 %%| echo: false
 flowchart TD
   subgraph "Water Accessibility and Safety Analysis"
-    A(OSF Typhoid outbreak & World Bank World WDI) --> B(Read Input)
+    A(OSF Typhoid outbreak & World Bank World WDI & Cholera Outbreak from Kaggle) --> B(Read Input)
 
     subgraph "Data Preparation"
       B --> C(Data Cleaning)
@@ -96,11 +96,11 @@ Before conducting any analysis, we will ensure that the dataset is clean, struct
 
 ### Filtering and Transformation  
 
--   Select key variables relevant to the study, such as clean water access, death rate per 100,000 population  
+-   Select key variables relevant to the study, such as clean water access,
 
 ### Data Integration
 
--   Merge Typhoid outbreak 2000 - 2022 from Center for Open Science (OSF) with World Development indicator (WDI) from World Bank 2000 - 2023 for understanding the relationship between waterborne disease and access to unsafe water source  
+-   Merge data on typhoid outbreaks (2000–2022) from the Center for Open Science (OSF), cholera cases from the WHO (2000–2023) via Kaggle (extra from WHO), and World Development Indicators (WDI) from the World Bank (2000–2023) to analyze the relationship between waterborne diseases and access to unsafe water sources. This integration will help assess how trends in cholera and typhoid correlate with water quality and accessibility over time.
 -   Geocode data for geospatial visualization  
 
 ## Geospatial Data Analysis  
@@ -110,7 +110,7 @@ The objective of the geospatial Data Analysis is to understand and identify spat
 -   Interactive heat map will be developed that represents: 
 -   Areas with low access to clean water  
 -   High Concentration of unsafe water usage  
--   Death rate due to unsafe water usage and sanitation  
+-   Outbreak cases of Cholera and Typhoid
 
 The choropleth maps will be used where different color intensities represent severity level. 
 
@@ -118,7 +118,8 @@ The choropleth maps will be used where different color intensities represent sev
 
 The object of this analysis is to identify the trend and predict future patterns in water safety and sanitation overtime  
 
--   Incorporate forecasting models using Autoregressive Integrated Moving Average (ARIMA), Seasonal Decomposition of Time Series (STL) and Seasonal Autoregressive Integrated Moving Average (SARIMA) to project future trends in:  
+Incorporate forecasting models using Autoregressive Integrated Moving Average (ARIMA), Seasonal Decomposition of Time Series (STL) and Seasonal Autoregressive Integrated Moving Average (SARIMA) to project future trends in:  
+
 -   Water accessibility improvements over the years  
 -   Death rates related to unsafe water  
 -   Sanitation coverage change (People with basic handwashing facilities including soap and water % of population) over time  
@@ -128,11 +129,11 @@ The object of this analysis is to identify the trend and predict future patterns
 
 ## Confirmatory Data Analysis (CDA) 
 
-The objective of confirmatory data analysis is to validate the statistical relationship between water accessibility, sanitation and health outcomes.  
+The objective of confirmatory data analysis is to validate the statistical relationship between water accessibility and health outcomes.  
 
 -   Correlation Analysis will be conducted to determine relationship between  
--   Clean water access and health outcomes  
--   Unsafe water exposure and mortality rate attributed to unsafe water, sanitation.  
+    -   Clean water access and health outcomes  
+    -   Outbreak cases of Cholera and Typhoid
 -   Hypothesis testing of t-test and ANOVA will be conducted to verify significant difference in water access between different regions  
 -   Regression model will be used to examine the influence of sanitation and water  
 

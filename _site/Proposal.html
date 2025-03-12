@@ -213,7 +213,7 @@ ul.task-list li input[type="checkbox"] {
 <div>
 <pre class="mermaid mermaid-js">flowchart TD
   subgraph "Water Accessibility and Safety Analysis"
-    A(OSF Typhoid outbreak &amp; World Bank World WDI) --&gt; B(Read Input)
+    A(OSF Typhoid outbreak &amp; World Bank World WDI &amp; Cholera Outbreak from Kaggle) --&gt; B(Read Input)
 
     subgraph "Data Preparation"
       B --&gt; C(Data Cleaning)
@@ -289,13 +289,13 @@ ul.task-list li input[type="checkbox"] {
 <section id="filtering-and-transformation" class="level3">
 <h3 class="anchored" data-anchor-id="filtering-and-transformation">Filtering and Transformation &nbsp;</h3>
 <ul>
-<li>Select key variables relevant to the study, such as clean water access, death rate per 100,000 population &nbsp;</li>
+<li>Select key variables relevant to the study, such as clean water access,</li>
 </ul>
 </section>
 <section id="data-integration" class="level3">
 <h3 class="anchored" data-anchor-id="data-integration">Data Integration</h3>
 <ul>
-<li>Merge Typhoid outbreak 2000 - 2022 from Center for Open Science (OSF) with World Development indicator (WDI) from World Bank 2000 - 2023 for understanding the relationship between waterborne disease and access to unsafe water source &nbsp;</li>
+<li>Merge data on typhoid outbreaks (2000–2022) from the Center for Open Science (OSF), cholera cases from the WHO (2000–2023) via Kaggle (extra from WHO), and World Development Indicators (WDI) from the World Bank (2000–2023) to analyze the relationship between waterborne diseases and access to unsafe water sources. This integration will help assess how trends in cholera and typhoid correlate with water quality and accessibility over time.</li>
 <li>Geocode data for geospatial visualization &nbsp;</li>
 </ul>
 </section>
@@ -307,15 +307,15 @@ ul.task-list li input[type="checkbox"] {
 <li>Interactive heat map will be developed that represents:&nbsp;</li>
 <li>Areas with low access to clean water &nbsp;</li>
 <li>High Concentration of unsafe water usage &nbsp;</li>
-<li>Death rate due to unsafe water usage and sanitation &nbsp;</li>
+<li>Outbreak cases of Cholera and Typhoid</li>
 </ul>
 <p>The choropleth maps will be used where different color intensities represent severity level.&nbsp;</p>
 </section>
 <section id="time-series-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="time-series-analysis">Time series Analysis &nbsp;</h2>
 <p>The object of this analysis is to identify the trend and predict future patterns in water safety and sanitation overtime &nbsp;</p>
+<p>Incorporate forecasting models using Autoregressive Integrated Moving Average (ARIMA), Seasonal Decomposition of Time Series (STL) and Seasonal Autoregressive Integrated Moving Average (SARIMA) to project future trends in: &nbsp;</p>
 <ul>
-<li>Incorporate forecasting models using Autoregressive Integrated Moving Average (ARIMA), Seasonal Decomposition of Time Series (STL) and Seasonal Autoregressive Integrated Moving Average (SARIMA) to project future trends in: &nbsp;</li>
 <li>Water accessibility improvements over the years &nbsp;</li>
 <li>Death rates related to unsafe water &nbsp;</li>
 <li>Sanitation coverage change (People with basic handwashing facilities including soap and water % of population) over time &nbsp;</li>
@@ -326,11 +326,13 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="confirmatory-data-analysis-cda" class="level2">
 <h2 class="anchored" data-anchor-id="confirmatory-data-analysis-cda">Confirmatory Data Analysis (CDA)&nbsp;</h2>
-<p>The objective of confirmatory data analysis is to validate the statistical relationship between water accessibility, sanitation and health outcomes. &nbsp;</p>
+<p>The objective of confirmatory data analysis is to validate the statistical relationship between water accessibility and health outcomes. &nbsp;</p>
 <ul>
-<li>Correlation Analysis will be conducted to determine relationship between &nbsp;</li>
+<li>Correlation Analysis will be conducted to determine relationship between &nbsp;
+<ul>
 <li>Clean water access and health outcomes &nbsp;</li>
-<li>Unsafe water exposure and&nbsp;mortality rate attributed to unsafe water, sanitation. &nbsp;</li>
+<li>Outbreak cases of Cholera and Typhoid</li>
+</ul></li>
 <li>Hypothesis testing of t-test and ANOVA will be conducted to verify significant difference in water access between different regions &nbsp;</li>
 <li>Regression model will be used to examine the influence of sanitation and water &nbsp;</li>
 </ul>

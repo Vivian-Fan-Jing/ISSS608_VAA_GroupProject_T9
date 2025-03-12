@@ -4,28 +4,28 @@
     "href": "Proposal.html#data-preparation",
     "title": "Project Proposal",
     "section": "Data Preparation",
-    "text": "Data Preparation\nBefore conducting any analysis, we will ensure that the dataset is clean, structured for analysis, and suitable for visualization. The following steps will be taken: \n\nData Cleaning:  \n\nHandling Missing value (removal of incomplete records) \nIdentify and remove duplicate records \nStandardize data formats (date formats, numerical conversions) \n\n\n\nFiltering and Transformation  \n\nSelect key variables relevant to the study, such as clean water access, death rate per 100,000 population  \n\n\n\nData Integration\n\nMerge Typhoid outbreak 2000 - 2022 from Center for Open Science (OSF) with World Development indicator (WDI) from World Bank 2000 - 2023 for understanding the relationship between waterborne disease and access to unsafe water source  \nGeocode data for geospatial visualization"
+    "text": "Data Preparation\nBefore conducting any analysis, we will ensure that the dataset is clean, structured for analysis, and suitable for visualization. The following steps will be taken: \n\nData Cleaning:  \n\nHandling Missing value (removal of incomplete records) \nIdentify and remove duplicate records \nStandardize data formats (date formats, numerical conversions) \n\n\n\nFiltering and Transformation  \n\nSelect key variables relevant to the study, such as clean water access,\n\n\n\nData Integration\n\nMerge data on typhoid outbreaks (2000–2022) from the Center for Open Science (OSF), cholera cases from the WHO (2000–2023) via Kaggle (extra from WHO), and World Development Indicators (WDI) from the World Bank (2000–2023) to analyze the relationship between waterborne diseases and access to unsafe water sources. This integration will help assess how trends in cholera and typhoid correlate with water quality and accessibility over time.\nGeocode data for geospatial visualization"
   },
   {
     "objectID": "Proposal.html#geospatial-data-analysis",
     "href": "Proposal.html#geospatial-data-analysis",
     "title": "Project Proposal",
     "section": "Geospatial Data Analysis  ",
-    "text": "Geospatial Data Analysis  \nThe objective of the geospatial Data Analysis is to understand and identify spatial disparities in water accessibility and unsafe water-related deaths.  \n\nInteractive heat map will be developed that represents: \nAreas with low access to clean water  \nHigh Concentration of unsafe water usage  \nDeath rate due to unsafe water usage and sanitation  \n\nThe choropleth maps will be used where different color intensities represent severity level."
+    "text": "Geospatial Data Analysis  \nThe objective of the geospatial Data Analysis is to understand and identify spatial disparities in water accessibility and unsafe water-related deaths.  \n\nInteractive heat map will be developed that represents: \nAreas with low access to clean water  \nHigh Concentration of unsafe water usage  \nOutbreak cases of Cholera and Typhoid\n\nThe choropleth maps will be used where different color intensities represent severity level."
   },
   {
     "objectID": "Proposal.html#time-series-analysis",
     "href": "Proposal.html#time-series-analysis",
     "title": "Project Proposal",
     "section": "Time series Analysis  ",
-    "text": "Time series Analysis  \nThe object of this analysis is to identify the trend and predict future patterns in water safety and sanitation overtime  \n\nIncorporate forecasting models using Autoregressive Integrated Moving Average (ARIMA), Seasonal Decomposition of Time Series (STL) and Seasonal Autoregressive Integrated Moving Average (SARIMA) to project future trends in:  \nWater accessibility improvements over the years  \nDeath rates related to unsafe water  \nSanitation coverage change (People with basic handwashing facilities including soap and water % of population) over time  \nIdentify in seasonal spikes, long-term trends in water safety  \nDesign interactive time sliders for temporal exploration  \nEvaluate and compare different forecasting model"
+    "text": "Time series Analysis  \nThe object of this analysis is to identify the trend and predict future patterns in water safety and sanitation overtime  \nIncorporate forecasting models using Autoregressive Integrated Moving Average (ARIMA), Seasonal Decomposition of Time Series (STL) and Seasonal Autoregressive Integrated Moving Average (SARIMA) to project future trends in:  \n\nWater accessibility improvements over the years  \nDeath rates related to unsafe water  \nSanitation coverage change (People with basic handwashing facilities including soap and water % of population) over time  \nIdentify in seasonal spikes, long-term trends in water safety  \nDesign interactive time sliders for temporal exploration  \nEvaluate and compare different forecasting model"
   },
   {
     "objectID": "Proposal.html#confirmatory-data-analysis-cda",
     "href": "Proposal.html#confirmatory-data-analysis-cda",
     "title": "Project Proposal",
     "section": "Confirmatory Data Analysis (CDA) ",
-    "text": "Confirmatory Data Analysis (CDA) \nThe objective of confirmatory data analysis is to validate the statistical relationship between water accessibility, sanitation and health outcomes.  \n\nCorrelation Analysis will be conducted to determine relationship between  \nClean water access and health outcomes  \nUnsafe water exposure and mortality rate attributed to unsafe water, sanitation.  \nHypothesis testing of t-test and ANOVA will be conducted to verify significant difference in water access between different regions  \nRegression model will be used to examine the influence of sanitation and water"
+    "text": "Confirmatory Data Analysis (CDA) \nThe objective of confirmatory data analysis is to validate the statistical relationship between water accessibility and health outcomes.  \n\nCorrelation Analysis will be conducted to determine relationship between  \n\nClean water access and health outcomes  \nOutbreak cases of Cholera and Typhoid\n\nHypothesis testing of t-test and ANOVA will be conducted to verify significant difference in water access between different regions  \nRegression model will be used to examine the influence of sanitation and water"
   },
   {
     "objectID": "index.html",
