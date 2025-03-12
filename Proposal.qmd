@@ -121,7 +121,7 @@ The object of this analysis is to identify the trend and predict future patterns
 Incorporate forecasting models using Autoregressive Integrated Moving Average (ARIMA), Seasonal Decomposition of Time Series (STL) and Seasonal Autoregressive Integrated Moving Average (SARIMA) to project future trends in:  
 
 -   Water accessibility improvements over the years  
--   Death rates related to unsafe water  
+-   Death rates related to unsafe water (waterborne disease incidence)
 -   Sanitation coverage change (People with basic handwashing facilities including soap and water % of population) over time  
 -   Identify in seasonal spikes, long-term trends in water safety  
 -   Design interactive time sliders for temporal exploration  
@@ -132,10 +132,10 @@ Incorporate forecasting models using Autoregressive Integrated Moving Average (A
 The objective of confirmatory data analysis is to validate the statistical relationship between water accessibility and health outcomes.  
 
 -   Correlation Analysis will be conducted to determine relationship between  
-    -   Clean water access and health outcomes  
-    -   Outbreak cases of Cholera and Typhoid
+    -   Clean water access (%) and incidence of waterborne diseases (Cholera & Typhoid)
+    -   Unsafe water exposure and mortality rates due to waterborne diseases
 -   Hypothesis testing of t-test and ANOVA will be conducted to verify significant difference in water access between different regions  
--   Regression model will be used to examine the influence of sanitation and water  
+-   Regression model will be used to examine the impact of sanitation access, clean water availability, and waterborne disease incidence.  
 
 # Prototype
 
