@@ -32,7 +32,7 @@
     "href": "index.html",
     "title": "Blue Pulse",
     "section": "",
-    "text": "(still need background)\nThis project aims to analyse, visualise and forecast trends in clean water access, unsafe water exposure, and health outcome through and interactive visual analytics platform. By leveraging geospatial mapping, time series forecasting, and confirmatory data analysis, we seek to:\n\nidentify regions most affect by unsafe water and sanitation\nanalyze the historical trends in waterborne disease incidence\nconfirm statistical relationships between unsafe water and public health outcome\n\nWe aim to support efforts in ensuring universal access to clean water and improving global health outcomes."
+    "text": "(still need background)\nThis project aims to analyse, visualise and forecast trends in clean water access, unsafe water exposure, and health outcome through and interactive visual analytics platform. By leveraging geospatial mapping, time series forecasting, and confirmatory data analysis, we seek to:\n\nidentify regions most affect by unsafe water and sanitation\nanalyze the historical trends in waterborne disease incidence\nconfirm statistical relationships between unsafe water and waterborne disease incidence\n\nWe aim to support efforts in ensuring universal access to clean water and improving global health outcomes."
   },
   {
     "objectID": "about.html",

@@ -20,6 +20,6 @@ This project aims to analyse, visualise and forecast trends in clean water acces
 
 -   analyze the historical trends in waterborne disease incidence
 
--   confirm statistical relationships between unsafe water and public health outcome
+-   confirm statistical relationships between unsafe water and waterborne disease incidence
 
 We aim to support efforts in ensuring universal access to clean water and improving global health outcomes.
