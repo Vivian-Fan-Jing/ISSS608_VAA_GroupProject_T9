@@ -4,7 +4,7 @@
     "href": "Proposal.html#data-preparation",
     "title": "Project Proposal",
     "section": "Data Preparation",
-    "text": "Data Preparation\nBefore conducting any analysis, we will ensure that the dataset is clean, structured for analysis, and suitable for visualization. The following steps will be taken: \n\nData Cleaning:  \n\nHandling Missing value (removal of incomplete records) \nIdentify and remove duplicate records \nStandardize data formats (date formats, numerical conversions) \n\n\n\nFiltering and Transformation  \n\nSelect key variables relevant to the study, such as clean water access, death rate per 100,000 population  \n\n\n\nData Integration\n\nMerge WHO water data with World Bank sanitation statistic for understanding the relationship between waterborne disease and access to unsafe water source  \nGeocode data for geospatial visualization"
+    "text": "Data Preparation\nBefore conducting any analysis, we will ensure that the dataset is clean, structured for analysis, and suitable for visualization. The following steps will be taken: \n\nData Cleaning:  \n\nHandling Missing value (removal of incomplete records) \nIdentify and remove duplicate records \nStandardize data formats (date formats, numerical conversions) \n\n\n\nFiltering and Transformation  \n\nSelect key variables relevant to the study, such as clean water access, death rate per 100,000 population  \n\n\n\nData Integration\n\nMerge Typhoid outbreak 2000 - 2022 with World Bank sanitation statistic 2000 - 2023 for understanding the relationship between waterborne disease and access to unsafe water source  \nGeocode data for geospatial visualization"
   },
   {
     "objectID": "Proposal.html#geospatial-data-analysis",

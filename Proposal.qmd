@@ -22,7 +22,7 @@ execute:
 %%| echo: false
 flowchart TD
   subgraph "Water Accessibility and Safety Analysis"
-    A(WHO & WB Dataset) --> B(Read Input)
+    A(Typhoid Outbreak 2000-2022 & WB Sanitation Dataset) --> B(Read Input)
 
     subgraph "Data Preparation"
       B --> C(Data Cleaning)
@@ -96,7 +96,7 @@ Before conducting any analysis, we will ensure that the dataset is clean, struct
 
 ### Data Integration
 
--   Merge WHO water data with World Bank sanitation statistic for understanding the relationship between waterborne disease and access to unsafe water source  
+-   Merge Typhoid outbreak 2000 - 2022 with World Bank sanitation statistic 2000 - 2023 for understanding the relationship between waterborne disease and access to unsafe water source  
 -   Geocode data for geospatial visualization  
 
 ## Geospatial Data Analysis  
