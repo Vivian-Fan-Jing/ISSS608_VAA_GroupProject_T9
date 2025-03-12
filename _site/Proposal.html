@@ -133,8 +133,8 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#motivation" id="toc-motivation" class="nav-link active" data-scroll-target="#motivation">Motivation</a></li>
-  <li><a href="#objectives" id="toc-objectives" class="nav-link" data-scroll-target="#objectives">Objectives</a></li>
-  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#problem-statement" id="toc-problem-statement" class="nav-link" data-scroll-target="#problem-statement">Problem Statement</a></li>
+  <li><a href="#data-source-scope" id="toc-data-source-scope" class="nav-link" data-scroll-target="#data-source-scope">Data Source &amp; Scope</a></li>
   <li><a href="#methodology" id="toc-methodology" class="nav-link" data-scroll-target="#methodology">Methodology</a>
   <ul class="collapse">
   <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data Preparation</a>
@@ -147,7 +147,12 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#time-series-analysis" id="toc-time-series-analysis" class="nav-link" data-scroll-target="#time-series-analysis">Time series Analysis &nbsp;</a></li>
   <li><a href="#confirmatory-data-analysis-cda" id="toc-confirmatory-data-analysis-cda" class="nav-link" data-scroll-target="#confirmatory-data-analysis-cda">Confirmatory Data Analysis (CDA)&nbsp;</a></li>
   </ul></li>
-  <li><a href="#prototype" id="toc-prototype" class="nav-link" data-scroll-target="#prototype">Prototype</a></li>
+  <li><a href="#prototype" id="toc-prototype" class="nav-link" data-scroll-target="#prototype">Prototype</a>
+  <ul class="collapse">
+  <li><a href="#geospatial-data-analysis-1" id="toc-geospatial-data-analysis-1" class="nav-link" data-scroll-target="#geospatial-data-analysis-1">Geospatial Data Analysis</a></li>
+  <li><a href="#time-series-analysis-1" id="toc-time-series-analysis-1" class="nav-link" data-scroll-target="#time-series-analysis-1">Time series Analysis</a></li>
+  <li><a href="#confirmatory-data-analysis-cda-1" id="toc-confirmatory-data-analysis-cda-1" class="nav-link" data-scroll-target="#confirmatory-data-analysis-cda-1">Confirmatory Data Analysis (CDA)&nbsp;</a></li>
+  </ul></li>
   <li><a href="#r-packages" id="toc-r-packages" class="nav-link" data-scroll-target="#r-packages">R packages</a></li>
   <li><a href="#project-schedule" id="toc-project-schedule" class="nav-link" data-scroll-target="#project-schedule">Project Schedule</a></li>
   </ul>
@@ -197,12 +202,33 @@ ul.task-list li input[type="checkbox"] {
 <p>Image source: The guardian</p>
 <section id="motivation" class="level1">
 <h1>Motivation</h1>
+<p>Water is essential for life, yet millions around the world still lack access to clean water and sanitation. As of 2022, <strong>2.2 billion</strong> <strong>people</strong> lacked safely managed drinking water and basic hand-washing facilities, <strong>3.5 billion</strong> lacked safely managed sanitation and <strong>2.4 billion</strong> lived in water-stressed countries.</p>
+<p><a href="https://sdgs.un.org/goals/goal6">Sustainable Development Goal 6 (SDG 6)</a>aims to ensure universal access to water and sanitation. However, at the current pace, billions will continue to face these challenges by 2030.</p>
+<p><img src="images/clipboard-3249475822-01.png" class="img-fluid" width="290"></p>
 </section>
-<section id="objectives" class="level1">
-<h1>Objectives</h1>
+<section id="problem-statement" class="level1">
+<h1>Problem Statement</h1>
+<p>To meet <a href="https://sdgs.un.org/goals/goal6">Sustainable Development Goal 6 (SDG 6)</a> targets, the global rate of progress must accelerate significantly — 6x for drinking water, 5x for sanitation, and 3x for hygiene. Achieving these targets would save <strong>829,000 lives</strong> annually, the number of people who currently die each year from disease directly linked to unsafe water, inadequate sanitation and poor hygiene.</p>
+<p>This project aims to analyze and visualize global water accessibility, sanitation trends and their impact on public health. Using data from the World Bank and health related dataset, we will:</p>
+<ul>
+<li><p>Identify spatial disparities in clean water access and unsafe water-related deaths.</p></li>
+<li><p>Analyze time-series trends to assess progress in water safety and sanitation overtime.</p></li>
+<li><p>Examine statistical relationship between water access and disease prevalence (Cholera, Typhoid)</p></li>
+<li><p>Assess investment gaps by analyzing government and international funding in water infrastructure and sanitation programs</p></li>
+<li><p>Evaluate trans boundary water cooperation, identifying region where shared water resources requires coordinated management to improve accessibility and sustainability.</p></li>
+</ul>
+<p>This project aims to support efforts in ensuring universal access to clean water and improving global health outcome through data driven approach</p>
 </section>
-<section id="data" class="level1">
-<h1>Data</h1>
+<section id="data-source-scope" class="level1">
+<h1>Data Source &amp; Scope</h1>
+<p>This project will explore global trend in water accessibility sanitation and related health impacts using multiple datasets. The primary source is the<a href="https://databank.worldbank.org/reports.aspx?source=2&amp;series=SP.POP.TOTL&amp;country=">World Development Indicators (WDI)</a> from the World Bank, which compiles extensive development data across 266 countries from 1960 to 2023. Given the large dataset, only relevant indicators will be selected to align with the project’s objectives.</p>
+<p>Potential variables from WDI may include indicators related to drinking water access, sanitation services, hygiene practices, water stress and water productivity. These factors will help assess disparities in water availability and quality across different regions.</p>
+<p>Additionally, the project will incorporate health related datasets to examine the link between water conditions and waterborne disease prevalence:</p>
+<ul>
+<li><p><a href="https://osf.io/kew4d/">Typhoid Fever Incidence (2000 -2022)</a> from the Center for Open Science (OSF)</p></li>
+<li><p><a href="https://www.kaggle.com/datasets/imdevskp/cholera-dataset">Cholera Case Data (from 1949 onward)</a>, extracted from the <a href="https://apps.who.int/gho/data/node.main.174?lang=en">WHO</a>on Kaggle</p></li>
+</ul>
+<p>By integrating these data sources, the project aims to provide data-driven insight into the impact of water accessibility and sanitation on public health. This findings can help policy makers, organizations and government target resource more effectively to ensure equitable access to safe water and sanitation worldwide.</p>
 </section>
 <section id="methodology" class="level1">
 <h1>Methodology</h1>
@@ -302,56 +328,74 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="geospatial-data-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="geospatial-data-analysis">Geospatial Data Analysis &nbsp;</h2>
-<p>The objective of the geospatial Data Analysis is to understand and identify spatial disparities in water accessibility and unsafe water-related deaths. &nbsp;</p>
+<p>The objective of the geospatial Data Analysis is to understand and identify spatial disparities in water accessibility and unsafe water-related deaths while assessing investment gaps and policy effectiveness.&nbsp;</p>
+<p>Visualization Approach:</p>
 <ul>
-<li>Interactive heat map will be developed that represents:&nbsp;</li>
+<li>Interactive heat map will be developed that represents:&nbsp;
+<ul>
 <li>Areas with low access to clean water &nbsp;</li>
 <li>High Concentration of unsafe water usage &nbsp;</li>
 <li>Outbreak cases of Cholera and Typhoid</li>
+</ul></li>
+<li>Choropleth Maps will be used to illustrate severity levels with different color intensities represents:
+<ul>
+<li><p>Water stress levels and sanitation access disparities</p></li>
+<li><p>Disease incidence across different region</p></li>
+<li><p>Transboundary water cooperation gaps in shared water resources.</p></li>
+<li><p>Policy effectiveness, comparing investment levels vs actual progress in improving water access and sanitation</p></li>
+<li><p>Investment disparities in water and sanitation infrastructure showing region with high vs.low funding levels.</p></li>
+</ul></li>
 </ul>
-<p>The choropleth maps will be used where different color intensities represent severity level.&nbsp;</p>
 </section>
 <section id="time-series-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="time-series-analysis">Time series Analysis &nbsp;</h2>
-<p>The object of this analysis is to identify the trend and predict future patterns in water safety and sanitation overtime &nbsp;</p>
-<p>Incorporate forecasting models using Autoregressive Integrated Moving Average (ARIMA), Seasonal Decomposition of Time Series (STL) and Seasonal Autoregressive Integrated Moving Average (SARIMA) to project future trends in: &nbsp;</p>
+<p>The object of this analysis is to identify the trend and predict future patterns in water safety and sanitation overtime and related health risks over time.</p>
+<p>Incorporate forecasting models using Autoregressive Integrated Moving Average (ARIMA) for overall trend forecasting, Seasonal Decomposition of Time Series (STL) to analyse the seasonal variation and long term patterns and Seasonal Autoregressive Integrated Moving Average (SARIMA) to incorporate both trend and seasonality to project future trends in: &nbsp;</p>
 <ul>
-<li>Water accessibility improvements over the years &nbsp;</li>
-<li>Death rates related to unsafe water (waterborne disease incidence)</li>
-<li>Sanitation coverage change (People with basic handwashing facilities including soap and water % of population) over time &nbsp;</li>
-<li>Identify in seasonal spikes, long-term trends in water safety &nbsp;</li>
-<li>Design interactive time sliders for temporal exploration &nbsp;</li>
-<li>Evaluate and compare different forecasting model&nbsp;</li>
+<li><p>Water accessibility improvements over the years</p></li>
+<li><p>Death rates linked to unsafe water (waterborne disease incidence trends).</p></li>
+<li><p>Changes in sanitation coverage</p></li>
 </ul>
 </section>
 <section id="confirmatory-data-analysis-cda" class="level2">
 <h2 class="anchored" data-anchor-id="confirmatory-data-analysis-cda">Confirmatory Data Analysis (CDA)&nbsp;</h2>
-<p>The objective of confirmatory data analysis is to validate the statistical relationship between water accessibility and health outcomes. &nbsp;</p>
+<p>The objective of confirmatory data analysis is to validate the statistical relationship between water accessibility sanitation and health outcomes using correlation, hypothesis testing and regression models.</p>
 <ul>
-<li>Correlation Analysis will be conducted to determine relationship between &nbsp;
+<li><p>Correlation Analysis</p>
 <ul>
-<li>Clean water access (%) and incidence of waterborne diseases (Cholera &amp; Typhoid)</li>
-<li>Unsafe water exposure and mortality rates due to waterborne diseases</li>
+<li><p>Assess the relationship between clean water access and the incidence of waterborne disease (Cholera &amp; Typhoid)</p></li>
+<li><p>Examine how unsafe water exposure correlates with mortality rates due to waterborne dieases.</p></li>
 </ul></li>
-<li>Hypothesis testing of t-test and ANOVA will be conducted to verify significant difference in water access between different regions &nbsp;</li>
-<li>Regression model will be used to examine the impact of sanitation access, clean water availability, and waterborne disease incidence. &nbsp;</li>
+<li><p>Hypothesis Testing:</p>
+<ul>
+<li>Conduct t-tests and ANOVA to determine if significant different exist in water access levels across different regions.</li>
+</ul></li>
+<li><p>Regression Modelling:</p>
+<ul>
+<li><p>Evaluate the impact of sanitation access and clean water availability on the incidence of waterborne diseases</p></li>
+<li><p>Quantify the extent to which improvements in water infrastructure reduce health risks.</p></li>
+<li><p>Assess the effect of investment in water and sanitation on overall health outcomes.</p></li>
+</ul></li>
 </ul>
 </section>
 </section>
 <section id="prototype" class="level1">
 <h1>Prototype</h1>
-<ul>
-<li>Geospatial Data Analysis</li>
-</ul>
+<section id="geospatial-data-analysis-1" class="level2">
+<h2 class="anchored" data-anchor-id="geospatial-data-analysis-1">Geospatial Data Analysis</h2>
+<p>With this tab, users can freely select the variables they want to explore from 2012-2022. Additionally, by selecting different regions, they can gain deeper insights into specific areas. The data table below allows users to conveniently view detailed information.</p>
 <p><img src="images/1871269457c1f72b36efd4e29951bbc.jpg" class="img-fluid" width="420"></p>
-<ul>
-<li>Time series Analysis</li>
-</ul>
+</section>
+<section id="time-series-analysis-1" class="level2">
+<h2 class="anchored" data-anchor-id="time-series-analysis-1">Time series Analysis</h2>
+<p>This tab will display time series forecasting. Users can explore the basic information of the data and use different models for forecasting.</p>
 <p><img src="images/10eb0b424332b246c9e6d517157e520.jpg" class="img-fluid" width="420"></p>
-<ul>
-<li>Confirmatory Data Analysis (CDA)&nbsp;</li>
-</ul>
+</section>
+<section id="confirmatory-data-analysis-cda-1" class="level2">
+<h2 class="anchored" data-anchor-id="confirmatory-data-analysis-cda-1">Confirmatory Data Analysis (CDA)&nbsp;</h2>
+<p>This tab will use statistical methods to analyze and validate the relationships between data based on user selections, providing a clearer understanding of the impact of water stress, sanitation, and hygiene.</p>
 <p><img src="images/3a15416b3910b816c7c2937bf9f063b.jpg" class="img-fluid" width="420"></p>
+</section>
 </section>
 <section id="r-packages" class="level1">
 <h1>R packages</h1>
