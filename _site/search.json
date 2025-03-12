@@ -12,5 +12,61 @@
     "title": "Blue Pulse",
     "section": "",
     "text": "Water is fundamental to life, yet billions worldwide still lack access to safe drinking water and sanitation. As of 2022, 2.2 billion people lacked safely managed drinking water, while 3.5 billion had no access to safe sanitation. Waterborne diseases such as cholera and typhoid continue to pose serious public health threats, particularly in regions with inadequate water infrastructure. Sustainable Development Goal 6 (SDG 6) aims to ensure universal access to water and sanitation, but current progress is insufficient, requiring accelerated efforts to meet global targets.\nObjectives:\nThis project seeks to analyze and visualize global disparities in water accessibility, sanitation, and health outcomes. By leveraging statistical and geospatial analysis, we aim to:\n\nIdentify regions with severe water stress and sanitation deficiencies.\nAssess the relationship between water accessibility and waterborne diseases.\nForecast future trends in water safety and sanitation.\nExamine investment disparities and transboundary water cooperation gaps.\n\nApplication Features:\nOur team will develop an interactive web-based visual analytics application using Shiny to democratize data access and insights. The key features include:\n\nGeospatial Mapping: Interactive heat maps and choropleth maps visualizing water stress, disease outbreaks, and investment gaps.\nTime Series Analysis: Forecasting water accessibility improvements, sanitation trends, and disease prevalence using ARIMA, STL, and SARIMA models.\nConfirmatory Data Analysis (CDA): Statistical validation of the relationship between water access, health outcomes, and investment impact.\nInteractive Dashboards: Allowing users to explore country-level insights and trends over time.\nInvestment & Policy Insights: Identifying underfunded regions and evaluating the effectiveness of water infrastructure investment.\n\nThis project aims to support efforts to ensure universal access to clean water and improve global health outcomes through data-driven approaches."
+  },
+  {
+    "objectID": "Proposal.html",
+    "href": "Proposal.html",
+    "title": "Project Proposal",
+    "section": "",
+    "text": "Image source: The guardian"
+  },
+  {
+    "objectID": "Proposal.html#data-preparation",
+    "href": "Proposal.html#data-preparation",
+    "title": "Project Proposal",
+    "section": "Data Preparation",
+    "text": "Data Preparation\nBefore conducting any analysis, we will ensure that the dataset is clean, structured for analysis, and suitable for visualization. The following steps will be taken: \n\nData Cleaning:  \n\nHandling Missing value (removal of incomplete records) \nIdentify and remove duplicate records \nStandardize data formats (date formats, numerical conversions) \n\n\n\nFiltering and Transformation  \n\nSelect key variables relevant to the study, such as clean water access,\n\n\n\nData Integration\n\nMerge data on typhoid outbreaks (2000–2022) from the Center for Open Science (OSF), cholera cases from the WHO (2000–2023) via Kaggle (extra from WHO), and World Development Indicators (WDI) from the World Bank (2000–2023) to analyze the relationship between waterborne diseases and access to unsafe water sources. This integration will help assess how trends in cholera and typhoid correlate with water quality and accessibility over time.\nGeocode data for geospatial visualization"
+  },
+  {
+    "objectID": "Proposal.html#geospatial-data-analysis",
+    "href": "Proposal.html#geospatial-data-analysis",
+    "title": "Project Proposal",
+    "section": "Geospatial Data Analysis  ",
+    "text": "Geospatial Data Analysis  \nThe objective of the geospatial Data Analysis is to understand and identify spatial disparities in water accessibility and unsafe water-related deaths while assessing investment gaps and policy effectiveness. \nVisualization Approach:\n\nInteractive heat map will be developed that represents: \n\nAreas with low access to clean water  \nHigh Concentration of unsafe water usage  \nOutbreak cases of Cholera and Typhoid\n\nChoropleth Maps will be used to illustrate severity levels with different color intensities represents:\n\nWater stress levels and sanitation access disparities\nDisease incidence across different region\nTransboundary water cooperation gaps in shared water resources.\nPolicy effectiveness, comparing investment levels vs actual progress in improving water access and sanitation\nInvestment disparities in water and sanitation infrastructure showing region with high vs.low funding levels."
+  },
+  {
+    "objectID": "Proposal.html#time-series-analysis",
+    "href": "Proposal.html#time-series-analysis",
+    "title": "Project Proposal",
+    "section": "Time series Analysis  ",
+    "text": "Time series Analysis  \nThe object of this analysis is to identify the trend and predict future patterns in water safety and sanitation overtime and related health risks over time.\nIncorporate forecasting models using Autoregressive Integrated Moving Average (ARIMA) for overall trend forecasting, Seasonal Decomposition of Time Series (STL) to analyse the seasonal variation and long term patterns and Seasonal Autoregressive Integrated Moving Average (SARIMA) to incorporate both trend and seasonality to project future trends in:  \n\nWater accessibility improvements over the years\nDeath rates linked to unsafe water (waterborne disease incidence trends).\nChanges in sanitation coverage"
+  },
+  {
+    "objectID": "Proposal.html#confirmatory-data-analysis-cda",
+    "href": "Proposal.html#confirmatory-data-analysis-cda",
+    "title": "Project Proposal",
+    "section": "Confirmatory Data Analysis (CDA) ",
+    "text": "Confirmatory Data Analysis (CDA) \nThe objective of confirmatory data analysis is to validate the statistical relationship between water accessibility sanitation and health outcomes using correlation, hypothesis testing and regression models.\n\nCorrelation Analysis\n\nAssess the relationship between clean water access and the incidence of waterborne disease (Cholera & Typhoid)\nExamine how unsafe water exposure correlates with mortality rates due to waterborne dieases.\n\nHypothesis Testing:\n\nConduct t-tests and ANOVA to determine if significant different exist in water access levels across different regions.\n\nRegression Modelling:\n\nEvaluate the impact of sanitation access and clean water availability on the incidence of waterborne diseases\nQuantify the extent to which improvements in water infrastructure reduce health risks.\nAssess the effect of investment in water and sanitation on overall health outcomes."
+  },
+  {
+    "objectID": "Proposal.html#geospatial-data-analysis-1",
+    "href": "Proposal.html#geospatial-data-analysis-1",
+    "title": "Project Proposal",
+    "section": "Geospatial Data Analysis",
+    "text": "Geospatial Data Analysis\nWith this tab, users can freely select the variables they want to explore from 2012-2022. Additionally, by selecting different regions, they can gain deeper insights into specific areas. The data table below allows users to conveniently view detailed information."
+  },
+  {
+    "objectID": "Proposal.html#time-series-analysis-1",
+    "href": "Proposal.html#time-series-analysis-1",
+    "title": "Project Proposal",
+    "section": "Time series Analysis",
+    "text": "Time series Analysis\nThis tab will display time series forecasting. Users can explore the basic information of the data and use different models for forecasting."
+  },
+  {
+    "objectID": "Proposal.html#confirmatory-data-analysis-cda-1",
+    "href": "Proposal.html#confirmatory-data-analysis-cda-1",
+    "title": "Project Proposal",
+    "section": "Confirmatory Data Analysis (CDA) ",
+    "text": "Confirmatory Data Analysis (CDA) \nThis tab will use statistical methods to analyze and validate the relationships between data based on user selections, providing a clearer understanding of the impact of water stress, sanitation, and hygiene."
   }
 ]

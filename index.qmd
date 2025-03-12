@@ -10,7 +10,7 @@ execute:
   freeze: true
 ---
 
-![](images/clipboard-1382453510.png){width="167"}
+![](images/clipboard-1382453510.png){width="248"}
 
 Water is fundamental to life, yet billions worldwide still lack access to safe drinking water and sanitation. As of 2022, **2.2 billion people** lacked safely managed drinking water, while **3.5 billion** had no access to safe sanitation. Waterborne diseases such as **cholera and typhoid** continue to pose serious public health threats, particularly in regions with inadequate water infrastructure. **Sustainable Development Goal 6 (SDG 6)** aims to ensure universal access to water and sanitation, but current progress is insufficient, requiring **accelerated efforts** to meet global targets.
 

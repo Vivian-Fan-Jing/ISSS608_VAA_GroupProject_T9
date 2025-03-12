@@ -18,7 +18,7 @@ Image source: The guardian
 
 Water is essential for life, yet millions around the world still lack access to clean water and sanitation. As of 2022, **2.2 billion** **people** lacked safely managed drinking water and basic hand-washing facilities, **3.5 billion** lacked safely managed sanitation and **2.4 billion** lived in water-stressed countries.
 
-[Sustainable Development Goal 6 (SDG 6) ](https://sdgs.un.org/goals/goal6) aims to ensure universal access to water and sanitation. However, at the current pace, billions will continue to face these challenges by 2030.
+[Sustainable Development Goal 6 (SDG 6)](https://sdgs.un.org/goals/goal6) aims to ensure universal access to water and sanitation. However, at the current pace, billions will continue to face these challenges by 2030.
 
 ![](images/clipboard-3249475822-01.png){width="290"}
 
@@ -40,7 +40,7 @@ This project aims to analyze and visualize global water accessibility, sanitatio
 
 This project aims to support efforts to ensure universal access to clean water and improve global health outcomes through data-driven approaches.
 
-# Data Source & Scope 
+# Data Source & Scope
 
 This project will explore global trend in water accessibility sanitation and related health impacts using multiple datasets. The primary source is the [World Development Indicators (WDI)](https://databank.worldbank.org/reports.aspx?source=2&series=SP.POP.TOTL&country=) from the World Bank, which compiles extensive development data across 266 countries from 1960 to 2023. Given the large dataset, only relevant indicators will be selected to align with the project's objectives.
 
@@ -50,7 +50,7 @@ Additionally, the project will incorporate health related datasets to examine th
 
 -   [Typhoid Fever Incidence (2000 -2022)](https://osf.io/kew4d/) from the Center for Open Science (OSF)
 
--   [Cholera Case Data (from 1949 onward)](https://www.kaggle.com/datasets/imdevskp/cholera-dataset), extracted from the [WHO ](https://apps.who.int/gho/data/node.main.174?lang=en) on Kaggle
+-   [Cholera Case Data (from 1949 onward)](https://www.kaggle.com/datasets/imdevskp/cholera-dataset), extracted from the [WHO](https://apps.who.int/gho/data/node.main.174?lang=en) on Kaggle
 
 By integrating these data sources, the project aims to provide data-driven insight into the impact of water accessibility and sanitation on public health. This findings can help policy makers, organizations and government target resource more effectively to ensure equitable access to safe water and sanitation worldwide.
 
