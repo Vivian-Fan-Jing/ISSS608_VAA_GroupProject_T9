@@ -50,7 +50,7 @@ Additionally, the project will incorporate health related datasets to examine th
 
 -   [Typhoid Fever Incidence (2000 -2022)](https://osf.io/kew4d/) from the Center for Open Science (OSF)
 
--   [Cholera Case Data (from 1949 onward)](https://www.kaggle.com/datasets/imdevskp/cholera-dataset), extracted from the [WHO ](https://apps.who.int/gho/data/node.main.174?lang=en)on Kaggle
+-   [Cholera Case Data (from 1949 onward)](https://www.kaggle.com/datasets/imdevskp/cholera-dataset), extracted from the [WHO ](https://apps.who.int/gho/data/node.main.174?lang=en) on Kaggle
 
 By integrating these data sources, the project aims to provide data-driven insight into the impact of water accessibility and sanitation on public health. This findings can help policy makers, organizations and government target resource more effectively to ensure equitable access to safe water and sanitation worldwide.
 
