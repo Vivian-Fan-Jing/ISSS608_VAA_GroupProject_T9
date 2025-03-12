@@ -8,6 +8,9 @@ execute:
   echo: true
   warning: false
   freeze: true
+format: html
+filters: 
+  - mermaid
 ---
 
 # Motivation
@@ -141,17 +144,24 @@ good morning good afternoon good evening
 The team intends to use the following R packages to develop and deploy the interactive visual analytics application
 
 -   **tidyverse**: A family of modern R packages specially designed to support data science, analysis, and communication tasks, including creating static statistical graphs.
--   **knitr**: A report generation tool that facilitates dynamic document creation in R.
--   **dplyr**: An R package for data manipulation and working with data frames efficiently.
--   **plotly**: An R library for plotting interactive statistical graphs and visualizing data dynamically.
--   **DT**: An R interface to the JavaScript library **DataTables**, which creates interactive tables for HTML pages.
--   **lubridate**: An R package that simplifies working with **dates and time elements**.
--   **ggforce**: An extension of **ggplot2** that provides additional geoms and stats for advanced visual data analysis.
--   **highcharter**: A wrapper around the ‘Highcharts’ JavaScript library, allowing for highly interactive and customizable plotting of R objects.
--   **sf**: An R package that supports the **importing, managing, and processing of geospatial data**, essential for mapping analysis.
--   **spdep**: An R package that facilitates spatial analysis by handling geospatial data dependencies and relationships.
 
-# Conclusion
+-   **knitr**: A report generation tool that facilitates dynamic document creation in R.
+
+-   **dplyr**: An R package for data manipulation and working with data frames efficiently.
+
+-   **plotly**: An R library for plotting interactive statistical graphs and visualizing data dynamically.
+
+-   **DT**: An R interface to the JavaScript library **DataTables**, which creates interactive tables for HTML pages.
+
+-   **lubridate**: An R package that simplifies working with **dates and time elements**.
+
+-   **ggforce**: An extension of **ggplot2** that provides additional geoms and stats for advanced visual data analysis.
+
+-   **highcharter**: A wrapper around the ‘Highcharts’ JavaScript library, allowing for highly interactive and customizable plotting of R objects.
+
+-   **sf**: An R package that supports the **importing, managing, and processing of geospatial data**, essential for mapping analysis.
+
+-   **spdep**: An R package that facilitates spatial analysis by handling geospatial data dependencies and relationships.
 
 # Project Schedule
 
