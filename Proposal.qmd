@@ -24,7 +24,7 @@ Water is essential for life, yet millions around the world still lack access to 
 
 # Problem Statement
 
-To meet [Sustainable Development Goal 6 (SDG 6)](https://sdgs.un.org/goals/goal6) targets, the global rate of progress must accelerate significantly — 6x for drinking water, 5x for sanitation, and 3x for hygiene. Achieving these targets would save **829,000 lives** annually, the number of people who currently die each year from disease directly linked to unsafe water, inadequate sanitation and poor hygiene.
+To meet [Sustainable Development Goal 6 (SDG 6)](https://sdgs.un.org/goals/goal6) targets, the global rate of progress must accelerate significantly — 6x for drinking water, 5x for sanitation, and 3x for hygiene. Achieving these targets would save **829,000 lives** annually, the number of people who currently die each year from diseases directly linked to unsafe water, inadequate sanitation and poor hygiene.
 
 This project aims to analyze and visualize global water accessibility, sanitation trends and their impact on public health. Using data from the World Bank and health related dataset, we will:
 
@@ -32,13 +32,13 @@ This project aims to analyze and visualize global water accessibility, sanitatio
 
 -   Analyze time-series trends to assess progress in water safety and sanitation overtime.
 
--   Examine statistical relationship between water access and disease prevalence (Cholera, Typhoid)
+-   Examine the statistical relationship between water access and disease prevalence (Cholera, Typhoid)
 
 -   Assess investment gaps by analyzing government and international funding in water infrastructure and sanitation programs
 
--   Evaluate trans boundary water cooperation, identifying region where shared water resources requires coordinated management to improve accessibility and sustainability.
+-   Evaluate transboundary water cooperation, identifying regions where shared water resources require coordinated management to improve accessibility and sustainability
 
-This project aims to support efforts in ensuring universal access to clean water and improving global health outcome through data driven approach
+This project aims to support efforts to ensure universal access to clean water and improve global health outcomes through data-driven approaches.
 
 # Data Source & Scope 
 
