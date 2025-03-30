@@ -711,7 +711,7 @@ combined_data <- read.csv("combined_complete_data.csv")
 
 ## 8.2 plotting for visualization
 
-The below code chunk creates a line plot using `ggplot2` to visualise the historical result and forecast result of the `DiarrheaRate.` \
+The below code chunk creates a line plot using `ggplot2` to visualise the historical result and forecast result of the `DiarrheaRate.`\
 The aim of the graph is to observe the change overtime.
 
 ```{r}
