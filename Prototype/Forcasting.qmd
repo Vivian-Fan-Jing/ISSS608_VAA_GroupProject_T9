@@ -1,0 +1,821 @@
+---
+title: "WASH-Based Health Trend Analysis"
+author: "Lai Meihao"
+date: "March 31, 2025"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+# 1. Overview
+
+In this analysis, I will explore the forecasting of health outcomes related to WASH (Water, Sanitation, and Hygiene) indicators using **Panel Linear Models (PLM)** and **Time-series analysis (ARIMA**). The goal is to project future trends in diseases such as Diarrhea, Typhoid, and Hepatitis across different WHO regions, based on the impact of WASH-related factors like water access, sanitation, and hygiene practices.
+
+# 2. Initial Data Preparation
+
+## 2.1 Install and launch R packages
+
+The project uses `p_load()` of pacman package to check if the R package are installed in the computer.
+
+The following code chunk is used to install and launch the R packages.
+
+```{r}
+pacman::p_load(tidyverse, ggplot2, plm,ExPanDaR,lubridate, ggthemes, plotly,dplyr,purrr,forecast)
+```
+
+## 2.2 Import Data
+
+The below code chunk use `read_csv()` to read the csv file into R as a data frame
+
+```{r}
+merged_data <- read_csv("data/merged_data.csv")
+
+```
+
+## **2.3 Overview of the data**
+
+### **Dataset Structure**
+
+The below code chunk check the structure of the data.
+
+```{r}
+glimpse(merged_data)
+
+
+head(merged_data)
+```
+
+# 3. Data Processing
+
+## 3.1 Missing Data
+
+The below code chunk of `is.na()` to check the missing values in the `merged_data` frame, and returns a logical matrix( or vector, depending on the data structure. `sum()` function calculate the sum of the elements of the logical matrix or vector.
+
+```{r}
+sum(is.na(merged_data))
+
+```
+
+The result of zero indicate that there no missing in the merge dataset.
+
+## 3.2 Duplicate Value
+
+The `duplicated()` function checks for duplicate rows in the `merged_data` frame.
+
+```{r}
+sum(duplicated(merged_data))
+```
+
+The result indicate that there is no duplicate in the `merged_data`.
+
+# 4. PLM: Linear Model for panel data
+
+## 4.1 Overview of plm
+
+A **Panel Linear Model (PLM)** is a statistical model used to analyze data that includes observations over time (time-series) and across different units (cross-sectional). This type of data, often called panel data or longitudinal data, involves multiple subjects (such as countries, individuals, or companies) observed over several time periods.
+
+For this project, we are using data from the World Development Indicators (WDI) as WASH (Water, Sanitation, and Hygiene) indicators and data from the Institute for Health Metrics as health indicators. We will apply the PLM to estimate the coefficients of the WASH indicators for each health indicator. Subsequently, we will use time-series analysis to forecast trends for the health indicators, particularly disease rates, based on the coefficients obtained from the WASH indicators.
+
+To apply PLM in our project, we will be using [`plm`](https://cran.r-project.org/web/packages/plm/plm.pdf) package in R.
+
+## 4.2 Creating Panel Data
+
+Before proceed to the PLM analysis, we will first create panel data. We will be start by understanding `merged_data`.\
+The below code chunk use `names()` function to extract the names of the columns in the `merged_data`.
+
+```{r}
+names(merged_data)
+
+```
+
+The output shows the columns in the `merged_data`.
+
+The below code chunk use the `summary()` function to provide a quick overview of each column in a dataframe.
+
+```{r}
+summary(merged_data)
+```
+
+This summary provides key insights into the distribution and spread of values in each of the columns. The `AvgValue` column, for instance, has a wide range, with very large maximum values compared to the median and first quartile. Similarly, health indicators like `TyphoidRate`, `DiarrheaRate`, and `HepatitisRate` show varying levels of distribution, with some regions having very low rates and others experiencing high rates.
+
+The below code chunk use `str()` function to display the structure of the merged_data. It provides a compact overview of the data type of each column, as well as the first few entries in each column.
+
+```{r}
+str(merged_data)
+
+```
+
+The dataset is a **spec_tbl_df** (which is a specific type of tibble in R) with **1232 rows and 8 columns**. The dataset includes 8 variables (columns), and it uses the `spec_tbl_df` class from the `tibble` package.
+
+The below code chunk summaries the `merged_data` set by grouping it by `Region` and `Year`.
+
+The result of this code is a new data frame, `merged_data_clean`, where:
+
+-   Each row corresponds to a unique combination of `Region` and `Year`.
+
+-   For each `Region` and `Year`, the mean values for `TyphoidRate`, `DiarrheaRate`, `HepatitisRate`, and `UnsafeRisk` are calculated, ignoring missing values.
+
+The code chunk below use the `pivot_wider()` function from the `tidyverse` package to transform the `merged_data` dataset from long format to wide format. As the WASH indicator are store in the column `Series.Name`.
+
+```{r}
+wide_data <- merged_data %>%
+  pivot_wider(
+    id_cols = c(Region, Year, TyphoidRate, DiarrheaRate, HepatitisRate, UnsafeRisk),
+    names_from = Series.Name,
+    values_from = AvgValue
+  )
+```
+
+The code chunk below creates a panel data frame using the `pdata.frame()` function from the `plm` package.
+
+```{r}
+pdata <- pdata.frame(wide_data, index = c("Region", "Year"))
+
+```
+
+The result of this code is that the `wide_data` data frame is now transformed into a **panel data frame**, stored in the variable `pdata`. This allows we to perform panel data analysis using the `plm` package.
+
+-   The `pdata` object will now be suitable for running panel regressions, such as fixed effects or random effects models, using functions like `plm()` from the `plm` package.
+
+The below code chunk use `colnames()` function to return the column names of the `pdata` which is now a panel data after being converted by `pdata.frame()`.
+
+```{r}
+colnames(pdata)
+
+```
+
+## 4.3 PLM for coefficient of the WASH Variables
+
+The below code chunk fits a Fixed Effects Model also known as the 'within' model) using the `plm` function from the `plm` package in R analyse the relationship between `DiarrheaRate` and WASH indicators.
+
+```{r}
+model <- plm(DiarrheaRate ~ 
+  People.practicing.open.defecation....of.population. +
+  People.using.at.least.basic.drinking.water.services....of.population. +
+  People.using.at.least.basic.sanitation.services....of.population. +
+  Population.density..people.per.sq..km.of.land.area. +
+  Water.productivity..total..constant.2015.US..GDP.per.cubic.meter.of.total.freshwater.withdrawal. +
+  Level.of.water.stress..freshwater.withdrawal.as.a.proportion.of.available.freshwater.resources +  # Level of water stress
+  People.using.safely.managed.drinking.water.services....of.population. +  # People using safely managed drinking water services
+  People.using.safely.managed.sanitation.services....of.population.,  # People using safely managed sanitation services
+  data = pdata,
+  model = "within"
+)
+summary(model)
+
+```
+
+The below code chunk fits a Fixed Effects Model also known as the 'within' model) using the `plm` function from the `plm` package in R analyse the relationship between `HeptatitisRate` and WASH indicators.
+
+```{r}
+model <- plm(HepatitisRate ~ 
+  People.practicing.open.defecation....of.population. +
+  People.using.at.least.basic.drinking.water.services....of.population. +
+  People.using.at.least.basic.sanitation.services....of.population. +
+  Population.density..people.per.sq..km.of.land.area. +
+  Water.productivity..total..constant.2015.US..GDP.per.cubic.meter.of.total.freshwater.withdrawal. +
+  Level.of.water.stress..freshwater.withdrawal.as.a.proportion.of.available.freshwater.resources +  # Level of water stress
+  People.using.safely.managed.drinking.water.services....of.population. +  # People using safely managed drinking water services
+  People.using.safely.managed.sanitation.services....of.population.,  # People using safely managed sanitation services
+  data = pdata,
+  model = "within"
+)
+summary(model)
+
+```
+
+The below code chunk fits a Fixed Effects Model also known as the 'within' model) using the `plm` function from the `plm` package in R analyse the relationship between `unsafetyRisk` and WASH indicators.
+
+```{r}
+model <- plm(UnsafeRisk ~ 
+  People.practicing.open.defecation....of.population. +
+  People.using.at.least.basic.drinking.water.services....of.population. +
+  People.using.at.least.basic.sanitation.services....of.population. +
+  Population.density..people.per.sq..km.of.land.area. +
+  Water.productivity..total..constant.2015.US..GDP.per.cubic.meter.of.total.freshwater.withdrawal. +
+  Level.of.water.stress..freshwater.withdrawal.as.a.proportion.of.available.freshwater.resources +  # Level of water stress
+  People.using.safely.managed.drinking.water.services....of.population. +  # People using safely managed drinking water services
+  People.using.safely.managed.sanitation.services....of.population.,  # People using safely managed sanitation services
+  data = pdata,
+  model = "within"
+)
+summary(model)
+```
+
+The below code chunk fits a Fixed Effects Model also known as the 'within' model) using the `plm` function from the `plm` package in R analyse the relationship between `TyphoidRate` and WASH indicators.
+
+```{r}
+model <- plm(TyphoidRate~ 
+  People.practicing.open.defecation....of.population. +
+  People.using.at.least.basic.drinking.water.services....of.population. +
+  People.using.at.least.basic.sanitation.services....of.population. +
+  Population.density..people.per.sq..km.of.land.area. +
+  Water.productivity..total..constant.2015.US..GDP.per.cubic.meter.of.total.freshwater.withdrawal. +
+  Level.of.water.stress..freshwater.withdrawal.as.a.proportion.of.available.freshwater.resources +  # Level of water stress
+  People.using.safely.managed.drinking.water.services....of.population. +  # People using safely managed drinking water services
+  People.using.safely.managed.sanitation.services....of.population.,  # People using safely managed sanitation services
+  data = pdata,
+  model = "within"
+)
+summary(model)
+
+
+```
+
+Base on the output of four model, People practicing open defecation and People using at least basic drinking water services are significant across all models, consistently showing a negative relationship with health outcomes. `Level of water stress` appears as significant in most models, suggesting that regions facing higher water stress tend to experience worse health outcomes. `People using safely managed drinking water services` has significant positive impacts on `DiarrheaRate` and `UnsafeRisk`, but it is not significant for `HepatitisRate`.
+
+The models explaining `HepatitisRate` and `UnsafeRisk` have very high R-squared values (above 94%), suggesting that these models explain most of the variance in the respective dependent variables.The `DiarrheaRate` model has a slightly lower R-squared (85.4%), but still a very good fit.
+
+The results show that sanitation, drinking water access, and open defecation are important factors influencing health outcomes, particularly `DiarrheaRate` and `UnsafeRisk`.Water stress plays a critical role, indicating that regions with high water stress are likely to face more health-related challenges.There is considerable variation in the impact of predictors on different health outcomes, with some predictors (e.g., `People using safely managed drinking water services`) being more influential for some health outcomes than others.
+
+## 4.4 Coefficient list
+
+The code chunk below create a list of coefficient for four different health outcome, `DiarrheaRate`, `TyphoidRate`, `UnsafeRisk`, and `HepatitisRate` from the fixed effects models.
+
+```{r}
+coef_list <- list(
+  DiarrheaRate = c(
+    OpenDefecation = -0.6755407,
+    BasicWater = -1.0144098,
+    BasicSanitation = -0.1706479,
+    WaterProductivity = 0.0029523,
+    WaterStress = 0.0110199,
+    PopulationDensity = 0.0014148,
+    SafelyManagedWater = 0.2855646,
+    SafelyManagedSanitation = -0.1302516
+  ),
+  TyphoidRate = c(
+    OpenDefecation = 0.015961,
+    BasicWater = 0.018088,
+    BasicSanitation = 0.0024683,
+    WaterProductivity = 1.1884e-05,
+    WaterStress = -4.1832e-04,
+    PopulationDensity = 9.1629e-05,
+    SafelyManagedWater = -4.9622e-03,
+    SafelyManagedSanitation = -2.0081e-03
+  ),
+  UnsafeRisk = c(
+    OpenDefecation = 0.72708968,
+    BasicWater = 0.43477443,
+    BasicSanitation = 0.21651056,
+    WaterProductivity = 0.00063762,
+    WaterStress = -0.01913748,
+    PopulationDensity = 0.00037018,
+    SafelyManagedWater = -0.25010937,
+    SafelyManagedSanitation = 0.04852111
+  ),
+  HepatitisRate = c(
+    OpenDefecation = 0.0085691,
+    BasicWater = 0.023667,
+    BasicSanitation = -0.011585,
+    WaterProductivity = 8.6247e-05,
+    WaterStress = -0.0010463,
+    PopulationDensity = -3.7942e-04,
+    SafelyManagedWater = -3.6054e-03,
+    SafelyManagedSanitation = -5.7112e-04
+  )
+)
+
+```
+
+# 5. Time Series Analysis for period 2022 to 2030 for wash indicators
+
+## 5.1 Create `selected_data`
+
+The below code chunk use `dplyr` package to select all the variables that will be use for analysis in the `pdata`. This is done using the `select()` function.
+
+```{r}
+selected_data <- pdata %>%
+  select(Region, Year, TyphoidRate, DiarrheaRate, HepatitisRate, 
+         UnsafeRisk, 
+         "Level.of.water.stress..freshwater.withdrawal.as.a.proportion.of.available.freshwater.resources",
+         "People.practicing.open.defecation....of.population.",
+         "People.using.at.least.basic.drinking.water.services....of.population.",
+         "People.using.at.least.basic.sanitation.services....of.population.",
+         "People.using.safely.managed.drinking.water.services....of.population.",
+         "People.using.safely.managed.sanitation.services....of.population.",
+         "Population.density..people.per.sq..km.of.land.area.",
+         "Water.productivity..total..constant.2015.US..GDP.per.cubic.meter.of.total.freshwater.withdrawal.")
+
+```
+
+### 5.2 Converting Data type
+
+The function `class()` and `typeof()` provide different types of information about the Year column in the `selected_data.`
+
+```{r}
+class(selected_data$Year)
+typeof(selected_data$Year)
+```
+
+The below code chunk ensure that if the `Year` column in the `selected_data` is a factor it will be converted into a numeric format.
+
+```{r}
+selected_data$Year <- as.numeric(as.character(selected_data$Year))
+```
+
+The below code chunk use function `extract_year()` that extracts a 4-digit year from a mixed string and then cleans the `Year` column in your `selected_data` dataset by applying this function. Finally, it converts the `Year` to a Date format representing the first day of the year.
+
+```{r}
+extract_year <- function(x) {
+  year <- str_extract(x, "\\d{4}")
+  return(as.numeric(year))
+}
+
+selected_data$Year <- extract_year(selected_data$Year)
+
+selected_data$YearDate <- as.Date(paste0(selected_data$Year, "-01-01"))
+```
+
+The below code chunk using str() function provides a compact display the structure of the an object, including its type and other relevant details. The `str(selected_data$Year)`
+
+```{r}
+# Check the type of the 'Year' column
+str(selected_data$Year)
+
+```
+
+### 5.3 Times Series Analysis using ARIMA
+
+The below code chunk perform ARIMA (Auto-Regression Integrated Moving Average) time series forecasting for WHO regions based on historical data. It generate the WASH indicators and population from 2022 to 2030.\
+The code chunk processes data region-by-region, checks the availability of necessary data, fits ARIMA models, and returns the forecasted values for the next several years, which can be used for policy planning, resource allocation, or trend analysis.
+
+```{r}
+arima_forecast <- function(data, forecast_start_year = 2022, forecast_end_year = 2030) {
+
+#define variable name 
+  forecast_vars <- c(
+    "WaterStress" = "Level.of.water.stress..freshwater.withdrawal.as.a.proportion.of.available.freshwater.resources",
+    "OpenDefecation" = "People.practicing.open.defecation....of.population.",
+    "BasicWaterServices" = "People.using.at.least.basic.drinking.water.services....of.population.",
+    "BasicSanitationServices" = "People.using.at.least.basic.sanitation.services....of.population.",
+    "SafeManagedWaterServices" = "People.using.safely.managed.drinking.water.services....of.population.",
+    "SafeManagedSanitationServices" = "People.using.safely.managed.sanitation.services....of.population.",
+    "PopulationDensity" = "Population.density..people.per.sq..km.of.land.area.",
+    "WaterProductivity" = "Water.productivity..total..constant.2015.US..GDP.per.cubic.meter.of.total.freshwater.withdrawal."
+  )
+  
+  # Print progress header
+  cat("========================================\n")
+  cat("Starting ARIMA forecasting for", forecast_start_year, "to", forecast_end_year, "\n")
+  cat("========================================\n\n")
+  
+  # Verify input data
+  cat("Verifying input data...\n")
+  cat("Input data has", nrow(data), "rows and", ncol(data), "columns\n")
+  
+  # Check if required columns exist
+  required_cols <- c("Region", "Year")
+  missing_required <- setdiff(required_cols, names(data))
+  if (length(missing_required) > 0) {
+    stop("Missing required columns: ", paste(missing_required, collapse = ", "))
+  }
+  
+  # Check for variable columns
+  available_vars <- intersect(forecast_vars, names(data))
+  if (length(available_vars) == 0) {
+    stop("None of the forecast variables found in the data")
+  }
+  cat("Found", length(available_vars), "out of", length(forecast_vars), "forecast variables\n")
+  
+  # Get unique regions
+  regions <- unique(data$Region)
+  cat("Found", length(regions), "regions:", paste(regions, collapse = ", "), "\n\n")
+  
+  # Create empty data frame for results
+  all_forecasts <- data.frame()
+  
+  # Process each region
+  for (region in regions) {
+    cat("Processing region:", region, "\n")
+    
+    # Filter data for this region
+    region_data <- data %>% filter(Region == region)
+    cat("  Region has", nrow(region_data), "rows\n")
+    
+    # Create an empty data frame for this region's forecasts
+    region_forecasts <- expand.grid(
+      Region = region,
+      Year = forecast_start_year:forecast_end_year,
+      stringsAsFactors = FALSE
+    )
+    # Add DataType column
+    region_forecasts$DataType <- "Forecast"
+    
+    # Process each variable
+    for (short_name in names(forecast_vars)) {
+      var_name <- forecast_vars[short_name]
+      cat("  Forecasting:", short_name, "(", var_name, ")\n")
+      
+      # Check if variable exists in data
+      if (!(var_name %in% names(region_data))) {
+        cat("    Variable not found in data, skipping\n")
+        region_forecasts[[short_name]] <- NA
+        next
+      }
+      
+      # Get historical data for this variable
+      var_data <- region_data %>% 
+        filter(!is.na(!!sym(var_name)), Year < forecast_start_year) %>%
+        arrange(Year)
+      
+      # Check if enough data
+      if (nrow(var_data) < 5) {
+        cat("    Insufficient historical data (need at least 5 points), skipping\n")
+        region_forecasts[[short_name]] <- NA
+        next
+      }
+      
+      # Create time series
+      cat("    Creating time series with", nrow(var_data), "points from", 
+          min(var_data$Year), "to", max(var_data$Year), "\n")
+      
+      ts_data <- ts(var_data[[var_name]], 
+                   start = min(var_data$Year), 
+                   end = max(var_data$Year), 
+                   frequency = 1)
+      
+      # Fit ARIMA model and forecast
+      tryCatch({
+        cat("    Fitting ARIMA model...\n")
+        arima_model <- auto.arima(ts_data, seasonal = FALSE, stepwise = TRUE)
+        
+        # Print model information
+        cat("    Model:", arimaorder(arima_model), "\n")
+        
+        # Generate forecast
+        forecast_years <- forecast_end_year - forecast_start_year + 1
+        cat("    Generating", forecast_years, "year forecast...\n")
+        forecast_result <- forecast(arima_model, h = forecast_years)
+        
+        # Add forecast to results
+        region_forecasts[[short_name]] <- as.numeric(forecast_result$mean)
+        
+        # Print forecast summary
+        cat("    Forecast summary - First:", round(forecast_result$mean[1], 4),
+            "Last:", round(forecast_result$mean[forecast_years], 4), "\n")
+        
+      }, error = function(e) {
+        cat("    Error in forecasting:", e$message, "\n")
+        region_forecasts[[short_name]] <- NA
+      })
+    }
+    
+    # Add this region's forecasts to the overall results
+    all_forecasts <- bind_rows(all_forecasts, region_forecasts)
+    cat("  Completed forecasts for", region, "\n\n")
+  }
+  
+  # Print summary
+  cat("========================================\n")
+  cat("ARIMA forecasting complete\n")
+  cat("Generated forecasts for", nrow(all_forecasts), "rows\n")
+  cat("Forecasted variables:", paste(names(all_forecasts)[!(names(all_forecasts) %in% c("Region", "Year", "DataType"))], collapse = ", "), "\n")
+  cat("========================================\n\n")
+  
+  # Return the clean format results with short names
+  return(all_forecasts)
+}
+
+
+```
+
+The below code chunk run the `arima_forecast` from above code chunk, generating forecasts for year 2022 to 2030. The resulting forecasted data is then saved to a csv file name `water_sanitation_forecasts.csv` .
+
+```{r}
+
+ forecast_data <-arima_forecast(selected_data, 
+                                         forecast_start_year = 2022, 
+                                          forecast_end_year = 2030)
+ 
+ write.csv(forecast_data, "water_sanitation_forecasts.csv", row.names = FALSE)
+```
+
+# 6. Forecast for health indicator
+
+## 6.1 Apply coefficient to forecast data
+
+The below code chunk generates predictions for disease rates (Diarrhea, Typhoid, Unsafe Risk, and Hepatitis) based on forecasted changes in key water and sanitation variables (e.g., open defecation, basic water services, population density) for each region. The function first retrieves baseline values from the historical data for 2021, then calculates the forecasted disease rates for each region between 2022 and 2030 by applying coefficients that quantify the impact of changes in the variables. It iterates over each region and variable, adjusting the baseline values according to the forecasted changes, and ensures that negative disease values are set to zero. The function returns the updated dataset with forecasted disease rates.
+
+```{r}
+predict_diseases <- function(forecast_data, selected_data) {
+  var_mapping <- c(
+    "Level.of.water.stress..freshwater.withdrawal.as.a.proportion.of.available.freshwater.resources" = "WaterStress",
+    "People.practicing.open.defecation....of.population." = "OpenDefecation",
+    "People.using.at.least.basic.drinking.water.services....of.population." = "BasicWaterServices",
+    "People.using.at.least.basic.sanitation.services....of.population." = "BasicSanitationServices",
+    "People.using.safely.managed.drinking.water.services....of.population." = "SafeManagedWaterServices",
+    "People.using.safely.managed.sanitation.services....of.population." = "SafeManagedSanitationServices",
+    "Population.density..people.per.sq..km.of.land.area." = "PopulationDensity",
+    "Water.productivity..total..constant.2015.US..GDP.per.cubic.meter.of.total.freshwater.withdrawal." = "WaterProductivity"
+  )
+  
+
+  historical <- as.data.frame(selected_data)
+  
+
+  baseline <- historical[historical$Year == 2021, ]
+  
+
+  coef_list <- list(
+    DiarrheaRate = c(
+      OpenDefecation = -0.6755407,
+      BasicWaterServices = -1.0144098,
+      BasicSanitationServices = -0.1706479,
+      WaterProductivity = 0.0029523,
+      WaterStress = 0.0110199,
+      PopulationDensity = 0.0014148,
+      SafeManagedWaterServices = 0.2855646,
+      SafeManagedSanitationServices = -0.1302516
+    ),
+    TyphoidRate = c(
+      OpenDefecation = 0.015961,
+      BasicWaterServices = 0.018088,
+      BasicSanitationServices = 0.0024683,
+      WaterProductivity = 1.1884e-05,
+      WaterStress = -4.1832e-04,
+      PopulationDensity = 9.1629e-05,
+      SafeManagedWaterServices = -4.9622e-03,
+      SafeManagedSanitationServices = -2.0081e-03
+    ),
+    UnsafeRisk = c(
+      OpenDefecation = 0.72708968,
+      BasicWaterServices = 0.43477443,
+      BasicSanitationServices = 0.21651056,
+      WaterProductivity = 0.00063762,
+      WaterStress = -0.01913748,
+      PopulationDensity = 0.00037018,
+      SafeManagedWaterServices = -0.25010937,
+      SafeManagedSanitationServices = 0.04852111
+    ),
+    HepatitisRate = c(
+      OpenDefecation = 0.0085691,
+      BasicWaterServices = 0.023667,
+      BasicSanitationServices = -0.011585,
+      WaterProductivity = 8.6247e-05,
+      WaterStress = -0.0010463,
+      PopulationDensity = -3.7942e-04,
+      SafeManagedWaterServices = -3.6054e-03,
+      SafeManagedSanitationServices = -5.7112e-04
+    )
+  )
+  
+  
+  result <- forecast_data
+  
+ 
+  for (disease in names(coef_list)) {
+    result[[disease]] <- NA
+  }
+  
+
+  for (region in unique(result$Region)) {
+
+    region_baseline <- baseline[baseline$Region == region, ]
+    
+    if (nrow(region_baseline) == 0) {
+      next
+    }
+    
+ 
+    region_rows <- which(result$Region == region)
+    
+   
+    for (disease in names(coef_list)) {
+   
+      baseline_value <- region_baseline[[disease]]
+      
+      for (row in region_rows) {
+      
+        result[row, disease] <- baseline_value
+        
+        for (pred_name in names(coef_list[[disease]])) {
+          
+          forecast_col <- pred_name
+          
+          historical_col <- names(var_mapping)[var_mapping == forecast_col]
+          
+          if (length(historical_col) == 0 || !forecast_col %in% names(result)) {
+            next
+          }
+          
+          baseline_val <- region_baseline[[historical_col]]
+          forecast_val <- result[row, forecast_col]
+          
+          if (is.na(baseline_val) || is.na(forecast_val)) {
+            next
+          }
+          
+          coef_val <- coef_list[[disease]][pred_name]
+          change <- forecast_val - baseline_val
+          effect <- coef_val * change
+          result[row, disease] <- result[row, disease] + effect
+        }
+      }
+    }
+  }
+  
+  # Set all negative disease values to zero
+  for (disease in names(coef_list)) {
+    negative_rows <- which(result[[disease]] < 0)
+    if (length(negative_rows) > 0) {
+      result[negative_rows, disease] <- 0
+    }
+  }
+  
+  return(result)
+}
+```
+
+The code chunk below runs the `predict_diseases` created above, generating the predicted disease rates for each region and year. It then saves the results to a csv file named `disease_predictions.csv`.
+
+```{r}
+disease_forecasts <- predict_diseases(forecast_data, selected_data)
+
+
+write.csv(disease_forecasts, "disease_predictions.csv", row.names = FALSE)
+```
+
+# 7. Merging Historical data with Forcasted data
+
+The code combines historical and forecasted data by first mapping the original water and sanitation variables from the `selected_data` dataset to standardized names, then cleaning and adding relevant columns for disease rates (e.g., DiarrheaRate, TyphoidRate) and water-related variables (e.g., WaterStress, PopulationDensity). It adds a `DataType` column to distinguish historical from forecast data, merges both datasets, and sorts them by Region and Year. Finally, the combined data is saved as a CSV file, `combined_complete_data.csv`, containing both historical and forecasted values for further analysis or reporting.
+
+```{r}
+
+historical_vars <- c(
+  "Level.of.water.stress..freshwater.withdrawal.as.a.proportion.of.available.freshwater.resources",
+  "People.practicing.open.defecation....of.population.",
+  "People.using.at.least.basic.drinking.water.services....of.population.",
+  "People.using.at.least.basic.sanitation.services....of.population.",
+  "People.using.safely.managed.drinking.water.services....of.population.",
+  "People.using.safely.managed.sanitation.services....of.population.",
+  "Population.density..people.per.sq..km.of.land.area.",
+  "Water.productivity..total..constant.2015.US..GDP.per.cubic.meter.of.total.freshwater.withdrawal."
+)
+
+forecast_vars <- c(
+  "WaterStress",
+  "OpenDefecation",
+  "BasicWaterServices",
+  "BasicSanitationServices",
+  "SafeManagedWaterServices", 
+  "SafeManagedSanitationServices",
+  "PopulationDensity",
+  "WaterProductivity"
+)
+
+
+var_mapping <- setNames(forecast_vars, historical_vars)
+
+
+historical_data <- as.data.frame(selected_data)
+
+historical_data$DataType <- "Historical"
+
+
+historical_clean <- historical_data[, c("Region", "Year", "TyphoidRate", "DiarrheaRate", 
+                                       "HepatitisRate", "UnsafeRisk", "DataType")]
+
+
+for (hist_var in names(var_mapping)) {
+  if (hist_var %in% names(historical_data)) {
+    forecast_var <- var_mapping[hist_var]
+    historical_clean[[forecast_var]] <- historical_data[[hist_var]]
+  }
+}
+
+
+combined_data <- rbind(historical_clean, disease_forecasts)
+
+
+combined_data <- combined_data[order(combined_data$Region, combined_data$Year), ]
+
+```
+
+```{r}
+write.csv(combined_data, "combined_complete_data.csv", row.names = FALSE)
+```
+
+# 8. Visualize test result
+
+## 8.1 Importing the combined data
+
+The below code chunk use `read.csv()` to read the `combined_complete_data.csv`.
+
+```{r}
+combined_data <- read.csv("combined_complete_data.csv")
+```
+
+## 8.2 plotting for visualization
+
+The below code chunk creates a line plot using `ggplot2` to visualise the historical result and forecast result of the `DiarrheaRate.` \
+The aim of the graph is to observe the change overtime.
+
+```{r}
+ggplot(combined_data, aes(x = Year, y = DiarrheaRate, color = Region, linetype = DataType)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Diarrhea Rate: Historical and Forecast", y = "Rate")
+```
+
+```{r}
+
+combined_data_long <- combined_data %>%
+  pivot_longer(cols = c(UnsafeRisk, WaterStress, OpenDefecation, BasicWaterServices, 
+                        BasicSanitationServices, SafeManagedWaterServices, 
+                        SafeManagedSanitationServices, WaterProductivity),
+               names_to = "WASH_Variable", values_to = "Value")
+```
+
+```{r}
+
+ggplot(combined_data_long, aes(x = Year, y = Value, color = Region, linetype = DataType)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~WASH_Variable, scales = "free_y") +  # Facet by WASH variable
+  labs(title = "WASH Variables Over Time by Region", y = "Value") +
+  theme_minimal()
+
+
+```
+
+```{r}
+
+combined_data <- read.csv("combined_complete_data.csv")
+
+
+combined_data_long <- combined_data %>%
+  pivot_longer(cols = c(UnsafeRisk, WaterStress, OpenDefecation, BasicWaterServices, 
+                        BasicSanitationServices, SafeManagedWaterServices, 
+                        SafeManagedSanitationServices, WaterProductivity,
+                        TyphoidRate, DiarrheaRate, HepatitisRate),
+               names_to = "Variable", values_to = "Value")
+
+
+ggplot(combined_data_long, aes(x = Year, y = Value, color = Region, linetype = DataType)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~Variable, scales = "free_y") +  # Facet by variable (WASH + diseases)
+  labs(title = "WASH and Disease Variables Over Time by Region", y = "Value") +
+  theme_minimal()
+
+```
+
+## 8.3 Interactive plot using plotly
+
+### 8.3.1 Import Data
+
+The below code chunk use `read_csv()` to read the csv file into R as a data frame.
+
+```{r}
+
+data <- read_csv("combined_complete_data.csv")
+```
+
+### 8.3.2 Visualizing the change over time through interactive plot
+
+The below code chunk use `plotly` to visualise the change overtime of health indicator `TyphoidRate` of all region.
+
+```{r}
+interactive_plot <- plot_ly(data, 
+                            x = ~Year, 
+                            y = ~TyphoidRate, 
+                            color = ~Region,   
+                            type = 'scatter', 
+                            mode = 'lines+markers',  
+                            hoverinfo = 'text', 
+                            text = ~paste('Year: ', Year, '<br>Typhoid Rate: ', round(TyphoidRate, 2))) %>%
+  layout(title = "Interactive Time Series of Typhoid Rate by Region",
+         xaxis = list(title = "Year"),
+         yaxis = list(title = "Typhoid Rate"))
+
+
+interactive_plot
+```
+
+The below code chunk use `plotly` to visualise the change over time of Wash Indicator `waterstress` in all region.
+
+```{r}
+wash_indicator <- "WaterStress"
+
+interactive_plot <- plot_ly(data, 
+                            x = ~Year, 
+                            y = ~get(wash_indicator),  
+                            color = ~Region,   
+                            type = 'scatter', 
+                            mode = 'lines+markers',  
+                            hoverinfo = 'text', 
+                            text = ~paste('Year: ', Year, '<br>', wash_indicator, ': ', round(get(wash_indicator), 2))) %>%
+  layout(title = paste("Interactive Time Series of", wash_indicator, "by Region"),
+         xaxis = list(title = "Year",
+                      rangeslider = list(type = "date"),  
+                      type = "linear"),  
+         yaxis = list(title = wash_indicator),
+         dragmode = "pan")
+
+interactive_plot
+
+```

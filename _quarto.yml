@@ -11,12 +11,25 @@ website:
         text: Overview
       - href: "Proposal.html"
         text: "Proposal"
+    
+    
+    
+        
+      - text: "Prototype"
+        menu:
+        - text: "WASH-Based Health Trend Analysis"
+          href: "Prototype/Forcasting.html"
+
+
+
       - text: "Team"
         menu:
         - text: "About this project"
           href: about.qmd
         - text: "Meeting Minutes"
           href: "MeetingMinutes.html"
+      
+
 
 
 format:
