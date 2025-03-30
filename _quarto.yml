@@ -9,17 +9,30 @@ website:
     right: 
       - href: index.qmd
         text: Overview
-      - href: "Proposal.html"
-        text: "Proposal"
-    
     
     
         
       - text: "Prototype"
         menu:
+        - text: "Geospatial Data Analysis"
         - text: "WASH-Based Health Trend Analysis"
           href: "Prototype/Forcasting.html"
+        - text: "Comfirmatory Data Analysis(CDA)"
+        - text: "Story Board"
+        
+        
+        
+      - text: "Shiny App"
+        menu: 
+          - text: "Shiny App"
+          - text: "User guide"
+      
+      
+      
+      
+      - text: "Project Poster" 
 
+      
 
 
       - text: "Team"
@@ -28,8 +41,9 @@ website:
           href: about.qmd
         - text: "Meeting Minutes"
           href: "MeetingMinutes.html"
-      
-
+        - text: "Proposal" 
+          href: "Proposal.html"
+        
 
 
 format:
