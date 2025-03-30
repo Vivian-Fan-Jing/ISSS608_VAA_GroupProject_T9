@@ -103,3 +103,123 @@ After reviewing senior work, the team decided on the proposal structure and dist
 -   All members to push their work to GitHub for peer review
 
 -   Jing will handle the final submission on Wednesday
+
+# **Meeting Minutes 2** 
+
+**Date**: March 17, 2025\
+**Time**: 21:00 - 21:30\
+**Attendees**: Fan Jing, Lin Xinyue, Lai Meihao
+
+**Agenda**
+
+1.  **Discussion on Proposal Feedback**
+
+2.  **Action Items**
+
+**1. Discussion on Proposal Feedback**
+
+Identified Issues from Feedback
+
+1.  Lack of clear allocation of analysis modules to team members.
+
+2.  Concerns about the appropriateness of the suggested dataset.
+
+3.  Recommendation to use web-based predictive modeling or machine learning forecasting instead of traditional time series analysis.
+
+Decisions & Next Steps
+
+1\. Allocation of Analysis Modules
+
+After discussion, the following responsibilities were assigned:
+
+-   Jing: Data cleaning and data processing
+
+-   Xinyue: Geospatial data analysis
+
+-   Meihao: Forecasting
+
+All Members: Collaborate on Confirmatory Data Analysis (CDA)
+
+2\. Dataset Appropriateness
+
+The team realized that for geospatial data analysis, the dataset needs to be in shp, API, or other suitable formats instead of the current CSV format.
+
+-   Solution: It was found CSV files can be converted to shp or JSON for geospatial analysis after research.
+
+    -   Meihao will test whether the files can be converted to shp or Json.
+
+    -   Jing and Xinyue will focus on selecting relevant variables and assessing the dataset’s suitability
+
+3\. Forecasting Approach
+
+-   The team agreed to shift from traditional time series forecasting to web-based predictive modeling or machine learning forecasting.
+
+-   The specific methodology will be further discussed and finalized in upcoming meetings.
+
+**2. Action Items**
+
++-------------------------------------------------------+-----------------+----------------+
+| Task                                                  | Responsible     | Deadline       |
++=======================================================+=================+================+
+| Test CSV-to-SHP/JSON conversion                       | Meihao          | Next meeting   |
++-------------------------------------------------------+-----------------+----------------+
+| Select relevant variables for analysis                | Jing & Xinyue   | Next meeting   |
++-------------------------------------------------------+-----------------+----------------+
+| Research and discuss predictive modeling techniques   | All Members     | Ongoing        |
++-------------------------------------------------------+-----------------+----------------+
+
+Next Steps: The team will review progress in the next meeting and finalize the predictive modeling approach.
+
+# Meeting Minutes 3
+
+**Date**: March 13, 2025\
+**Time**: 11:20 – 12:30\
+**Attendees**: Fan Jing, Lin Xinyue, Lai Meihao
+
+**Agenda**
+
+1.  **Discussion after consultation with Dr. Kam**
+
+2.  **Action Items**
+
+**1. Discussion after Consultation with Dr. Kam**
+
+The meeting focused on addressing dataset and methodology concerns raised during the consultation with Dr. Kam. Key takeaways include:
+
+Dataset Concerns
+
+-   The current world-level dataset contains many missing values, making a choropleth map less meaningful.
+
+-   A tree map would be a more appropriate visualization if the group continues using this dataset.
+
+-   Choropleth maps are better suited for national-level data.
+
+Methodology Recommendations
+
+-   For time series and regression analysis, Dr. Kam recommended using:
+
+    -   plm for time series regression analysis.
+
+    -   ExPanDa for visualization.
+
+-   If continuing with the current data set, the Confirmatory Data Analysis (CDA) should focus on a regional perspective or developing countries or other categorization rather than global trends.
+
+Team Discussion & Next Steps
+
+-   Jing strongly advocated for continuing with the current dataset.
+
+-   Xinyue and Meihao suggested exploring regional or national-level data for more meaningful insights.
+
+The group agreed to conduct further research before making a final decision.
+
+**2. Action Items**
+
++---------------------------------------------------------+--------------------+--------------+
+| **Task**                                                | **Assigned To**    | **Deadline** |
++---------------------------------------------------------+--------------------+--------------+
+| Continue variable selection using the current dataset   | Jing               | Ongoing      |
++---------------------------------------------------------+--------------------+--------------+
+| Research alternative datasets (regional/national level) | Meihao & Xinyue    | Next meeting |
++---------------------------------------------------------+--------------------+--------------+
+| Evaluate dataset feasibility and finalize the decision  | Entire Team        | Next meeting |
++---------------------------------------------------------+--------------------+--------------+

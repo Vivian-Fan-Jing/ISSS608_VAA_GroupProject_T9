@@ -24,19 +24,15 @@ This project seeks to **analyze and visualize global disparities** in **water ac
 
 -   Forecast **future trends** in water safety and sanitation.
 
--   Examine **investment disparities** and **transboundary water cooperation gaps**.
-
 **Application Features:**\
 Our team will develop an **interactive web-based visual analytics application** using **Shiny** to democratize data access and insights. The key features include:
 
--   **Geospatial Mapping:** Interactive **heat maps and choropleth maps** visualizing water stress, disease outbreaks, and investment gaps.
+-   **Treemap Visualisation:** Displaying disparities in water stress, disease outbreaks, and investment gaps across regions, identify the trend and areas of concern.
 
--   **Time Series Analysis:** Forecasting **water accessibility improvements, sanitation trends, and disease prevalence** using **ARIMA, STL, and SARIMA models**.
+-   **WASH-Based Health Trend Analysis:** Forecasting **WASH indicator**(water stress, water sanitation, etc )and **Health Indicator**( DiarrheaRate, TyphoidRate) using combined PLM and Time Series Analysis (ARIMA).
 
--   **Confirmatory Data Analysis (CDA):** Statistical validation of the relationship between **water access, health outcomes, and investment impact**.
+-   **Confirmatory Data Analysis (CDA):** Statistical validation of the relationship between **water access, health outcomes**.
 
--   **Interactive Dashboards:** Allowing users to explore **country-level insights** and trends over time.
-
--   **Investment & Policy Insights:** Identifying **underfunded regions** and evaluating **the effectiveness of water infrastructure investment**.
+-   **Interactive Dashboards:** Allowing users to explore **Region-level insights** and trends over time.
 
 This project aims to support efforts to ensure universal access to clean water and improve global health outcomes through data-driven approaches.
