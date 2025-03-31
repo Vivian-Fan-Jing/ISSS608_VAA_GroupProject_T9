@@ -1,0 +1,13 @@
+name: BluePulse
+title: BluePulse
+username: liyml
+account: liyml
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 14382741
+bundleId: 10031553
+url: https://liyml.shinyapps.io/BluePulse/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: cd584ca9-08f7-46dd-87c1-00ce4af84b71_Data.csv|complete_data.csv|disease_predictions.csv|merged_data.xlsx|water_sanitation_forecasts.csv|WaterandDiseasebywhoregion.xlsx
