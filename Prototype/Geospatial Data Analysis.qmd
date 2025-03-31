@@ -1,0 +1,733 @@
+---
+title: "Geospatial Data Analysis"
+author: "Fan Jing"
+date: "March 31, 2025"
+date-modified: "last-modified"
+---
+# 1. Installing and Launching R Packages
+
+```{r}
+pacman::p_load(tidyverse,readxl,ggcorrplot, ggstatsplot, GGally,
+              SmartEDA, easystats, gtsummary, ggstatsplot,
+              parallelPlot,treemap, treemapify, tidyverse,tibble, d3treeR,ggstatsplot,ggdist, ggridges, ggthemes,
+               colorspace)
+```
+
+# 2 Data Wrangling
+
+## 2.1 Importing the data set
+
+In the code chunk below, read_csv() of readr is used to import WDI Country Data.csv into R and parsed it into tibble R data.frame format.
+
+```{r}
+water_indicators <- read.csv("WDICountryData.csv")
+```
+
+## 2.2 Data summary
+
+Function ExpData() comes from the SmartEDA package in R and The type = 2 argument specifies the type of analysis to perform.
+
+```{r}
+water_indicators %>%
+  ExpData(type = 2)
+```
+
+## 2.3 Data Cleaning
+
+```{r}
+water_indicators[6:27] <- lapply(water_indicators[6:27], function(x) as.numeric(as.character(x)))
+```
+
+Changing column name
+
+```{r}
+water_long <- water_indicators %>%
+  pivot_longer(
+    cols = starts_with("X"),             
+    names_to = "Year",
+    values_to = "Value"
+  )
+```
+
+```{r}
+water_long <- water_long %>%
+  mutate(Year = gsub("X(\\d{4})\\.\\..*", "\\1", Year),
+         Year = as.numeric(Year),
+         Value = as.numeric(Value))  
+```
+
+First, we will select latest records in 2021 for nine indicator.
+
+```{r}
+water_long_selected <- water_long %>%
+  filter(Year == 2021)
+```
+
+```{r}
+water_long_selected[water_long_selected == ".."] <- NA
+water_long_selected[water_long_selected == "#N/A"] <- NA
+water_long_selected[water_long_selected == ""] <- NA
+
+```
+
+# 3.Designing Treemap with treemap Package
+
+## 3.1 Designing a static treemap
+
+**treemap** package is a R package specially designed to offer great flexibility in drawing treemaps. The core function, namely: *treemap()* offers at least 43 arguments. In this section, we will only explore the major arguments for designing elegent and yet truthful treemaps.
+
+```{r}
+unique(water_long_selected[[1]])
+```
+
+Next, reshape the data for 2021 and change data type
+
+```{r}
+water_long_selected_reshape <- water_long_selected %>%
+  select(Country = Country.Name, Region, Variable = Series.Name, Value) %>%
+  pivot_wider(names_from = Variable, values_from = Value) %>%
+  drop_na("Region")
+```
+
+```{r}
+water_long_selected_reshape$`Population, total` <- as.numeric(gsub(",", "", water_long_selected_reshape$`Population, total`))
+```
+
+## 3.2 Using the basic arguments
+
+The code chunk below designed a treemap by using three core arguments of treemap(), namely: index, vSize and vColor.
+
+### 3.2.1 Visualizing Level of water stress: freshwater withdrawal as a proportion of available freshwater resources by country and region
+
+```{r}
+water_long_selected_reshape_1 <- water_long_selected_reshape %>%
+  drop_na("Level of water stress: freshwater withdrawal as a proportion of available freshwater resources")
+```
+
+```{r}
+tm1 <- treemap(water_long_selected_reshape_1,
+        index = c("Region", "Country"),
+        vSize = "Population, total",
+        vColor = `Level of water stress: freshwater withdrawal as a proportion of available freshwater resources`,
+        type = "index",
+        palette="RdYlBu", 
+        title = "Level of water stress, 2021",
+        title.legend = "Level of water stress"
+)
+```
+
+### 3.2.2 Visualizing Water productivity, total (constant 2015 US\$ GDP per cubic meter of total freshwater withdrawal)
+
+```{r}
+water_long_selected_reshape_2 <- water_long_selected_reshape %>%
+  drop_na(`Water productivity, total (constant 2015 US$ GDP per cubic meter of total freshwater withdrawal)`)
+```
+
+```{r}
+tm2 <- treemap(water_long_selected_reshape_2,
+        index = c("Region", "Country"),
+        vSize = "Population, total",
+        vColor = `Water productivity, total (constant 2015 US$ GDP per cubic meter of total freshwater withdrawal)`,
+        type = "index",
+        palette="RdYlBu", 
+        title = "Water productivity, 2021",
+        title.legend = "Water productivity"
+)
+```
+
+### 3.2.3 Visualizing People using safely managed drinking water services (% of population))
+
+```{r}
+water_long_selected_reshape_3 <- water_long_selected_reshape %>%
+  drop_na("People using safely managed drinking water services (% of population)")
+```
+
+```{r}
+tm3 <- treemap(water_long_selected_reshape_3,
+        index = c("Region", "Country"),
+        vSize = "Population, total",
+        vColor = "People using safely managed drinking water services (% of population)" ,
+        type = "index",
+        palette="Blues", 
+        title = "safely managed drinking water services, 2021",
+        title.legend = "People using safely managed drinking water services (% of population)"
+)
+```
+
+### 3.2.4 Visualizing People using at least basic drinking water services (% of population)
+
+```{r}
+water_long_selected_reshape_4 <- water_long_selected_reshape %>%
+  drop_na("People using at least basic sanitation services (% of population)")
+```
+
+```{r}
+tm4 <- treemap(water_long_selected_reshape_4,
+        index = c("Region", "Country"),
+        vSize = "Population, total",
+        vColor = "People using at least basic drinking water services (% of population)" ,
+        type = "index",
+        palette="Blues", 
+        title = "basic drinking water services, 2021",
+        title.legend = "People using at least basic drinking water services"
+)
+```
+
+### 3.2.5 Visualizing People with basic handwashing facilities including soap and water (% of population)
+
+```{r}
+water_long_selected_reshape_5 <- water_long_selected_reshape %>%
+  drop_na("People with basic handwashing facilities including soap and water (% of population)")
+```
+
+```{r}
+tm5 <- treemap(water_long_selected_reshape_5,
+        index = c("Region", "Country"),
+        vSize = "Population, total",
+        vColor = "People with basic handwashing facilities including soap and water (% of population)" ,
+        type = "index",
+        palette="Greens", 
+        title = "People with basic handwashing facilities, 2021",
+        title.legend = "People with basic handwashing facilities"
+)
+```
+
+### 3.2.6 Visualizing People using at least basic sanitation services (% of population)
+
+```{r}
+water_long_selected_reshape_6 <- water_long_selected_reshape %>%
+  drop_na("People using at least basic sanitation services (% of population)")
+```
+
+```{r}
+tm6 <- treemap(water_long_selected_reshape_6,
+        index = c("Region", "Country"),
+        vSize = "Population, total",
+        vColor = "People using at least basic sanitation services (% of population)" ,
+        type = "index",
+        palette="Reds", 
+        title = "basic sanitation services, 2021",
+        title.legend = "People using at least basic sanitation services (% of population)"
+)
+```
+
+### 3.2.7 Visualizing People using safely managed sanitation services (% of population)
+
+```{r}
+water_long_selected_reshape_7 <- water_long_selected_reshape %>%
+  drop_na("People using safely managed sanitation services (% of population)")
+```
+
+```{r}
+tm7 <- treemap(water_long_selected_reshape_7,
+        index = c("Region", "Country"),
+        vSize = "Population, total",
+        vColor = "People using safely managed sanitation services (% of population)" ,
+        type = "index",
+        palette="Reds", 
+        title = "safely managed sanitation services, 2021",
+        title.legend = "People using safely managed sanitation services (% of population)"
+)
+```
+
+### 3.2.8 Visualizing People practicing open defecation (% of population)
+
+```{r}
+water_long_selected_reshape_8 <- water_long_selected_reshape %>%
+  drop_na("People practicing open defecation (% of population)")
+```
+
+```{r}
+tm8 <- treemap(water_long_selected_reshape_8,
+        index = c("Region", "Country"),
+        vSize = "Population, total",
+        vColor = "People practicing open defecation (% of population)" ,
+        type = "index",
+        palette="Purples", 
+        title = "open defecation, 2021",
+        title.legend = "People practicing open defecation (% of population)"
+)
+```
+
+## 3.3 Designing An Interactive Treemap
+
+d3tree() is used to build an interactive treemap
+
+### 3.3.1 Level of water stress
+
+```{r}
+d3tree(tm1,rootname = "Worldwide" )
+```
+
+### 3.3.2 Water productivity
+
+```{r}
+d3tree(tm2,rootname = "Worldwide" )
+```
+
+### 3.3.3 Safely managed drinking water
+
+```{r}
+d3tree(tm3,rootname = "Worldwide" )
+```
+
+### 3.3.4 Basic drinking water services
+
+```{r}
+d3tree(tm4,rootname = "Worldwide" )
+```
+
+### 3.3.5 Basic handwashing facilities including soap and water
+
+```{r}
+d3tree(tm5,rootname = "Worldwide" )
+```
+
+### 3.3.6 At least basic sanitation services
+
+```{r}
+d3tree(tm6,rootname = "Worldwide" )
+```
+
+### 3.3.7 Safely managed sanitation services
+
+```{r}
+d3tree(tm7,rootname = "Worldwide" )
+```
+
+### 3.3.8 Practicing open defecation
+
+```{r}
+d3tree(tm8,rootname = "Worldwide" )
+```
+
+# 4. Oneway ANOVA Test: ggbetweenstats() method
+
+ANOVA (Analysis of Variance) tests if the mean values of different groups are significantly different as we need statistical proof of differences, determining whether observed differences are statistically significant.
+
+## 4.1 People using at least basic sanitation services (% of population)
+
+```{r}
+water_long_selected_reshape_27 <- water_long_selected_reshape %>%
+  select('Country', 'Region',`People using at least basic sanitation services (% of population)`) %>%
+  mutate(Country = as.factor(Country))
+```
+
+```{r}
+water_long_selected_reshape_27 <- water_long_selected_reshape_27 %>%
+  drop_na(`People using at least basic sanitation services (% of population)`) %>%
+  mutate(
+    `People using at least basic sanitation services (% of population)` = 
+      round(as.numeric(`People using at least basic sanitation services (% of population)`), 0),
+
+  )
+
+```
+
+```{r}
+ggbetweenstats(
+  data = water_long_selected_reshape_27,
+  x = Region, 
+  y = `People using at least basic sanitation services (% of population)`, 
+  type = "p",
+  mean.ci = TRUE, 
+  pairwise.comparisons = TRUE, 
+  pairwise.display = "significant", 
+  p.adjust.method = "fdr",
+  messages = FALSE
+)
+```
+
+## 4.2 People using safely managed sanitation services (% of population)
+
+```{r}
+water_long_selected_reshape_28 <- water_long_selected_reshape %>%
+  select('Country', 'Region',`People using safely managed sanitation services (% of population)`) %>%
+  mutate(Country = as.factor(Country))
+```
+
+```{r}
+water_long_selected_reshape_28 <- water_long_selected_reshape_28 %>%
+  drop_na(`People using safely managed sanitation services (% of population)`) %>%
+  mutate(
+    `People using safely managed sanitation services (% of population)` = 
+      round(as.numeric(`People using safely managed sanitation services (% of population)`), 0),
+
+  )
+
+```
+
+```{r}
+ggbetweenstats(
+  data = water_long_selected_reshape_28,
+  x = Region, 
+  y = `People using safely managed sanitation services (% of population)`, 
+  type = "p",
+  mean.ci = TRUE, 
+  pairwise.comparisons = TRUE, 
+  pairwise.display = "significant", 
+  p.adjust.method = "fdr",
+  messages = FALSE
+)
+```
+
+## 4.3 People using at least basic drinking water services (% of population)
+
+```{r}
+water_long_selected_reshape_29 <- water_long_selected_reshape %>%
+  select('Country', 'Region',`People using at least basic drinking water services (% of population)`) %>%
+  mutate(Country = as.factor(Country))
+```
+
+```{r}
+water_long_selected_reshape_29 <- water_long_selected_reshape_29 %>%
+  drop_na(`People using at least basic drinking water services (% of population)`) %>%
+  mutate(
+    `People using at least basic drinking water services (% of population)` = 
+      round(as.numeric(`People using at least basic drinking water services (% of population)`), 0),
+
+  )
+
+```
+
+```{r}
+ggbetweenstats(
+  data = water_long_selected_reshape_29,
+  x = Region, 
+  y = `People using at least basic drinking water services (% of population)`, 
+  type = "p",
+  mean.ci = TRUE, 
+  pairwise.comparisons = TRUE, 
+  pairwise.display = "significant", 
+  p.adjust.method = "fdr",
+  messages = FALSE
+)
+```
+
+## 4.4 People using safely managed drinking water services (% of population)
+
+```{r}
+water_long_selected_reshape_30 <- water_long_selected_reshape %>%
+  select('Country', 'Region',`People using safely managed drinking water services (% of population)`) %>%
+  mutate(Country = as.factor(Country))
+```
+
+```{r}
+water_long_selected_reshape_30 <- water_long_selected_reshape_30 %>%
+  drop_na(`People using safely managed drinking water services (% of population)`) %>%
+  mutate(
+    `People using safely managed drinking water services (% of population)` = 
+      round(as.numeric(`People using safely managed drinking water services (% of population)`), 0),
+
+  )
+
+```
+
+```{r}
+ggbetweenstats(
+  data = water_long_selected_reshape_30,
+  x = Region, 
+  y = `People using safely managed drinking water services (% of population)`, 
+  type = "p",
+  mean.ci = TRUE, 
+  pairwise.comparisons = TRUE, 
+  pairwise.display = "significant", 
+  p.adjust.method = "fdr",
+  messages = FALSE
+)
+```
+
+## 4.5 Water productivity, total (constant 2015 US\$ GDP per cubic meter of total freshwater withdrawal)
+
+```{r}
+water_long_selected_reshape_31 <- water_long_selected_reshape %>%
+  select('Country', 'Region',`Water productivity, total (constant 2015 US$ GDP per cubic meter of total freshwater withdrawal)`) %>%
+  mutate(Country = as.factor(Country))
+```
+
+```{r}
+water_long_selected_reshape_31 <- water_long_selected_reshape_31 %>%
+  drop_na(`Water productivity, total (constant 2015 US$ GDP per cubic meter of total freshwater withdrawal)`) %>%
+  mutate(
+    `Water productivity, total (constant 2015 US$ GDP per cubic meter of total freshwater withdrawal)` = 
+      round(as.numeric(`Water productivity, total (constant 2015 US$ GDP per cubic meter of total freshwater withdrawal)`), 0),
+
+  )
+
+```
+
+```{r}
+ggbetweenstats(
+  data = water_long_selected_reshape_31,
+  x = Region, 
+  y = `Water productivity, total (constant 2015 US$ GDP per cubic meter of total freshwater withdrawal)`, 
+  type = "p",
+  mean.ci = TRUE, 
+  pairwise.comparisons = TRUE, 
+  pairwise.display = "significant", 
+  p.adjust.method = "fdr",
+  messages = FALSE
+)
+```
+
+## 4.6 Level of water stress: freshwater withdrawal as a proportion of available freshwater resources
+
+```{r}
+water_long_selected_reshape_32 <- water_long_selected_reshape %>%
+  select('Country', 'Region',`Level of water stress: freshwater withdrawal as a proportion of available freshwater resources`) %>%
+  mutate(Country = as.factor(Country))
+```
+
+```{r}
+water_long_selected_reshape_32 <- water_long_selected_reshape_32 %>%
+  drop_na(`Level of water stress: freshwater withdrawal as a proportion of available freshwater resources`) %>%
+  mutate(
+    `Level of water stress: freshwater withdrawal as a proportion of available freshwater resources` = 
+      round(as.numeric(`Level of water stress: freshwater withdrawal as a proportion of available freshwater resources`), 0),
+
+  )
+
+```
+
+```{r}
+ggbetweenstats(
+  data = water_long_selected_reshape_32,
+  x = Region, 
+  y = `Level of water stress: freshwater withdrawal as a proportion of available freshwater resources`, 
+  type = "p",
+  mean.ci = TRUE, 
+  pairwise.comparisons = TRUE, 
+  pairwise.display = "significant", 
+  p.adjust.method = "fdr",
+  messages = FALSE
+)
+```
+
+## 4.7 People practicing open defecation (% of population)
+
+```{r}
+water_long_selected_reshape_33 <- water_long_selected_reshape %>%
+  select('Country', 'Region',`People practicing open defecation (% of population)`) %>%
+  mutate(Country = as.factor(Country))
+```
+
+```{r}
+water_long_selected_reshape_33 <- water_long_selected_reshape_33 %>%
+  drop_na(`People practicing open defecation (% of population)`) %>%
+  mutate(
+    `People practicing open defecation (% of population)` = 
+      round(as.numeric(`People practicing open defecation (% of population)`), 0),
+
+  )
+
+```
+
+```{r}
+ggbetweenstats(
+  data = water_long_selected_reshape_33,
+  x = Region, 
+  y = `People practicing open defecation (% of population)`, 
+  type = "p",
+  mean.ci = TRUE, 
+  pairwise.comparisons = TRUE, 
+  pairwise.display = "significant", 
+  p.adjust.method = "fdr",
+  messages = FALSE
+)
+```
+
+## 4.8 People with basic handwashing facilities including soap and water (% of population)
+
+```{r}
+water_long_selected_reshape_34 <- water_long_selected_reshape %>%
+  select('Country', 'Region',`People with basic handwashing facilities including soap and water (% of population)`) %>%
+  mutate(Country = as.factor(Country))
+```
+
+```{r}
+water_long_selected_reshape_34 <- water_long_selected_reshape_34 %>%
+  drop_na(`People with basic handwashing facilities including soap and water (% of population)`) %>%
+  mutate(
+    `People with basic handwashing facilities including soap and water (% of population)` = 
+      round(as.numeric(`People with basic handwashing facilities including soap and water (% of population)`), 0),
+
+  )
+
+```
+
+```{r}
+ggbetweenstats(
+  data = water_long_selected_reshape_34,
+  x = Region, 
+  y = `People with basic handwashing facilities including soap and water (% of population)`, 
+  type = "p",
+  mean.ci = TRUE, 
+  pairwise.comparisons = TRUE, 
+  pairwise.display = "significant", 
+  p.adjust.method = "fdr",
+  messages = FALSE
+)
+```
+
+# 5. Distribution Analysis (Density Plot)
+
+Density plot shows the smooth distribution of eight indicators and allow us to see the exact distribution shape.
+
+-   Peaks → Common sanitation levels in different regions
+
+-   Spread → Variability of sanitation access within each region
+
+-   Skewness → If most values are concentrated on one side
+
+-   Multiple Peaks → Presence of subgroups
+
+## 5.1 People using at least basic sanitation services (% of population)
+
+```{r}
+ggplot(water_long_selected_reshape_27, aes(x = `People using at least basic sanitation services (% of population)`)) +
+  geom_density(fill = "lightblue", alpha = 0.5) +
+  labs(title = "Density Plot of Basic Sanitation Access", x = "Percentage of Population", y = "Density")
+```
+
+## 5.2 People using safely managed sanitation services (% of population)
+
+```{r}
+ggplot(water_long_selected_reshape_28, aes(x = `People using safely managed sanitation services (% of population)`)) +
+  geom_density(fill = "lightblue", alpha = 0.5) +
+  labs(title = "Density Plot of safely managed sanitation services", x = "Percentage of Population", y = "Density")
+```
+
+## 5.3 People using at least basic drinking water services (% of population)
+
+```{r}
+ggplot(water_long_selected_reshape_29, aes(x = `People using at least basic drinking water services (% of population)`)) +
+  geom_density(fill = "lightyellow", alpha = 0.5) +
+  labs(title = "Density Plot of basic drinking water services", x = "Percentage of Population", y = "Density")
+```
+
+## 5.4 People using safely managed drinking water services (% of population)
+
+```{r}
+ggplot(water_long_selected_reshape_30, aes(x = `People using safely managed drinking water services (% of population)`)) +
+  geom_density(fill = "lightyellow", alpha = 0.5) +
+  labs(title = "Density Plot of safely managed drinking water services", x = "Percentage of Population", y = "Density")
+```
+
+## 5.5 Water productivity, total (constant 2015 US\$ GDP per cubic meter of total freshwater withdrawal)
+
+```{r}
+ggplot(water_long_selected_reshape_31, aes(x = `Water productivity, total (constant 2015 US$ GDP per cubic meter of total freshwater withdrawal)`)) +
+  geom_density(fill = "lightpink", alpha = 0.5) +
+  labs(title = "Density Plot of Water productivity", x = "constant 2015 US$ GDP per cubic meter of total freshwater withdrawal", y = "Density")
+```
+
+## 5.6 Level of water stress: freshwater withdrawal as a proportion of available freshwater resources
+
+```{r}
+ggplot(water_long_selected_reshape_32, aes(x = `Level of water stress: freshwater withdrawal as a proportion of available freshwater resources`)) +
+  geom_density(fill = "lightpink", alpha = 0.5) +
+  labs(title = "Density Plot of Level of water stress", x = "freshwater withdrawal as a proportion of available freshwater resources", y = "Density")
+```
+
+## 5.7 People practicing open defecation (% of population)
+
+```{r}
+ggplot(water_long_selected_reshape_33, aes(x = `People practicing open defecation (% of population)`)) +
+  geom_density(fill = "lightgrey", alpha = 0.5) +
+  labs(title = "Density Plot of People practicing open defecation", x = "Percentage of Population", y = "Density")
+```
+
+## 5.8 People with basic handwashing facilities including soap and water (% of population)
+
+```{r}
+ggplot(water_long_selected_reshape_34, aes(x = `People with basic handwashing facilities including soap and water (% of population)`)) +
+  geom_density(fill = "lightblue", alpha = 0.5) +
+  labs(title = "Density Plot of basic handwashing facilities", x = "Percentage of Population", y = "Density")
+```
+
+# 6. Regional Comparison: Boxplot
+
+Boxplot allows us to compare the distribution, spread, and outliers of a variable across regions. Box with whiskers, showing median, interquartile range (IQR), and outliers.
+
+## 6.1 People using at least basic sanitation services (% of population)
+
+```{r}
+ggplot(water_long_selected_reshape_27, aes(x = Region, y = `People using at least basic sanitation services (% of population)`)) +
+  geom_boxplot(fill = "lightblue") +
+  labs(title = "Basic Sanitation Services By Region", x = "Region", y = "Percentage of Population") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+## 6.2 People using safely managed sanitation services (% of population)
+
+```{r}
+ggplot(water_long_selected_reshape_28, aes(x = Region, y = `People using safely managed sanitation services (% of population)`)) +
+  geom_boxplot(fill = "lightblue") +
+  labs(title = "Safely Managed Sanitation Services By Region", x = "Region", y = "Percentage of Population") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+## 6.3 People using at least basic drinking water services (% of population)
+
+```{r}
+ggplot(water_long_selected_reshape_29, aes(x = Region, y = `People using at least basic drinking water services (% of population)`)) +
+  geom_boxplot(fill = "lightyellow") +
+  labs(title = "Basic Drinking Water Services", x = "Region", y = "Percentage of Population") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+## 6.4 People using safely managed drinking water services (% of population)
+
+```{r}
+ggplot(water_long_selected_reshape_30, aes(x = Region, y = `People using safely managed drinking water services (% of population)`)) +
+  geom_boxplot(fill = "lightyellow") +
+  labs(title = "Safely Managed Drinking Water Services", x = "Region", y = "Percentage of Population") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+## 6.5 Water productivity, total (constant 2015 US\$ GDP per cubic meter of total freshwater withdrawal)
+
+```{r}
+ggplot(water_long_selected_reshape_31, aes(x = Region, y = `Water productivity, total (constant 2015 US$ GDP per cubic meter of total freshwater withdrawal)`)) +
+  geom_boxplot(fill = "lightpink") +
+  labs(title = "Water productivity", 
+       x = "Region", 
+       y = "constant 2015 US\\$ GDP per cubic meter of total freshwater withdrawal") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+## 6.6 Level of water stress: freshwater withdrawal as a proportion of available freshwater resources
+
+```{r}
+ggplot(water_long_selected_reshape_32, aes(x = Region, 
+                                           y = `Level of water stress: freshwater withdrawal as a proportion of available freshwater resources`)) +
+  geom_boxplot(fill = "lightpink") +
+  labs(title = "Level of water stress", 
+       x = "Region", 
+       y = "Freshwater withdrawal as a proportion of available freshwater resources") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+## 6.7 People practicing open defecation (% of population)
+
+```{r}
+ggplot(water_long_selected_reshape_33, aes(x = Region, 
+                                           y = `People practicing open defecation (% of population)`)) +
+  geom_boxplot(fill = "lightgrey") +
+  labs(title = "People Practicing Open Defecation", 
+       x = "Region", 
+       y = "Percentage of Population") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+## 6.8 People with basic handwashing facilities including soap and water (% of population)
+
+```{r}
+ggplot(water_long_selected_reshape_34, aes(x = Region, 
+                                           y = `People with basic handwashing facilities including soap and water (% of population)`)) +
+  geom_boxplot(fill = "lightgrey") +
+  labs(title = "Basic Handwashing Facilities", 
+       x = "Region", 
+       y = "Percentage of Population") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
