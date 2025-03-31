@@ -15,6 +15,7 @@ library(treemap)
 library(d3treeR)
 library(tidyverse)
 library(readr)
+library(svglite)
 
 # Data preparation
 # Geo dataprepare

@@ -5,7 +5,7 @@ account: liyml
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 14382741
-bundleId: 10031553
+bundleId: 10031611
 url: https://liyml.shinyapps.io/BluePulse/
 version: 1
 asMultiple: FALSE

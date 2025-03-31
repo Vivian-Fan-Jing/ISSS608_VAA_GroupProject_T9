@@ -29,6 +29,7 @@ website:
       - text: "Shiny App"
         menu: 
           - text: "Shiny App"
+            href: "https://liyml.shinyapps.io/BluePulse/"
           - text: "User guide"
       
       
