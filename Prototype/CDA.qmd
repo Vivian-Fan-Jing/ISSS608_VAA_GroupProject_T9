@@ -1,0 +1,6 @@
+---
+title: "Confirmatory data analysis"
+author: "Lin Xinyue"
+date: "March 31, 2025"
+date-modified: "last-modified"
+---

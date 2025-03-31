@@ -18,6 +18,7 @@ website:
         - text: "WASH-Based Health Trend Analysis"
           href: "Prototype/Forcasting.html"
         - text: "Comfirmatory Data Analysis(CDA)"
+          href: "Prototype/CDA.html"
         - text: "Story Board"
         
         
