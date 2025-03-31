@@ -49,7 +49,9 @@ website:
 
 format:
   html:
-    css: styles.css  # Reference external CSS file
+    css: 
+    - styles.css 
+    - box.css
     theme: darkly
     toc: true
 
