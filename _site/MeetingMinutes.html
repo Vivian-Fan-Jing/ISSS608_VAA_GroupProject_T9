@@ -71,6 +71,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="box.css">
 </head>
 
 <body class="nav-fixed">
@@ -99,12 +100,22 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Prototype</span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-prototype">    
-        <li class="dropdown-header">Geospatial Data Analysis</li>
+        <li>
+    <a class="dropdown-item" href="./Prototype/Geospatial Data Analysis_P1.html">
+ <span class="dropdown-text">Geospatial Data Analysis_P1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Prototype/Geospatial Data Analysis_P2.html">
+ <span class="dropdown-text">Geospatial Data Analysis_P2</span></a>
+  </li>  
         <li>
     <a class="dropdown-item" href="./Prototype/Forcasting.html">
  <span class="dropdown-text">WASH-Based Health Trend Analysis</span></a>
   </li>  
-        <li class="dropdown-header">Comfirmatory Data Analysis(CDA)</li>
+        <li>
+    <a class="dropdown-item" href="./Prototype/CDA.html">
+ <span class="dropdown-text">Comfirmatory Data Analysis(CDA)</span></a>
+  </li>  
         <li class="dropdown-header">Story Board</li>
     </ul>
   </li>
@@ -158,6 +169,8 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#meeting-minutes-1" id="toc-meeting-minutes-1" class="nav-link active" data-scroll-target="#meeting-minutes-1">Meeting Minutes 1</a></li>
+  <li><a href="#meeting-minutes-2" id="toc-meeting-minutes-2" class="nav-link" data-scroll-target="#meeting-minutes-2"><strong>Meeting Minutes 2</strong></a></li>
+  <li><a href="#meeting-minutes-3" id="toc-meeting-minutes-3" class="nav-link" data-scroll-target="#meeting-minutes-3">Meeting Minutes 3</a></li>
   </ul>
 </nav>
     </div>
@@ -268,6 +281,144 @@ ul.task-list li input[type="checkbox"] {
 <li><p>All members to push their work to GitHub for peer review</p></li>
 <li><p>Jing will handle the final submission on Wednesday</p></li>
 </ul>
+</section>
+<section id="meeting-minutes-2" class="level1">
+<h1><strong>Meeting Minutes 2</strong></h1>
+<p><strong>Date</strong>: March 17, 2025<br>
+<strong>Time</strong>: 21:00 - 21:30<br>
+<strong>Attendees</strong>: Fan Jing, Lin Xinyue, Lai Meihao</p>
+<p><strong>Agenda</strong></p>
+<ol type="1">
+<li><p><strong>Discussion on Proposal Feedback</strong></p></li>
+<li><p><strong>Action Items</strong></p></li>
+</ol>
+<p><strong>1. Discussion on Proposal Feedback</strong></p>
+<p>Identified Issues from Feedback</p>
+<ol type="1">
+<li><p>Lack of clear allocation of analysis modules to team members.</p></li>
+<li><p>Concerns about the appropriateness of the suggested dataset.</p></li>
+<li><p>Recommendation to use web-based predictive modeling or machine learning forecasting instead of traditional time series analysis.</p></li>
+</ol>
+<p>Decisions &amp; Next Steps</p>
+<p>1. Allocation of Analysis Modules</p>
+<p>After discussion, the following responsibilities were assigned:</p>
+<ul>
+<li><p>Jing: Data cleaning and data processing</p></li>
+<li><p>Xinyue: Geospatial data analysis</p></li>
+<li><p>Meihao: Forecasting</p></li>
+</ul>
+<p>All Members: Collaborate on Confirmatory Data Analysis (CDA)</p>
+<p>2. Dataset Appropriateness</p>
+<p>The team realized that for geospatial data analysis, the dataset needs to be in shp, API, or other suitable formats instead of the current CSV format.</p>
+<ul>
+<li><p>Solution: It was found CSV files can be converted to shp or JSON for geospatial analysis after research.</p>
+<ul>
+<li><p>Meihao will test whether the files can be converted to shp or Json.</p></li>
+<li><p>Jing and Xinyue will focus on selecting relevant variables and assessing the dataset’s suitability</p></li>
+</ul></li>
+</ul>
+<p>3. Forecasting Approach</p>
+<ul>
+<li><p>The team agreed to shift from traditional time series forecasting to web-based predictive modeling or machine learning forecasting.</p></li>
+<li><p>The specific methodology will be further discussed and finalized in upcoming meetings.</p></li>
+</ul>
+<p><strong>2. Action Items</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 60%">
+<col style="width: 19%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Task</th>
+<th>Responsible</th>
+<th>Deadline</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Test CSV-to-SHP/JSON conversion</td>
+<td>Meihao</td>
+<td>Next meeting</td>
+</tr>
+<tr class="even">
+<td>Select relevant variables for analysis</td>
+<td>Jing &amp; Xinyue</td>
+<td>Next meeting</td>
+</tr>
+<tr class="odd">
+<td>Research and discuss predictive modeling techniques</td>
+<td>All Members</td>
+<td>Ongoing</td>
+</tr>
+</tbody>
+</table>
+<p>Next Steps: The team will review progress in the next meeting and finalize the predictive modeling approach.</p>
+</section>
+<section id="meeting-minutes-3" class="level1">
+<h1>Meeting Minutes 3</h1>
+<p><strong>Date</strong>: March 13, 2025<br>
+<strong>Time</strong>: 11:20 – 12:30<br>
+<strong>Attendees</strong>: Fan Jing, Lin Xinyue, Lai Meihao</p>
+<p><strong>Agenda</strong></p>
+<ol type="1">
+<li><p><strong>Discussion after consultation with Dr.&nbsp;Kam</strong></p></li>
+<li><p><strong>Action Items</strong></p></li>
+</ol>
+<p><strong>1. Discussion after Consultation with Dr.&nbsp;Kam</strong></p>
+<p>The meeting focused on addressing dataset and methodology concerns raised during the consultation with Dr.&nbsp;Kam. Key takeaways include:</p>
+<p>Dataset Concerns</p>
+<ul>
+<li><p>The current world-level dataset contains many missing values, making a choropleth map less meaningful.</p></li>
+<li><p>A tree map would be a more appropriate visualization if the group continues using this dataset.</p></li>
+<li><p>Choropleth maps are better suited for national-level data.</p></li>
+</ul>
+<p>Methodology Recommendations</p>
+<ul>
+<li><p>For time series and regression analysis, Dr.&nbsp;Kam recommended using:</p>
+<ul>
+<li><p>plm for time series regression analysis.</p></li>
+<li><p>ExPanDa for visualization.</p></li>
+</ul></li>
+<li><p>If continuing with the current data set, the Confirmatory Data Analysis (CDA) should focus on a regional perspective or developing countries or other categorization rather than global trends.</p></li>
+</ul>
+<p>Team Discussion &amp; Next Steps</p>
+<ul>
+<li><p>Jing strongly advocated for continuing with the current dataset.</p></li>
+<li><p>Xinyue and Meihao suggested exploring regional or national-level data for more meaningful insights.</p></li>
+</ul>
+<p>The group agreed to conduct further research before making a final decision.</p>
+<p><strong>2. Action Items</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 61%">
+<col style="width: 22%">
+<col style="width: 15%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Task</strong></td>
+<td><strong>Assigned To</strong></td>
+<td><strong>Deadline</strong></td>
+</tr>
+<tr class="even">
+<td>Continue variable selection using the current dataset</td>
+<td>Jing</td>
+<td>Ongoing</td>
+</tr>
+<tr class="odd">
+<td>Research alternative datasets (regional/national level)</td>
+<td>Meihao &amp; Xinyue</td>
+<td>Next meeting</td>
+</tr>
+<tr class="even">
+<td>Evaluate dataset feasibility and finalize the decision</td>
+<td>Entire Team</td>
+<td>Next meeting</td>
+</tr>
+</tbody>
+</table>
 
 
 </section>
