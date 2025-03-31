@@ -1,0 +1,76 @@
+
+
+
+
+.info-box {
+    border-left: 4px solid #2A3F54; 
+    background: linear-gradient(15deg, #f8fafc 0%, #f1f5f9 100%); 
+    padding: 1.5rem;
+    margin: 1.25rem 0;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px -1px rgba(42,63,84,0.1); 
+    font-family: 'Segoe UI', system-ui, sans-serif; 
+    position: relative;
+    transition: transform 0.2s ease;
+    counter-increment: info-box; 
+}
+
+.info-box:hover {
+    transform: translateX(3px);
+}
+
+.info-box::before {
+    content: counter(info-box); 
+    position: absolute;
+    left: -1.25rem;
+    top: -0.75rem;
+    background: #2A3F54;
+    color: white;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9em;
+    box-shadow: 0 2px 4px rgba(42,63,84,0.2);
+}
+
+.info-box h4 {
+    color: #1e293b;
+    font-size: 1.15rem;
+    margin: 0 0 0.75rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.info-box h4::before {
+    content: "▣"; 
+    color: #2A3F54;
+    font-size: 1.1em;
+}
+
+.info-box p {
+    color: #475569;
+    line-height: 1.6;
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+}
+
+
+.info-box.chart-comment {
+    border-left-color: #3B82F6; 
+    background: linear-gradient(15deg, #f0f4ff 0%, #e0e7ff 100%);
+}
+
+.info-box.chart-comment::before {
+    background: #3B82F6;
+}
+
+.info-box.chart-comment h4::before {
+    content: "📈";
+}

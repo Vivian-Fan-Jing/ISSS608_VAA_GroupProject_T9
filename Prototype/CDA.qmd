@@ -4,3 +4,513 @@ author: "Lin Xinyue"
 date: "March 31, 2025"
 date-modified: "last-modified"
 ---
+# **1. Overview**
+
+The purpose of this analysis is to explore the relationship between water quality indicators and disease rates across different WHO regions. This study examines how access to basic water services, sanitation facilities, and other water-related indicators correlate with the prevalence of waterborne diseases such as typhoid, diarrhea, and hepatitis A. By understanding these relationships, we can identify potential interventions to reduce disease burden in affected regions.
+
+# **2. Data Preparation**
+
+**2.1 Install and launch R packages**
+
+```{r}
+pacman::p_load(tidyverse,rt,dplyr,tidyr, readxl,writexl,ggplot2, ggcorrplot, ggstatsplot, GGally,
+              SmartEDA, easystats, gtsummary,
+              ggExtra,parallelPlot,ggdist, ggridges, ggthemes,
+               colorspace,lubridate, ggthemes, reactable,
+              reactablefmtr, gt, gtExtras)
+```
+
+**2.2 Import Data**
+
+```{r}
+water_indicators <- read.csv("WDICountryData.csv")
+file_path <- "data/WaterandDiseasebywhoregion.xlsx"
+```
+
+**2.3 Extract Data**
+
+```{r}
+all_sheets <- setNames(
+  lapply(excel_sheets(file_path), function(sheet) read_excel(file_path, sheet = sheet)),
+  excel_sheets(file_path)
+)
+typhoid <- all_sheets[["typhoid 2000 - 2021"]]
+diarrhea <- all_sheets[["diarrheal diseases 2000 - 2021"]]
+hepatitiesA <- all_sheets[[ "acute hepatitis A 2000 -2021" ]]
+riskfactor <- all_sheets[[ "Risk factor" ]]
+
+```
+
+**2.4 Overview raw data**
+
+```{r}
+water_indicators %>%
+  ExpData(type = 2)
+```
+
+```{r}
+typhoid %>%
+  ExpData(type = 2)
+```
+
+```{r}
+diarrhea %>%
+  ExpData(type = 2)
+```
+
+```{r}
+hepatitiesA %>%
+  ExpData(type = 2)
+```
+
+```{r}
+riskfactor %>%
+  ExpData(type = 2)
+```
+
+**2.5 Data Transformation**
+
+*Remove the missing value*
+
+```{r}
+water_indicators[water_indicators == ".."] <- NA
+water_indicators[water_indicators == "#N/A"] <- NA
+water_indicators[water_indicators == ""] <- NA
+```
+
+```{r}
+water_indicators <- water_indicators[complete.cases(water_indicators[, 5:27]), ]
+```
+
+```{r}
+riskfactor[riskfactor == " "] <- NA
+riskfactor[riskfactor == "#N/A"] <- NA
+riskfactor <- riskfactor[rowSums(is.na(riskfactor)) != ncol(riskfactor), ]
+hepatitiesA[hepatitiesA == " "] <- NA
+diarrhea[diarrhea == " "] <- NA
+typhoid[typhoid == " "] <- NA
+```
+
+```{r}
+riskfactor <- riskfactor[, 1:10]
+hepatitiesA <- hepatitiesA[complete.cases(hepatitiesA), ]
+diarrhea <- diarrhea[complete.cases(diarrhea), ]
+typhoid <- typhoid[complete.cases(typhoid), ]
+```
+
+*Convert data type*
+
+```{r}
+water_indicators[6:27] <- lapply(water_indicators[6:27], function(x) as.numeric(as.character(x)))
+```
+
+*Reshape Data*
+
+```{r}
+water_indicators <- water_indicators %>%
+  pivot_longer(
+    cols = starts_with("X"),             
+    names_to = "Year",
+    values_to = "Value"
+  )
+```
+
+```{r}
+water_indicators <- water_indicators %>%
+  mutate(Year = gsub("X(\\d{4})\\.\\..*", "\\1", Year),
+         Year = as.numeric(Year),
+         Value = as.numeric(Value))  
+```
+
+*Keep consistent column names*
+
+```{r}
+typhoid <- typhoid %>% rename(Region = Location)
+diarrhea <- diarrhea %>% rename(Region = Location)
+hepatitiesA <- hepatitiesA %>% rename(Region = Location)
+riskfactor <- riskfactor %>% rename(Region = Location)
+```
+
+**2.6 Data Integration**
+
+*Group by regions*
+
+```{r}
+water_region <- water_indicators %>%
+  group_by(Region, Year, Series.Name) %>%
+  summarise(AvgValue = mean(Value, na.rm = TRUE), .groups = "drop")
+```
+
+```{r}
+Typhoid <- typhoid %>%
+   select(Region, Year, TyphoidRate = Value)
+
+Diarrhea <- diarrhea %>%
+   select(Region, Year, DiarrheaRate = Value)
+
+HepatitisA <- hepatitiesA %>%
+   select(Region, Year, HepatitisRate = Value)
+
+Risk <- riskfactor %>%
+   select(Region, Year, UnsafeRisk = Value)
+
+```
+
+*Merge disease data set*
+
+```{r}
+disease_combined <- reduce(
+  list(Typhoid, Diarrhea, HepatitisA, Risk),
+  ~ full_join(.x, .y, by = c("Region", "Year"))
+)
+```
+
+*Final data set assembly*
+
+```{r}
+merged_data <- left_join(disease_combined, water_region, by = c("Region", "Year"))
+```
+
+```{r}
+merged_data <- merged_data[, !names(merged_data) %in% 
+  "People with basic handwashing facilities including soap and water (% of population)"]
+
+merged_data <- merged_data[merged_data$Region != "WHO region", ]
+```
+
+```{r}
+merged_data <- merged_data %>%
+  filter(!is.na(Year)) %>%
+  mutate(Year = as.numeric(Year))
+```
+
+**2.7 Overview final data set**
+
+```{r}
+glimpse(merged_data)
+```
+
+# **3. Data Exploration**
+
+This section will explore the distribution patterns of disease rates across WHO regions to gain initial insights into regional variations
+
+## **3.1 Distribution of Disease Rates by Region**
+
+*Distribution of Typhoid Rates by WHO Region*
+
+```{r}
+ggplot(typhoid, 
+       aes(x = Value, 
+           y = Region)) +
+  geom_density_ridges(
+    scale = 3,
+    rel_min_height = 0.01,
+    bandwidth = 0.01,  
+    fill = lighten("#7097BB", 0.3),
+    color = "white"
+  ) +
+  scale_x_continuous(
+    name = "Typhoid Rate",
+    expand = c(0, 0)
+  ) +
+  scale_y_discrete(
+    name = NULL,
+    expand = expansion(add = c(0.2, 2.6))
+  ) +
+  theme_ridges() +
+  labs(title = "Distribution of Typhoid Rates by WHO Region")
+```
+
+*Distribution of Typhoid Rates by WHO Region-Raincloud Plot*
+
+```{r}
+ggplot(diarrhea, 
+       aes(x = Region, 
+           y = Value)) +
+  stat_halfeye(
+    adjust = 0.9,              
+    justification = -0.25,
+    .width = 0,
+    point_colour = NA,
+    fill = "#7097BB"
+  ) +
+  geom_boxplot(
+    width = 0.15,
+    outlier.shape = NA,
+    alpha = 0.6
+  ) +
+  stat_dots(
+    side = "left",
+    justification = 2.2,
+    binwidth = 0.08,          
+    dotsize = 2.2,
+    color = "#7097BB",
+    alpha = 0.9
+  ) +
+  coord_flip() +
+  theme_economist() +
+  labs(
+    title = "Diarrhea Rates by WHO Region"
+  )
+
+```
+
+*Distribution of Hepatitis A by WHO Region-Quantile Distribution*
+
+```{r}
+
+ggplot(hepatitiesA,
+       aes(x = Value, 
+           y = Region, 
+           fill = factor(stat(quantile)))) +
+  stat_density_ridges(
+    geom = "density_ridges_gradient",
+    calc_ecdf = TRUE,
+    quantiles = 6,
+    quantile_lines = TRUE,
+    scale = 2,
+    alpha = 0.9
+  ) +
+  scale_fill_viridis_d(name = "Quartiles") +
+  labs(
+    title = "Hepatitis Rate Distribution by WHO Region"
+  ) +
+  theme_ridges()
+```
+
+::: info-box
+-   **Ridge Density Plots** It Shows disease rates distribution across WHO regions Advantage and is easier to compare regions and see data spread
+
+-   **Rain-cloud Plots** It Combines density, boxplot, and points in one plot Advantage which Shows the complete data picture in single view
+
+-   **Quantile Distribution Plots** By using colors to show different data levels to makes it easy to see where most values are located
+:::
+
+## **3.2 Time Trend Analysis**
+
+*Trend of Diarrhea Rate Over Time by Region*
+
+```{r}
+trend_data1 <- merged_data %>%
+  filter(!is.na(DiarrheaRate)) %>%
+  group_by(Region, Year) %>%
+  summarise(mean_disease = mean(DiarrheaRate, na.rm = TRUE), .groups = "drop")
+```
+
+```{r}
+ggplot(trend_data1, aes(x = Year, y = mean_disease, color = Region)) +
+  geom_line(size = 1) +
+  geom_smooth(method = "lm", se = FALSE, linetype = "dashed") +
+  labs(title = "Trend of Diarrhea Rate Over Time by Region",
+       y = "Mean Diarrhea Rate (%)",
+       x = "Year") +
+  theme_minimal()
+```
+
+*Trends of Unsafe Water Risk by Region*
+
+```{r}
+trend_data2 <- merged_data %>%
+  filter(!is.na(UnsafeRisk)) %>%
+  group_by(Region, Year) %>%
+  summarise(mean_disease = mean(UnsafeRisk, na.rm = TRUE), .groups = "drop")
+
+ggplot(trend_data2, aes(x = Year, y = mean_disease)) +
+  geom_line(color = "steelblue") +
+  geom_smooth(method = "lm", se = FALSE, linetype = "dashed") +
+  facet_wrap(~ Region) +
+  labs(title = "Time Trends of Unsafe Water Risk by Region", 
+       y = "Unsafe Water Risk", 
+       x = "Year") +
+  theme_bw()
+```
+
+::: info-box
+-   **Line Plots** with Trend Lines It can easier to see if disease is increasing or decreasing over time
+
+-   **Faceted Time Series** Shows separate time trends for each region which may allow to compare different regions' patterns clearly
+:::
+
+# **4. Correlation Analysis**
+
+In this sector, we will quantify the relationships between water indicators and disease rates.
+
+*Basic sanitation access vs Typhoid Rate*
+
+```{r}
+filtered_corr_data <- merged_data %>%
+  filter(`Series.Name` == "People using at least basic sanitation services (% of population)")
+
+ggscatterstats(
+  data = filtered_corr_data,
+  x = AvgValue,        
+  y = TyphoidRate,           
+  xlab = "Basic Sanitation Access (%)",
+  ylab = "Disease Rate",
+  title = "Correlation between Basic Sanitation and Typhoid Rate",
+  marginal = TRUE
+)
+```
+
+*Basic drinking Water Access vs Diarrhea Rate*
+
+```{r}
+df_plot1 <- merged_data %>%
+  
+  filter(Series.Name == "People using at least basic drinking water services (% of population)")
+  "DiarrheaRate"
+
+ggscatterstats(
+  data = df_plot1,
+  x = AvgValue,
+  y = DiarrheaRate,
+  marginal = TRUE,
+  xlab = "Basic Drinking Water Access (%)",
+  ylab = "Diarrhea Rate",
+  title = "Correlation between Drinking Water Access and Diarrhea Rate",
+  point.args = list(alpha = 0.3)
+)
+```
+
+::: info-box
+**This analysis examines the relationships between water indicators and disease rates by using a visualization that combines scatter plots, marginal distributions, and statistical tests. The key advantage of this approach is that it provides a comprehensive view of the correlation in a single plot, allowing for both visual interpretation and statistical validation of the relationship between variables.**
+:::
+
+# **5. ANOVA Analysis**
+
+To further understand how disease rates vary across different categories and conditions, we employ Analysis of Variance to the following.
+
+*Sanitation Levels Across Different Diseases level*
+
+```{r}
+basic_sanitation_data <- merged_data %>%
+  filter(Series.Name == "People using at least basic sanitation services (% of population)") %>%
+  select(Region, Year, AvgValue, TyphoidRate, DiarrheaRate, HepatitisRate, UnsafeRisk)
+
+basic_sanitation_data <- basic_sanitation_data %>%
+  mutate(
+    TyphoidCategory = ifelse(TyphoidRate > median(TyphoidRate, na.rm = TRUE), "High Typhoid", "Low Typhoid"),
+    DiarrheaCategory = ifelse(DiarrheaRate > median(DiarrheaRate, na.rm = TRUE), "High Diarrhea", "Low Diarrhea"),
+    HepatitisCategory = ifelse(HepatitisRate > median(HepatitisRate, na.rm = TRUE), "High Hepatitis", "Low Hepatitis"),
+    UnsafeCategory = ifelse(UnsafeRisk > median(UnsafeRisk, na.rm = TRUE), "High Unsafe Water Risk", "Low Unsafe Water Risk")
+  )
+
+long_data <- basic_sanitation_data %>%
+  tidyr::pivot_longer(
+    cols = c(TyphoidCategory, DiarrheaCategory, HepatitisCategory, UnsafeCategory),
+    names_to = "DiseaseType",
+    values_to = "DiseaseLevel"
+  ) %>%
+  filter(!is.na(DiseaseLevel), !is.na(AvgValue))  # Remove NA
+
+ggbetweenstats(
+  data = long_data,
+  x = DiseaseLevel,
+  y = AvgValue,
+  grouping.var = DiseaseType,  # Group by disease type
+  type = "parametric",
+  title = "Basic Sanitation Levels Across Disease Categories",
+  xlab = "Disease Prevalence Level",
+  ylab = "Sanitation Level (% using basic services)",
+  messages = FALSE
+)
+
+```
+
+*Diarrhea Rate Across Sanitation Access Levels*
+
+```{R}
+long_data <- merged_data %>%
+  tidyr::pivot_longer(
+    cols = c(TyphoidRate, DiarrheaRate, HepatitisRate, UnsafeRisk),
+    names_to = "Disease",
+    values_to = "Rate"
+  )
+
+diarrhea_sanitation <- long_data %>%
+  filter(Disease == "DiarrheaRate",
+         `Series.Name` == "People using at least basic sanitation services (% of population)")
+
+diarrhea_sanitation <- diarrhea_sanitation %>%
+  mutate(SanitationLevel = cut(
+    AvgValue,
+    breaks = c(0, 50, 70, 90, 100),
+    labels = c("Low", "Moderate", "High", "Very High"),
+    right = FALSE
+  ))
+
+ggbetweenstats(
+  data = diarrhea_sanitation,
+  x = SanitationLevel,
+  y = Rate,
+  type = "parametric",
+  title = "ANOVA: Diarrhea Rate Across Sanitation Access Levels"
+)
+```
+
+::: info-box
+**This analysis compares disease rates under different levels of water access to understand how access affects public health. By testing the differences between groups, the plot shows the disparities clearly, while also presenting the data distribution, group means, and confidence intervals. It helps provide both statistical insight and visual summary.**
+:::
+
+# **6. Bullet Dashboard**
+
+*For Water Indicators(Basic Sanitation Access)*
+
+```{r}
+selected_indicator <- "People using at least basic sanitation services (% of population)"
+
+water_summary_all_regions <- merged_data %>%
+  filter(`Series.Name` == selected_indicator) %>%
+  group_by(Region) %>%
+  summarise(
+    Min = min(AvgValue, na.rm = TRUE),
+    Max = max(AvgValue, na.rm = TRUE),
+    Average = round(mean(AvgValue, na.rm = TRUE), 1),
+    Monthly = list(AvgValue[order(Year)]),
+    Actual = mean(AvgValue[Year == 2021], na.rm = TRUE),
+    Target = 100,
+    .groups = "drop"
+  )
+
+water_summary_all_regions %>%
+  gt() %>%
+  gt_plt_sparkline(Monthly, type = "default") %>%  # <-- FIXED HERE
+  gt_plt_bullet(column = Actual, 
+                target = Target, 
+                width = 28,
+                palette = c("lightblue", "black")) %>%
+  gt_theme_espn()
+
+```
+
+*For Disease Variable(Diarrhea Rate)*
+
+```{r}
+selected_disease_column <- "DiarrheaRate"
+
+disease_summary_all_regions <- merged_data %>%
+  filter(!is.na(.data[[selected_disease_column]])) %>%
+  group_by(Region) %>%
+  summarise(
+    Min = min(.data[[selected_disease_column]], na.rm = TRUE),
+    Max = max(.data[[selected_disease_column]], na.rm = TRUE),
+    Average = round(mean(.data[[selected_disease_column]], na.rm = TRUE), 1),
+    Monthly = list(.data[[selected_disease_column]][order(Year)]),
+    Actual = mean(.data[[selected_disease_column]][Year == 2021], na.rm = TRUE),
+    Target = 0,
+    .groups = "drop"
+  )
+
+disease_summary_all_regions %>%
+  gt() %>%
+  gt_plt_sparkline(Monthly, type = "default") %>%
+  gt_plt_bullet(column = Actual,
+                target = Target,
+                width = 28,
+                palette = c("salmon", "black")) %>%
+  gt_theme_espn()
+```
+
+::: info-box
+**The dashboard shows current value, target, historical trend, and min,max values all in one view - For sanitation access, we can see which regions are close to 100% target and which ones need more improvement.The sparkline shows if region is getting better over time. - For diarrhea rate, we want to reach 0% target. The bullet chart shows how far each region is from this goal, and sparkline shows if disease rate is decreasing over time.**
+:::
