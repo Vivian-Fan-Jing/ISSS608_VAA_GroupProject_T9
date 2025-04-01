@@ -63,7 +63,9 @@ safe_max_value <- function(data, column) {
   return(list(value = max_val, country = max_country))
 }
 
+
 # ==================== UI ====================
+
 ui <- dashboardPage(
   dashboardHeader(
     title = span("Blue Pulse", icon("tint"))  
@@ -80,6 +82,38 @@ ui <- dashboardPage(
     )
   ),
   dashboardBody(
+    
+#==================CSS===================
+    tags$head(
+      tags$style(HTML("
+.select-pill .remove-btn {
+  margin-left: 6px;
+  cursor: pointer;
+  color: #666;
+  font-weight: bold;
+}
+.select-pill .remove-btn:hover {
+  color: #dc3545;
+}
+")),
+      tags$script(HTML("
+      $(document).on('click', '.remove-btn', function() {
+        var selectId = $(this).data('id');
+        var value = $(this).data('value');
+        var selectInput = $('#' + selectId)[0].selectize;
+        selectInput.removeItem(value);
+      });
+      
+      Shiny.addCustomMessageHandler('selectize-config', function(message) {
+          message.ids.forEach(function(id) {
+            var selectizeInput = $('#' + id).selectize(message.options)[0].selectize;
+            if (selectizeInput) {
+              selectizeInput.refreshOptions();
+            }
+          });
+        });
+    "))
+    ),
  # theme style
     tags$head(
       tags$style(HTML("
@@ -88,8 +122,9 @@ ui <- dashboardPage(
         .skin-blue .main-header .navbar { background-color: #00acc1; }
         .content-wrapper, .right-side { background-color: #e8f7ff; }
         .box { border-top: 3px solid #00acc1; }
-      "))
+      ")),
     ),
+    
     tabItems(
       # ---------- Treemap  ----------
       tabItem(tabName = "treemap",
@@ -361,7 +396,6 @@ ui <- dashboardPage(
                       ),
                       mainPanel(
                         gt::gt_output("cda_bullet_table_auto"),
-                        h4("Insights"),
                         verbatimTextOutput("cda_data_insights")
                       )
                     )
@@ -374,6 +408,50 @@ ui <- dashboardPage(
 
 # ==================== SERVER ====================
 server <- function(input, output, session) {
+  
+  
+  observe({
+    shinyjs::runjs("
+      $(document).ready(function() {
+        var ids = ['washVarsSelect', 'diseaseSelect', 'regionSelect', 'cda_selectedIndicators', 'cda_selectedRegions'];
+        ids.forEach(function(id) {
+          var $select = $('#' + id);
+          if ($select.length) {
+            var selectize = $select.selectize({
+              render: {
+                item: function(data, escape) {
+                  return '<div class=\"select-pill\">' + escape(data.text) + 
+                         '<span class=\"remove-btn\" data-id=\"' + this.$input.attr('id') + '\" data-value=\"' + 
+                         escape(data.value) + '\">×</span></div>';
+                }
+              }
+            })[0].selectize;
+            if (selectize) {
+              selectize.refreshOptions();
+            }
+          }
+        });
+      });
+    ")
+    
+    session$sendCustomMessage(type = "selectize-config", message = list(
+      ids = c("washVarsSelect", "diseaseSelect", "regionSelect", "cda_selectedIndicators", "cda_selectedRegions"),
+      options = list(
+        render = list(
+          item = htmlwidgets::JS("
+          function(data, escape) {
+            return '<div class=\"select-pill\">' + escape(data.text) + 
+                   '<span class=\"remove-btn\" data-id=\"' + this.$input.attr('id') + '\" data-value=\"' + 
+                   escape(data.value) + '\">×</span></div>'; 
+          }
+        ")
+        )
+      )
+    ))
+  })
+  
+  
+  
   
   #### TREEMAP (Geo) 
   {
@@ -1059,33 +1137,7 @@ server <- function(input, output, session) {
         Monthly = "Trend",
         Target = "Target"
       )
-      chart <- chart %>% tab_header(
-        title = if(input$cda_indicator_type_auto == "Water") {
-          md(paste("**Top Regions by", input$cda_selected_indicator_auto, "in", input$cda_auto_year, "**"))
-        } else {
-          md(paste("**Top Regions by", gsub("Rate", "", input$cda_selected_disease_auto), "Rate in", input$cda_auto_year, "**"))
-        }
-      )
       chart %>% gtExtras::gt_theme_espn()
-    })
-    
-    output$cda_data_insights <- renderPrint({
-      req(cda_bullet_data())
-      insights <- cda_bullet_data() %>% summarise(
-        total_regions = n(),
-        overall_min = min(Min, na.rm = TRUE),
-        overall_max = max(Max, na.rm = TRUE),
-        overall_avg = mean(Average, na.rm = TRUE),
-        highest_actual = max(Actual, na.rm = TRUE),
-        lowest_actual = min(Actual, na.rm = TRUE)
-      )
-      cat("Data Insights:\n")
-      cat("Total Regions:", insights$total_regions, "\n")
-      cat("Overall Minimum Value:", round(insights$overall_min, 2), "\n")
-      cat("Overall Maximum Value:", round(insights$overall_max, 2), "\n")
-      cat("Overall Average:", round(insights$overall_avg, 2), "\n")
-      cat("Highest Actual Value:", round(insights$highest_actual, 2), "\n")
-      cat("Lowest Actual Value:", round(insights$lowest_actual, 2), "\n")
     })
   }
 
