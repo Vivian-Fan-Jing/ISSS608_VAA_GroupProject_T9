@@ -1,5 +1,5 @@
 ---
-title: "WASH-Based Health Trend Analysis"
+title: "Health Trend Analysis"
 author: "Lai Meihao"
 date: "March 31, 2025"
 date-modified: "last-modified"
