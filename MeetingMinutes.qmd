@@ -159,7 +159,7 @@ The team realized that for geospatial data analysis, the dataset needs to be in 
 **2. Action Items**
 
 | Task | Responsible | Deadline |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | Test CSV-to-SHP/JSON conversion | Meihao | Next meeting |
 | Select relevant variables for analysis | Jing & Xinyue | Next meeting |
 | Research and discuss predictive modeling techniques | All Members | Ongoing |
@@ -211,7 +211,7 @@ The group agreed to conduct further research before making a final decision.
 **2. Action Items**
 
 |  |  |  |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | **Task** | **Assigned To** | **Deadline** |
 | Continue variable selection using the current dataset | Jing | Ongoing |
 | Research alternative datasets (regional/national level) | Meihao & Xinyue | Next meeting |
@@ -240,19 +240,19 @@ Xinyue and Meihao were initially unable to locate appropriate region-specific da
 Task Allocation and Module Development\
 \
 Each member’s task was clarified and finalized as follows:\
- - Jing will be responsible for Treemap visualization and corresponding data exploration\
- - Meihao will focus on the Panel Data Model (PLM)\
- - Xinyue will work on the Confirmatory Data Analysis (CDA)\
+- Jing will be responsible for Treemap visualization and corresponding data exploration\
+- Meihao will focus on the Panel Data Model (PLM)\
+- Xinyue will work on the Confirmatory Data Analysis (CDA)\
 \
 The team agreed to work independently on their respective modules, with plans to reconvene after individual components are complete to integrate them into a full Shiny App.
 
 ## 2. Action Items
 
 |  |  |  |
-|------------------------------|------------------------|------------------------|
+|----|----|----|
 | **Task** | **Assigned To** | **Deadline** |
-| Perform
-treemap visualization and exploratory analysis | Jing | Next meeting |
+| Perform |  |  |
+| treemap visualization and exploratory analysis | Jing | Next meeting |
 | Build panel data regression model (PLM) | Meihao | Next meeting |
 | Conduct confirmatory data analysis (CDA) | Xinyue | Next meeting |
 | Integrate WHO regional groupings into analysis workflow | Entire Team | Next meeting |
@@ -276,10 +276,10 @@ After the completion of the initial version of the Shiny App, the group met with
 \
 Key Issues Identified:\
 \
- - Inconsistency in analysis level:\
+- Inconsistency in analysis level:\
   The current analysis mixes regional-level and country-level indicators, which makes interpretation unclear. Dr. Kam advised that all parts of the analysis should be aligned to the same level of granularity — either fully regional or fully country-level.\
 \
- - Visualization problems:\
+- Visualization problems:\
   Several visualizations were flagged as ineffective or unclear. They were considered poor in presentation and not meaningful for analysis. The group agreed that these need to be redesigned and improved for clarity and analytical value.\
 \
   All members will be responsible for improving their own visualization components, including:\
@@ -287,16 +287,16 @@ Key Issues Identified:\
   - Xinyue’s CDA visualizations\
   - Meihao’s PLM visual outputs\
 \
- - PLM Model clarity:\
+- PLM Model clarity:\
   The current PLM component focuses too much on results without clearly explaining or presenting the model structure itself. This part will be revised to better reflect how the model is built, not just the output.\
 \
- - WHO region naming issue:\
+- WHO region naming issue:\
   The current WHO region labels were noted as inappropriate or inconsistent. The team will need to either reassign the region groupings or re-arrange the dataset to resolve the naming issues.
 
 ## 2. Action Items
 
 |  |  |  |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | **Task** | **Assigned To** | **Deadline** |
 | Decide whether to adopt country-level or regional-level analysis | Entire Team | Next meeting |
 | Reformat and correct regional naming in the dataset | Meihao & Xinyue | Next meeting |
@@ -324,21 +324,21 @@ The team identified a new disease dataset at the country level, which can be ali
 Due to missing values, some variables will be removed and the analysis time range will be adjusted to 2006–2021 for consistency and completeness.\
 \
 In light of the data change:\
- - The treemap visualization will be replaced with an EDA module for trend review of all variables\
- - The team agreed to continue working on their respective modules using the new data\
- - Aiming to finish by April 3, allowing time for poster preparation\
+- The treemap visualization will be replaced with an EDA module for trend review of all variables\
+- The team agreed to continue working on their respective modules using the new data\
+- Aiming to finish by April 3, allowing time for poster preparation\
 \
 Poster Plan:\
- - Xinyue will be responsible for assembling the poster\
- - Jing and Meihao will support by providing graphs and written explanation for their parts
+- Xinyue will be responsible for assembling the poster\
+- Jing and Meihao will support by providing graphs and written explanation for their parts
 
 ## 2. Action Items
 
 |  |  |  |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | **Task** | **Assigned To** | **Deadline** |
-| Integrate
-new country-level disease data with WDI | Entire Team | April 3 |
+| Integrate |  |  |
+| new country-level disease data with WDI | Entire Team | April 3 |
 | Adjust time range and remove variables with missing values | Entire Team | April 3 |
 | Replace treemap with trend-based EDA | Jing | April 3 |
 | Update CDA and PLM modules based on new dataset | Xinyue & Meihao | April 3 |
