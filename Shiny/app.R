@@ -117,11 +117,25 @@ ui <- dashboardPage(
  # theme style
     tags$head(
       tags$style(HTML("
-        body { background-color: #e8f7ff; }
-        .skin-blue .main-header .logo { background-color: #0097a7; color: white; }
-        .skin-blue .main-header .navbar { background-color: #00acc1; }
-        .content-wrapper, .right-side { background-color: #e8f7ff; }
-        .box { border-top: 3px solid #00acc1; }
+         body { background-color: #e8f7ff; }
+          .skin-blue .main-header .logo { background-color: #00acc1; color: white; }
+          .skin-blue .main-header .navbar { background-color: #00acc1; }
+          .content-wrapper, .right-side { background-color: #e8f7ff; }
+          .box { border-top: 3px solid #0097a7; }
+          .titlePanel, 
+          .main-title,
+          .analysis-panel > h3,
+          .box-header,
+          .panel-primary > .panel-heading {
+            background-color: #0F2947 !important;
+            color: white !important;
+            padding: 10px 15px;
+            margin-top: 0;
+            border-radius: 4px 4px 0 0;
+          }
+          .nav-tabs > li > a,
+          .tabbable > .nav > li > a {
+          }
       ")),
     ),
     
@@ -694,16 +708,16 @@ server <- function(input, output, session) {
     read.csv("merged_data.csv", stringsAsFactors = FALSE)
   }, error = function(e) {
     showNotification(paste("Error loading merged_data:", e$message), type = "error")
-    data.frame()  # 返回空数据框
+    data.frame() 
   })
   
-  # 检查数据是否成功加载
+ 
   if(nrow(merged_data) == 0) {
     showNotification("No data loaded. Please check the CSV file.", type = "error")
-    return()  # 提前退出函数
+    return() 
   }
   
-  # 更新选择器
+ 
   updateSelectInput(session, "cda_selectedIndicators", 
                     choices = unique(merged_data$`Series.Name`),
                     selected = unique(merged_data$`Series.Name`)[1])

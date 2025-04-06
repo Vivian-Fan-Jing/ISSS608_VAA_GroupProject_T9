@@ -144,7 +144,7 @@ summary(typhoid_model)
 ### Summary table for Fixed Effect Panel Model Results
 
 | Disease Outcome | Significant Predictors | R-squared | Adj. R-squared |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | **Diarrhea** | OpenDefecation (↑), BasicSanitation (↓), PopulationDensity (↓), WaterProductivity (↑), WaterStress (↓) | 0.117 | 0.112 |
 | **Hepatitis A** | BasicWater (↓), BasicSanitation (↓), PopulationDensity (↓), WaterProductivity (↓) | 0.331 | 0.327 |
 | **Typhoid** | OpenDefecation (↑), BasicSanitation (↓) | 0.226 | 0.222 |
@@ -241,18 +241,18 @@ print(hausman_typhoid)
 ### Summary table for Random Effect Panel Model Results
 
 | Disease Outcome | Significant Predictors (p \< 0.05) | R-squared | Adj. R-squared |
-|---------------|----------------------------|---------------|---------------|
+|-----------------|------------------------------------|-----------|----------------|
 
 |  |  |  |  |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | **Diarrhea** | OpenDefecation (↑), BasicWater (↓), BasicSanitation (↓), PopulationDensity (↓), WaterProductivity (↓) | 0.414 | 0.412 |
 
 |  |  |  |  |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | **Hepatitis A** | OpenDefecation (↑), BasicWater (↓), BasicSanitation (↓), PopulationDensity (↓), WaterStress (↓) | 0.417 | 0.416 |
 
 |  |  |  |  |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | **Typhoid** | OpenDefecation (↑), BasicSanitation (↓), PopulationDensity (↓) | 0.560 | 0.559 |
 
 ### Hausman Test Results (Fixed vs Random Effects)
@@ -317,7 +317,7 @@ To control for time-specific influences that may affect all regions simultaneous
 ### Fixed Effects with Time Summary Table
 
 | Disease Outcome | Significant Predictors (p \< 0.05) | R² | Adj. R² |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | **Diarrhea** | OpenDefecation (↑), BasicSanitation (↓), PopulationDensity (↓), WaterProductivity (↑) | 0.661 | 0.657 |
 | **Hepatitis A** | BasicWater (↓), BasicSanitation (↓), WaterProductivity (↓), WaterStress (↑) | 0.496 | 0.491 |
 | **Typhoid** | OpenDefecation (↑), BasicSanitation (↓), PopulationDensity (↑) | 0.401 | 0.395 |
@@ -385,18 +385,18 @@ sargan_typhoid <- summary(typhoid_dynamic_model, robust = TRUE)
 ### Dynamic Panel Model Summary Table
 
 | Outcome | Significant Predictors | AR(2) p-value | Sargan Test p-value | Model Notes |
-|--------------|-----------------|--------------|--------------|--------------|
+|---------|------------------------|---------------|---------------------|-------------|
 
 |  |  |  |  |  |
-|---------------|---------------|---------------|---------------|---------------|
+|----|----|----|----|----|
 | **Diarrhea** | Lag(Diarrhea), OpenDefecation↑, BasicWater↓ | 0.007 | 0.0023 | AR(2) significant — potential issue |
 
 |                 |                 |       |       |                              |
-|-------------|-------------|-------------|-------------|----------------------|
+|-----------------|-----------------|-------|-------|------------------------------|
 | **Hepatitis A** | Lag(HepatitisA) | 0.105 | 0.022 | Instruments borderline valid |
 
 |             |              |       |       |                                         |
-|-----------|-----------|-----------|-----------|----------------------------|
+|-------------|--------------|-------|-------|-----------------------------------------|
 | **Typhoid** | Lag(Typhoid) | 0.258 | 0.830 | Clean diagnostics, no WASH significance |
 
 ### Interpretation
@@ -474,18 +474,18 @@ As a baseline comparison, pooled Ordinary Least Squares (OLS) panel regressions 
 ### Pooled OLS Model Summary Table
 
 | Disease | Significant Predictors (p \< 0.05) | R² | Adj. R² | BP Test p-value (Hetero) | Reliable? |
-|------------|------------|------------|------------|------------|------------|
+|----|----|----|----|----|----|
 
 |  |  |  |  |  |  |
-|------------|------------|------------|------------|------------|------------|
+|----|----|----|----|----|----|
 | **Diarrhea** | OpenDefecation (↑), BasicSanitation (↓), PopulationDensity (↓), WaterProductivity (↑) | 0.663 | 0.662 | 4.26e-10 | ❌ |
 
 |  |  |  |  |  |  |
-|------------|------------|------------|------------|------------|------------|
+|----|----|----|----|----|----|
 | **Hepatitis A** | BasicWater (↓), BasicSanitation (↓), WaterProductivity (↓), WaterStress (↑) | 0.498 | 0.497 | 3.54e-30 | ❌ |
 
 |  |  |  |  |  |  |
-|------------|------------|------------|------------|------------|------------|
+|----|----|----|----|----|----|
 | **Typhoid** | OpenDefecation (↑), BasicSanitation (↓), PopulationDensity (↑) | 0.407 | 0.405 | 6.72e-78 | ❌ |
 
 ### Interpretation
@@ -644,16 +644,16 @@ print_serial_correlation_results("Typhoid", typhoid_serial_corr)
 ### Serial Correlation Diagnostics Summary
 
 | Disease | Wooldridge χ² (df=16) | BG LM Stat (df=1) | Panel DW | Serial Correlation Detected? |
-|---------------|---------------|---------------|---------------|---------------|
+|----|----|----|----|----|
 
 |  |  |  |  |  |
-|---------------|---------------|---------------|---------------|---------------|
+|----|----|----|----|----|
 | **Diarrhea** | 1531.3 (p \< 2.2e-16) | 1960.9 (p \< 2.2e-16) | 0.39978 (p \< 2.2e-16) | ✅ Yes |
 
 |  |  |  |  |  |
-|---------------|---------------|---------------|---------------|---------------|
+|----|----|----|----|----|
 | **Hepatitis A** | 1220.6 (p \< 2.2e-16) | 1936.7 (p \< 2.2e-16) | 0.64618 (p \< 2.2e-16) | ✅ Yes |
 
 |  |  |  |  |  |
-|---------------|---------------|---------------|---------------|---------------|
+|----|----|----|----|----|
 | **Typhoid** | 1515.5 (p \< 2.2e-16) | 1959.6 (p \< 2.2e-16) | 0.40756 (p \< 2.2e-16) | ✅ Yes |
