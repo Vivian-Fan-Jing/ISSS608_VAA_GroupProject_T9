@@ -29,6 +29,7 @@ website:
           - text: "Shiny App"
             href: "https://linxy-xinyue.shinyapps.io/Water_Pulse/"
           - text: "User guide"
+            href: "data/UserGuide.pdf"
       
       
       
