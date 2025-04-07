@@ -1,0 +1,12 @@
+name: Blue_Pulse
+title: Blue_Pulse
+username: blusepulse
+account: blusepulse
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 14442787
+bundleId:
+url: https://blusepulse.shinyapps.io/Blue_Pulse/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
