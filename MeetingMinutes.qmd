@@ -159,7 +159,7 @@ The team realized that for geospatial data analysis, the dataset needs to be in 
 **2. Action Items**
 
 | Task | Responsible | Deadline |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | Test CSV-to-SHP/JSON conversion | Meihao | Next meeting |
 | Select relevant variables for analysis | Jing & Xinyue | Next meeting |
 | Research and discuss predictive modeling techniques | All Members | Ongoing |
@@ -211,7 +211,7 @@ The group agreed to conduct further research before making a final decision.
 **2. Action Items**
 
 |  |  |  |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | **Task** | **Assigned To** | **Deadline** |
 | Continue variable selection using the current dataset | Jing | Ongoing |
 | Research alternative datasets (regional/national level) | Meihao & Xinyue | Next meeting |
@@ -225,11 +225,11 @@ Time: 21:00 – 21:30
 
 Attendees: Fan Jing, Lin Xinyue, Lai Meihao
 
-## Agenda
+**Agenda**
 
 Project progress check-in and task realignment based on updated dataset availability
 
-## 1. Team Progress Update and Dataset Decision
+**1. Team Progress Update and Dataset Decision**
 
 The meeting began with updates from each group member on their progress and any data challenges faced.
 
@@ -246,10 +246,10 @@ Each member’s task was clarified and finalized as follows:\
 \
 The team agreed to work independently on their respective modules, with plans to reconvene after individual components are complete to integrate them into a full Shiny App.
 
-## 2. Action Items
+**2. Action Items**
 
 |  |  |  |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | **Task** | **Assigned To** | **Deadline** |
 | Perform |  |  |
 | treemap visualization and exploratory analysis | Jing | Next meeting |
@@ -266,11 +266,11 @@ Time: 15:00 – 17:00
 
 Attendees: Fan Jing, Lin Xinyue, Lai Meihao
 
-## Agenda
+**Agenda**
 
 Post-submission review and feedback discussion with Dr. Kam on the completed Shiny App
 
-## 1. Consultation Review and Feedback Summary
+**1. Consultation Review and Feedback Summary**
 
 After the completion of the initial version of the Shiny App, the group met with Dr. Kam to gather feedback and professional advice.\
 \
@@ -293,10 +293,10 @@ Key Issues Identified:\
 - WHO region naming issue:\
   The current WHO region labels were noted as inappropriate or inconsistent. The team will need to either reassign the region groupings or re-arrange the dataset to resolve the naming issues.
 
-## 2. Action Items
+**2. Action Items**
 
 |  |  |  |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | **Task** | **Assigned To** | **Deadline** |
 | Decide whether to adopt country-level or regional-level analysis | Entire Team | Next meeting |
 | Reformat and correct regional naming in the dataset | Meihao & Xinyue | Next meeting |
@@ -313,11 +313,11 @@ Time: 21:30 – 21:50
 
 Attendees: Fan Jing, Lin Xinyue, Lai Meihao
 
-## Agenda
+**Agenda**
 
 Review of new country-level disease dataset and planning for final integration and poster preparation
 
-## 1. Dataset Update and Task Realignment
+**1. Dataset Update and Task Realignment**
 
 The team identified a new disease dataset at the country level, which can be aligned with UN region groupings, allowing for both country-level and regional-level analysis. The team agreed to move forward with this dataset, and integrate it with the existing WDI dataset.\
 \
@@ -332,10 +332,10 @@ Poster Plan:\
 - Xinyue will be responsible for assembling the poster\
 - Jing and Meihao will support by providing graphs and written explanation for their parts
 
-## 2. Action Items
+**2. Action Items**
 
 |  |  |  |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | **Task** | **Assigned To** | **Deadline** |
 | Integrate |  |  |
 | new country-level disease data with WDI | Entire Team | April 3 |
