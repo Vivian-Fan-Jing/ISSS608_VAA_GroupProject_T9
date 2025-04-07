@@ -119,64 +119,69 @@ This code block defines two functions: `create_comprehensive_plots()` and `save_
 
 ```{r}
 create_comprehensive_plots <- function(data) {
-  # List of variables to plot
-  all_vars <- c("BasicSanitation", "BasicWater", "OpenDefecation", "WaterStress", 
-                "WaterProductivity", "HepatitisA", "Diarrhea", "Typhoid")
+  # Diagnostic checks
+  cat("Total number of rows in data:", nrow(data), "\n")
+  cat("Unique regions:", paste(unique(data$Region), collapse = ", "), "\n")
+  cat("Unique year groups:", paste(unique(data$year_group), collapse = ", "), "\n")
+  
+  all_vars <- c("BasicSanitation", "BasicWater", "OpenDefecation", 
+                "WaterStress", "WaterProductivity", 
+                "HepatitisA", "Diarrhea", "Typhoid")
+  
+  missing_vars <- setdiff(all_vars, names(data))
+  if (length(missing_vars) > 0) {
+    stop("Missing variables: ", paste(missing_vars, collapse = ", "))
+  }
   
   regions <- unique(data$Region)
-  
   plot_list <- list()
-  
   plot_counter <- 1
   
   for (var in all_vars) {
     for (reg in regions) {
-      region_data <- data %>% filter(Region == reg)
+      region_data <- data %>% 
+        filter(Region == reg) %>%
+
+        filter(!is.na(year_group) & !is.na(!!sym(var)))
       
-      p <- ggbetweenstats(
-        data = region_data,
-        x = year_group,
-        y = !!sym(var),
-        type = "parametric",
-        messages = FALSE,
-        mean.ci = TRUE,
-        pairwise.comparisons = TRUE,
-        pairwise.display = "significant",
-        title = paste("Comparison of", var, "in", reg),
-        xlab = "Year Group",
-        ylab = var
-      )
+      if (nrow(region_data) == 0) {
+        warning(paste("No data for", var, "in", reg))
+        next
+      }
       
-      plot_list[[plot_counter]] <- p
-      
-      print(p)
-      
-      plot_counter <- plot_counter + 1
+      tryCatch({
+        p <- ggbetweenstats(
+          data = region_data,
+          x = year_group,
+          y = !!sym(var),
+          type = "parametric",
+          messages = FALSE,
+          mean.ci = TRUE,
+          pairwise.comparisons = TRUE,
+          pairwise.display = "significant",
+          title = paste("Comparison of", var, "in", reg),
+          xlab = "Year Group",
+          ylab = var
+        )
+        
+        plot_list[[plot_counter]] <- p
+        print(p)
+        
+        plot_counter <- plot_counter + 1
+      }, error = function(e) {
+        warning(paste("Error plotting", var, "in", reg, ":", e$message))
+      })
     }
   }
   
   return(plot_list)
 }
 
-save_plots <- function(plot_list, output_dir = "comparison_plots") {
-  if (!dir.exists(output_dir)) {
-    dir.create(output_dir)
-  }
-  
-  for (i in seq_along(plot_list)) {
-    ggsave(
-      filename = paste0(output_dir, "/plot_", i, ".png"),
-      plot = plot_list[[i]],
-      width = 10,
-      height = 7,
-      dpi = 300
-    )
-  }
-}
+
 plots <- create_comprehensive_plots(cdata1)
 ```
 
-# 4 Box Plot Visualization of Regional Trends by Year
+# 4.Box Plot Visualization of Regional Trends by Year
 
 To examine regional disparities in water, sanitation and hygiene access and health outcomes over time, we generated a series of box plots for key indicators, including basic sanitation, access to drinking water, open defecation, water stress, water productivity, and disease prevalence (Hepatitis A, diarrhea, and typhoid). For each year in the dataset, the data was subset by year, and box plots were created to visualize the distribution of each indicator across different regions. This method provides a clear view of the central tendency, spread, and potential outliers within regions, enabling comparative analysis across both space and time. By using box plots, we were able to identify variations in access and health burdens, detect extreme cases, and observe trends in regional equity on a year-by-year basis.
 
