@@ -1,0 +1,659 @@
+---
+title: "Panel Data Modeling"
+author: "Lai Meihao"
+date: "April 1st , 2025"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+# **1.Overview**
+
+In this page, I will be exploring the codes for building up Panel Model and relevant statistic test
+
+# 2.Initial Data Preparation
+
+## 2.1Loading R package
+
+The project uses `p_load()` of pacman package to check if the R package are installed in the computer.
+
+The following code chunk is used to install and launch the R packages.
+
+```{r}
+pacman::p_load(tidyverse, ggplot2, plm,ExPanDaR,lubridate, ggthemes, plotly,dplyr,purrr,lmtest)
+```
+
+## 2.2 Import Data
+
+```{r}
+cdata <- read_csv("data/final_merged_data.csv")
+
+```
+
+### Renaming Variable
+
+To simplify and standardize the dataset for analysis, we renamed several lengthy variable names into shorter, more interpretable labels using the `rename()` function.This improves code readability and makes referencing variables in models and visualizations easier.
+
+```{r}
+cdata <- cdata %>%
+  rename(
+    BasicSanitation = `People using at least basic sanitation services (% of population)`,
+    BasicWater = `People using at least basic drinking water services (% of population)`,
+    OpenDefecation = `People practicing open defecation (% of population)`,
+    WaterStress = `Level of water stress: freshwater withdrawal as a proportion of available freshwater resources`,
+    WaterProductivity = `Water productivity, total (constant 2015 US$ GDP per cubic meter of total freshwater withdrawal)`,
+    HepatitisA = `Acute hepatitis A`,
+    Diarrhea = `Diarrheal diseases`,
+    Typhoid = `Typhoid fever`,
+    Region = `World Bank Regions`)
+ 
+
+```
+
+### **Checking for missing**
+
+The code `table(index(cdata), useNA = "ifany")` is checking for missing values (NA) in the index of a panel data frame.
+
+```{r}
+table(index(cdata), useNA = "ifany")
+```
+
+# 3.Preparing for PML
+
+## 3.1 Converting Data structure
+
+To prepare for panel data regression analysis, the dataset was transformed into a `pdata.frame` structure using the `plm` package. This format designates `Region` as the cross-sectional unit and `year` as the time index, allowing us to apply fixed-effects or random-effects models that account for both temporal dynamics and regional heterogeneity.
+
+```{r}
+pdata <- pdata.frame(cdata, index = c("Region", "year"))
+
+```
+
+3.2 Renaming Columns in pdata
+
+To facilitate analysis and improve code clarity, all variables in the panel dataset were renamed using short, descriptive labels. This standardization ensures compatibility with panel regression functions and enhances readability when interpreting model outputs.
+
+```{r}
+colnames(pdata) <- c(
+  "Country",
+  "Year",
+  "WaterStress",
+  "OpenDefecation",
+  "BasicWater",
+  "BasicSanitation",
+  "PopulationDensity",
+  "TotalPopulation",
+  "WaterProductivity",
+  "HepatitisA",
+  "Diarrhea",
+  "Typhoid",
+  "Region"
+)
+```
+
+# 4.Fixed Effects panel models
+
+To evaluate the influence of water, sanitation, and hygiene (WASH) factors on disease outcomes, we constructed three fixed-effects panel linear regression models using the `plm` package in R. The dependent variables were the regional prevalence rates of diarrhea, Hepatitis A, and typhoid, respectively. Each model included six explanatory variables: open defecation rate, access to basic water services, access to basic sanitation, population density, water productivity, and water stress. The fixed-effects specification accounts for unobserved, time-invariant regional characteristics, allowing us to isolate the effect of changes in WASH-related factors over time within each region.
+
+```{r}
+# Diarrhea Model (Fixed Effects)
+diarrhea_model <- plm(Diarrhea ~ 
+  OpenDefecation +
+  BasicWater +
+  BasicSanitation +
+  PopulationDensity +
+  WaterProductivity +
+  WaterStress,
+  data = pdata,
+  model = "within"
+)
+
+# Hepatitis A Model (Fixed Effects)
+hepatitis_model <- plm(HepatitisA ~ 
+  OpenDefecation +
+  BasicWater +
+  BasicSanitation +
+  PopulationDensity +
+  WaterProductivity +
+  WaterStress,
+  data = pdata,
+  model = "within"
+)
+
+# Typhoid Model (Fixed Effects)
+typhoid_model <- plm(Typhoid ~ 
+  OpenDefecation +
+  BasicWater +
+  BasicSanitation +
+  PopulationDensity +
+  WaterProductivity +
+  WaterStress,
+  data = pdata,
+  model = "within"
+)
+
+# Compare models
+summary(diarrhea_model)
+summary(hepatitis_model)
+summary(typhoid_model)
+```
+
+### Summary table for Fixed Effect Panel Model Results
+
+| Disease Outcome | Significant Predictors | R-squared | Adj. R-squared |
+|------------------|------------------|------------------|------------------|
+| **Diarrhea** | OpenDefecation (↑), BasicSanitation (↓), PopulationDensity (↓), WaterProductivity (↑), WaterStress (↓) | 0.117 | 0.112 |
+| **Hepatitis A** | BasicWater (↓), BasicSanitation (↓), PopulationDensity (↓), WaterProductivity (↓) | 0.331 | 0.327 |
+| **Typhoid** | OpenDefecation (↑), BasicSanitation (↓) | 0.226 | 0.222 |
+
+The panel regression models using fixed effects revealed consistent relationships between WASH indicators and health outcomes. Open defecation and poor access to basic sanitation were significant risk factors across diseases, particularly for diarrhea and typhoid. Basic water access and water productivity played a significant role in reducing Hepatitis A prevalence. Population density was a significant negative predictor for both diarrhea and Hepatitis A, potentially reflecting urban infrastructure advantages. Overall, these findings highlight the importance of sanitation and water access in reducing the burden of waterborne diseases across regions.
+
+# 5.Random Effect panel models
+
+To assess the robustness of our fixed effects results and determine the appropriate panel model specification, we also estimated random effects models for each disease outcome—diarrhea, Hepatitis A, and typhoid. The random effects models were specified using the same set of predictors: open defecation, basic water and sanitation access, population density, water productivity, and water stress. We then conducted **Hausman tests** to statistically compare the fixed and random effects specifications for each outcome.
+
+The Hausman test evaluates whether the unique errors (region effects) are correlated with the regressors, which violates the assumptions of the random effects model. A significant p-value (typically p \< 0.05) indicates that the **fixed effects model** is preferred. The results of the Hausman tests supported the use of **fixed effects** for all three disease models, confirming that unobserved regional characteristics are likely correlated with the explanatory variables.\
+
+```{r}
+
+pdata <- pdata.frame(pdata, index = c("Country", "Year"))
+
+
+run_random_effects_model <- function(dependent_var) {
+  model <- plm(as.formula(paste(dependent_var, "~ 
+    OpenDefecation +
+    BasicWater +
+    BasicSanitation +
+    PopulationDensity +
+    WaterProductivity +
+    WaterStress")), 
+    data = pdata,
+    model = "random"
+  )
+  return(model)
+}
+
+
+diarrhea_model_re <- run_random_effects_model("Diarrhea")
+hepatitis_model_re <- run_random_effects_model("HepatitisA")
+typhoid_model_re <- run_random_effects_model("Typhoid")
+
+
+cat("\n=== Diarrhea Random Effects Model ===\n")
+summary(diarrhea_model_re)
+
+cat("\n=== Hepatitis A Random Effects Model ===\n")
+summary(hepatitis_model_re)
+
+cat("\n=== Typhoid Random Effects Model ===\n")
+summary(typhoid_model_re)
+
+# Hausman Test to compare fixed vs random effects
+hausman_diarrhea <- phtest(
+  plm(Diarrhea ~ 
+    OpenDefecation +
+    BasicWater +
+    BasicSanitation +
+    PopulationDensity +
+    WaterProductivity +
+    WaterStress, 
+    data = pdata, 
+    model = "within"),
+  diarrhea_model_re
+)
+
+hausman_hepatitis <- phtest(
+  plm(HepatitisA ~ 
+    OpenDefecation +
+    BasicWater +
+    BasicSanitation +
+    PopulationDensity +
+    WaterProductivity +
+    WaterStress, 
+    data = pdata, 
+    model = "within"),
+  hepatitis_model_re
+)
+
+hausman_typhoid <- phtest(
+  plm(Typhoid ~ 
+    OpenDefecation +
+    BasicWater +
+    BasicSanitation +
+    PopulationDensity +
+    WaterProductivity +
+    WaterStress, 
+    data = pdata, 
+    model = "within"),
+  typhoid_model_re
+)
+
+
+cat("\n=== Hausman Test Results ===\n")
+print(hausman_diarrhea)
+print(hausman_hepatitis)
+print(hausman_typhoid)
+```
+
+### Summary table for Random Effect Panel Model Results
+
+| Disease Outcome | Significant Predictors (p \< 0.05) | R-squared | Adj. R-squared |
+|---------------|----------------------------|---------------|---------------|
+
+|  |  |  |  |
+|------------------|------------------|------------------|------------------|
+| **Diarrhea** | OpenDefecation (↑), BasicWater (↓), BasicSanitation (↓), PopulationDensity (↓), WaterProductivity (↓) | 0.414 | 0.412 |
+
+|  |  |  |  |
+|------------------|------------------|------------------|------------------|
+| **Hepatitis A** | OpenDefecation (↑), BasicWater (↓), BasicSanitation (↓), PopulationDensity (↓), WaterStress (↓) | 0.417 | 0.416 |
+
+|  |  |  |  |
+|------------------|------------------|------------------|------------------|
+| **Typhoid** | OpenDefecation (↑), BasicSanitation (↓), PopulationDensity (↓) | 0.560 | 0.559 |
+
+### Hausman Test Results (Fixed vs Random Effects)
+
+| Disease Outcome | Hausman Test p-value | Preferred Model |
+|-----------------|----------------------|-----------------|
+
+|              |          |                   |
+|--------------|----------|-------------------|
+| **Diarrhea** | 2.91e-07 | **Fixed Effects** |
+
+|                 |            |                   |
+|-----------------|------------|-------------------|
+| **Hepatitis A** | \< 2.2e-16 | **Fixed Effects** |
+
+|             |          |                   |
+|-------------|----------|-------------------|
+| **Typhoid** | 3.39e-06 | **Fixed Effects** |
+
+### Interpretation
+
+The random effects models provided good explanatory power, with R-squared values ranging from 0.41 to 0.56. However, results from the Hausman test indicated statistically significant differences between the fixed and random effects models for all three disease outcomes. Therefore, **fixed effects models are preferred** for this analysis, as they better account for unobserved, time-invariant regional characteristics that may be correlated with the explanatory variables. The most consistently significant predictors across all models were **open defecation** and **basic sanitation**, reinforcing their central role in influencing disease prevalence.
+
+# 6.Fixed Effects with Time
+
+To account for potential **time-specific effects** that may influence all regions simultaneously—such as changes in international funding, global health campaigns, or macroeconomic trends—we estimated fixed effects panel models with **time fixed effects**. These models control for unobserved heterogeneity across time, allowing for more accurate estimation of how WASH indicators impact disease outcomes while isolating temporal shocks that affect all units equally.
+
+The inclusion of time fixed effects strengthens the reliability of the model by removing year-to-year variation that is unrelated to the observed covariates. The results highlight which variables remain significant even after accounting for these common time effects, reinforcing the robustness of certain WASH-related predictors.
+
+```{r}
+run_fixed_effects_time_model <- function(dependent_var) {
+  model <- plm(as.formula(paste(dependent_var, "~ 
+    OpenDefecation +
+    BasicWater +
+    BasicSanitation +
+    PopulationDensity +
+    WaterProductivity +
+    WaterStress")), 
+    data = pdata,
+    model = "within",
+    effect = "time"
+  )
+  return(model)
+}
+
+diarrhea_model_time <- run_fixed_effects_time_model("Diarrhea")
+hepatitis_model_time <- run_fixed_effects_time_model("HepatitisA")
+typhoid_model_time <- run_fixed_effects_time_model("Typhoid")
+
+cat("\n=== Diarrhea Fixed Effects with Time Model ===\n")
+summary(diarrhea_model_time)
+
+cat("\n=== Hepatitis A Fixed Effects with Time Model ===\n")
+summary(hepatitis_model_time)
+
+cat("\n=== Typhoid Fixed Effects with Time Model ===\n")
+summary(typhoid_model_time)
+```
+
+To control for time-specific influences that may affect all regions simultaneously—such as policy shifts, international aid fluctuations, or public health campaigns—we estimated fixed effects models with **year fixed effects**. These models help isolate the influence of WASH-related predictors by adjusting for shared temporal trends. The results show that **open defecation** and **lack of basic sanitation** remain significant risk factors for diarrhea and typhoid even after accounting for time effects, while **basic water access**, **water productivity**, and **water stress** play a significant role in reducing Hepatitis A. Notably, **basic sanitation** was consistently negatively associated with disease prevalence across all models. These findings highlight the robustness of WASH determinants even after controlling for year-to-year variation.
+
+### Fixed Effects with Time Summary Table
+
+| Disease Outcome | Significant Predictors (p \< 0.05) | R² | Adj. R² |
+|------------------|------------------|------------------|------------------|
+| **Diarrhea** | OpenDefecation (↑), BasicSanitation (↓), PopulationDensity (↓), WaterProductivity (↑) | 0.661 | 0.657 |
+| **Hepatitis A** | BasicWater (↓), BasicSanitation (↓), WaterProductivity (↓), WaterStress (↑) | 0.496 | 0.491 |
+| **Typhoid** | OpenDefecation (↑), BasicSanitation (↓), PopulationDensity (↑) | 0.401 | 0.395 |
+
+# 7. Dynamic Panel Models
+
+To account for potential dynamic behavior in disease prevalence over time, we estimated **dynamic panel models** using the **Arellano-Bond Generalized Method of Moments (GMM)** approach via the `pgmm()` function. Each model includes the **lagged dependent variable** as a regressor to capture persistence in disease outcomes. This specification is particularly relevant for infectious diseases, where past incidence often influences current levels due to residual community spread or exposure.
+
+The following predictors were included: open defecation, access to basic water and sanitation, population density, water productivity, and water stress. To address potential endogeneity, **lagged levels and differences of the key predictors** were used as instruments. The models were estimated using the **two-step difference GMM method**, which provides robust and efficient estimates.
+
+Diagnostic tests were conducted:
+
+-   **Sargan/Hansen tests** to assess the validity of the instruments.
+
+-   **AR(1) and AR(2) tests** for autocorrelation in the residuals. For the model to be valid, AR(1) should be significant (as expected in first-differenced models), while AR(2) should not be significant.
+
+```{r}
+create_dynamic_panel_model <- function(dependent_var) {
+  dynamic_model <- pgmm(as.formula(paste(
+    dependent_var, "~ 
+    lag(", dependent_var, ") +  
+    OpenDefecation +
+    BasicWater +
+    BasicSanitation +
+    PopulationDensity +
+    WaterProductivity +
+    WaterStress | 
+    # Instruments: lagged levels and differences
+    lag(OpenDefecation, 2:3) + 
+    lag(BasicWater, 2:3) + 
+    lag(BasicSanitation, 2:3)"
+  )), 
+  data = pdata, 
+  effect = "individual",  # Individual effects
+  model = "twostep",      # Two-step estimation
+  transformation = "d"    # Difference transformation
+  )
+  
+  return(dynamic_model)
+}
+
+diarrhea_dynamic_model <- create_dynamic_panel_model("Diarrhea")
+hepatitis_dynamic_model <- create_dynamic_panel_model("HepatitisA")
+typhoid_dynamic_model <- create_dynamic_panel_model("Typhoid")
+
+# Print summaries
+cat("\n=== Diarrhea Dynamic Panel Model ===\n")
+summary(diarrhea_dynamic_model)
+
+cat("\n=== Hepatitis A Dynamic Panel Model ===\n")
+summary(hepatitis_dynamic_model)
+
+cat("\n=== Typhoid Dynamic Panel Model ===\n")
+summary(typhoid_dynamic_model)
+
+# Diagnostic tests
+# Sargan/Hansen test for over-identifying restrictions
+# Tests the validity of instruments
+sargan_diarrhea <- summary(diarrhea_dynamic_model, robust = TRUE)
+sargan_hepatitis <- summary(hepatitis_dynamic_model, robust = TRUE)
+sargan_typhoid <- summary(typhoid_dynamic_model, robust = TRUE)
+
+```
+
+### Dynamic Panel Model Summary Table
+
+| Outcome | Significant Predictors | AR(2) p-value | Sargan Test p-value | Model Notes |
+|--------------|-----------------|--------------|--------------|--------------|
+
+|  |  |  |  |  |
+|---------------|---------------|---------------|---------------|---------------|
+| **Diarrhea** | Lag(Diarrhea), OpenDefecation↑, BasicWater↓ | 0.007 | 0.0023 | AR(2) significant — potential issue |
+
+|                 |                 |       |       |                              |
+|-------------|-------------|-------------|-------------|----------------------|
+| **Hepatitis A** | Lag(HepatitisA) | 0.105 | 0.022 | Instruments borderline valid |
+
+|             |              |       |       |                                         |
+|-----------|-----------|-----------|-----------|----------------------------|
+| **Typhoid** | Lag(Typhoid) | 0.258 | 0.830 | Clean diagnostics, no WASH significance |
+
+### Interpretation
+
+-   The **lag of the dependent variable** was consistently significant in all models, indicating strong temporal persistence in disease prevalence.
+
+-   **Diarrhea** showed some sensitivity to WASH factors dynamically, but diagnostics suggest over-identification or instrument issues (Sargan p \< 0.05, AR(2) significant).
+
+-   **Hepatitis A** and **Typhoid** showed clear disease inertia but weak direct relationships with the contemporaneous WASH variables in this dynamic setup.
+
+-   Only **Typhoid** passed all diagnostic tests cleanly, suggesting a well-specified GMM model.
+
+# 8. Pooled OLS Models
+
+To establish a baseline for comparison, we estimated pooled Ordinary Least Squares (OLS) panel models for each disease outcome using the same WASH-related predictors as in previous models. Unlike fixed or random effects models, pooled OLS treats all observations as independent and does not control for region-specific effects. While this approach can be useful for exploratory purposes, it assumes homoscedasticity and no serial correlation in the error terms—assumptions we tested using the Breusch-Pagan test for heteroscedasticity and the Durbin-Watson test for autocorrelation.
+
+For all three models, the Breusch-Pagan test indicated the presence of **heteroscedasticity** (p \< 0.05), suggesting non-constant variance in residuals. Similarly, the Durbin-Watson test results pointed to **autocorrelation** in the residuals (p \< 0.05), particularly for the diarrhea and hepatitis A models. These violations of classical OLS assumptions reduce the reliability of pooled OLS estimates and reinforce the necessity of more appropriate panel estimators like fixed or random effects models.
+
+```{r}
+create_pooled_ols_model <- function(dependent_var) {
+  pooled_model <- plm(as.formula(paste(dependent_var, "~ 
+    OpenDefecation +
+    BasicWater +
+    BasicSanitation +
+    PopulationDensity +
+    WaterProductivity +
+    WaterStress")), 
+    data = pdata,
+    model = "pooling"
+  )
+  return(pooled_model)
+}
+
+diarrhea_pooled_model <- create_pooled_ols_model("Diarrhea")
+hepatitis_pooled_model <- create_pooled_ols_model("HepatitisA")
+typhoid_pooled_model <- create_pooled_ols_model("Typhoid")
+
+cat("\n=== Diarrhea Pooled OLS Model ===\n")
+summary(diarrhea_pooled_model)
+
+cat("\n=== Hepatitis A Pooled OLS Model ===\n")
+summary(hepatitis_pooled_model)
+
+cat("\n=== Typhoid Pooled OLS Model ===\n")
+summary(typhoid_pooled_model)
+
+# Additional diagnostic tests
+# Heteroscedasticity test
+bptest_diarrhea <- bptest(diarrhea_pooled_model)
+bptest_hepatitis <- bptest(hepatitis_pooled_model)
+bptest_typhoid <- bptest(typhoid_pooled_model)
+
+# Autocorrelation test
+# Durbin-Watson test
+dwtest_diarrhea <- dwtest(diarrhea_pooled_model)
+dwtest_hepatitis <- dwtest(hepatitis_pooled_model)
+dwtest_typhoid <- dwtest(typhoid_pooled_model)
+
+cat("\n=== Diagnostic Tests ===\n")
+cat("\nDiarrhea Model:\n")
+cat("Heteroscedasticity Test (BP test) p-value:", bptest_diarrhea$p.value, "\n")
+cat("Durbin-Watson Test p-value:", dwtest_diarrhea$p.value, "\n")
+
+cat("\nHepatitis A Model:\n")
+cat("Heteroscedasticity Test (BP test) p-value:", bptest_hepatitis$p.value, "\n")
+cat("Durbin-Watson Test p-value:", dwtest_hepatitis$p.value, "\n")
+
+cat("\nTyphoid Model:\n")
+cat("Heteroscedasticity Test (BP test) p-value:", bptest_typhoid$p.value, "\n")
+cat("Durbin-Watson Test p-value:", dwtest_typhoid$p.value, "\n")
+```
+
+As a baseline comparison, pooled Ordinary Least Squares (OLS) panel regressions were conducted for each disease outcome using the same WASH-related predictors. The models yielded relatively high R-squared values, particularly for diarrhea (R² = 0.66), indicating a good fit. Statistically significant predictors varied by outcome, with open defecation and lack of basic sanitation being consistently associated with higher disease prevalence across all three models. However, Breusch-Pagan tests for heteroscedasticity returned highly significant results (p \< 0.001) in all models, suggesting the presence of non-constant variance in the error terms. The Durbin-Watson test was not applicable due to model structure, but based on model design, autocorrelation is likely. These diagnostic violations indicate that pooled OLS is not the most reliable estimator for this dataset and support the use of fixed effects or dynamic panel models for more accurate inference.
+
+### Pooled OLS Model Summary Table
+
+| Disease | Significant Predictors (p \< 0.05) | R² | Adj. R² | BP Test p-value (Hetero) | Reliable? |
+|------------|------------|------------|------------|------------|------------|
+
+|  |  |  |  |  |  |
+|------------|------------|------------|------------|------------|------------|
+| **Diarrhea** | OpenDefecation (↑), BasicSanitation (↓), PopulationDensity (↓), WaterProductivity (↑) | 0.663 | 0.662 | 4.26e-10 | ❌ |
+
+|  |  |  |  |  |  |
+|------------|------------|------------|------------|------------|------------|
+| **Hepatitis A** | BasicWater (↓), BasicSanitation (↓), WaterProductivity (↓), WaterStress (↑) | 0.498 | 0.497 | 3.54e-30 | ❌ |
+
+|  |  |  |  |  |  |
+|------------|------------|------------|------------|------------|------------|
+| **Typhoid** | OpenDefecation (↑), BasicSanitation (↓), PopulationDensity (↑) | 0.407 | 0.405 | 6.72e-78 | ❌ |
+
+### Interpretation
+
+-   **OpenDefecation** and **BasicSanitation** were significant in all models, reinforcing their importance.
+
+-   All models suffer from **heteroscedasticity**, invalidating key OLS assumptions.
+
+-   Better estimates come from **fixed effects, random effects, or GMM models**, which account for panel structure and error characteristics.
+
+# 9. Hausman tests
+
+To determine whether fixed or random effects models were more appropriate for analyzing the relationship between WASH indicators and disease prevalence, we applied the **Hausman specification test** for each disease outcome. The Hausman test evaluates whether the unique errors in the model (i.e., unobserved effects) are correlated with the explanatory variables. A statistically significant p-value (typically p \< 0.05) indicates that the **fixed effects model** is preferable, as it accounts for potential endogeneity of omitted variables.
+
+The test results confirmed that **fixed effects models were more appropriate** for all three outcomes (diarrhea, Hepatitis A, and typhoid), supporting earlier findings. These results reinforce that regional heterogeneity must be controlled for, as ignoring these differences could lead to biased estimates in random effects models.
+
+```{R}
+run_hausman_test <- function(dependent_var) {
+  # Fixed Effects Model
+  fixed_model <- plm(as.formula(paste(dependent_var, "~ 
+    OpenDefecation +
+    BasicWater +
+    BasicSanitation +
+    PopulationDensity +
+    WaterProductivity +
+    WaterStress")), 
+    data = pdata,
+    model = "within"
+  )
+  
+  # Random Effects Model
+  random_model <- plm(as.formula(paste(dependent_var, "~ 
+    OpenDefecation +
+    BasicWater +
+    BasicSanitation +
+    PopulationDensity +
+    WaterProductivity +
+    WaterStress")), 
+    data = pdata,
+    model = "random"
+  )
+  
+  # Hausman Test
+  hausman_test <- phtest(fixed_model, random_model)
+  
+  return(list(
+    fixed_model = fixed_model,
+    random_model = random_model,
+    hausman_test = hausman_test
+  ))
+}
+
+# Run Hausman Tests for each disease
+diarrhea_hausman <- run_hausman_test("Diarrhea")
+hepatitis_hausman <- run_hausman_test("HepatitisA")
+typhoid_hausman <- run_hausman_test("Typhoid")
+
+# Print Hausman Test Results
+cat("\n=== Hausman Test Results ===\n")
+
+# Diarrhea Hausman Test
+cat("\nDiarrhea Model Hausman Test:\n")
+print(diarrhea_hausman$hausman_test)
+
+# Hepatitis A Hausman Test
+cat("\nHepatitis A Model Hausman Test:\n")
+print(hepatitis_hausman$hausman_test)
+
+# Typhoid Hausman Test
+cat("\nTyphoid Model Hausman Test:\n")
+print(typhoid_hausman$hausman_test)
+```
+
+### Hausman Test Results Table
+
+| Disease Outcome | Chi-squared | df  | p-value    | Preferred Model   |
+|-----------------|-------------|-----|------------|-------------------|
+| **Diarrhea**    | 40.99       | 6   | 2.91e-07   | **Fixed Effects** |
+| **Hepatitis A** | 102.78      | 6   | \< 2.2e-16 | **Fixed Effects** |
+| **Typhoid**     | 35.54       | 6   | 3.39e-06   | **Fixed Effects** |
+
+> Interpretation: In all cases, the Hausman test strongly favors the fixed effects specification (p \< 0.001).
+
+# 10. Serial correlation diagnostics
+
+To assess the presence of serial correlation in the fixed effects models, a suite of diagnostic tests was conducted, including the **Wooldridge test**, **Breusch-Godfrey test**, and both standard and panel **Durbin-Watson tests**. Serial correlation violates the assumption of independently distributed errors and can lead to inefficient or biased coefficient estimates if unaddressed.
+
+Across all three disease models, the Wooldridge and Breusch-Godfrey tests consistently detected **significant serial correlation** (p \< 0.05), indicating that residuals are not independent over time. This reinforces the need for robust standard errors or alternative model specifications (e.g., dynamic panel models or GMM estimators) that account for serial dependence. The Durbin-Watson tests also revealed non-randomness in the residuals, further validating these findings.
+
+```{R}
+run_serial_correlation_tests <- function(dependent_var) {
+  # Fixed Effects Model
+  fixed_model <- plm(as.formula(paste(dependent_var, "~ 
+    OpenDefecation +
+    BasicWater +
+    BasicSanitation +
+    PopulationDensity +
+    WaterProductivity +
+    WaterStress")), 
+    data = pdata,
+    model = "within"
+  )
+  
+  # Serial Correlation Diagnostics
+  # 1. Wooldridge Test for Autocorrelation
+  wooldridge_test <- pbgtest(fixed_model)
+  
+  # 2. Breusch-Godfrey Test
+  bg_test <- bgtest(fixed_model)
+  
+  # 3. Durbin-Watson Test
+  dw_test <- dwtest(fixed_model)
+  
+  # 4. Durbin-Watson Test (alternative method)
+  dw_test_alternative <- pdwtest(fixed_model)
+  
+  return(list(
+    fixed_model = fixed_model,
+    wooldridge_test = wooldridge_test,
+    breusch_godfrey_test = bg_test,
+    durbin_watson_test = dw_test,
+    pdw_test = dw_test_alternative
+  ))
+}
+
+# Run Serial Correlation Diagnostics for each disease
+diarrhea_serial_corr <- run_serial_correlation_tests("Diarrhea")
+hepatitis_serial_corr <- run_serial_correlation_tests("HepatitisA")
+typhoid_serial_corr <- run_serial_correlation_tests("Typhoid")
+
+# Print Serial Correlation Test Results
+cat("\n=== Serial Correlation Diagnostic Tests ===\n")
+
+# Function to print test results
+print_serial_correlation_results <- function(disease_name, serial_corr_results) {
+  cat("\n", disease_name, " Model Serial Correlation Tests:\n", sep = "")
+  
+  cat("\n1. Wooldridge Test for Autocorrelation:\n")
+  print(serial_corr_results$wooldridge_test)
+  
+  cat("\n2. Breusch-Godfrey Test:\n")
+  print(serial_corr_results$breusch_godfrey_test)
+  
+  cat("\n3. Durbin-Watson Test:\n")
+  print(serial_corr_results$durbin_watson_test)
+  
+  cat("\n4. Panel Durbin-Watson Test:\n")
+  print(serial_corr_results$pdw_test)
+}
+
+print_serial_correlation_results("Diarrhea", diarrhea_serial_corr)
+print_serial_correlation_results("Hepatitis A", hepatitis_serial_corr)
+print_serial_correlation_results("Typhoid", typhoid_serial_corr)
+```
+
+### Serial Correlation Diagnostics Summary
+
+| Disease | Wooldridge χ² (df=16) | BG LM Stat (df=1) | Panel DW | Serial Correlation Detected? |
+|---------------|---------------|---------------|---------------|---------------|
+
+|  |  |  |  |  |
+|---------------|---------------|---------------|---------------|---------------|
+| **Diarrhea** | 1531.3 (p \< 2.2e-16) | 1960.9 (p \< 2.2e-16) | 0.39978 (p \< 2.2e-16) | ✅ Yes |
+
+|  |  |  |  |  |
+|---------------|---------------|---------------|---------------|---------------|
+| **Hepatitis A** | 1220.6 (p \< 2.2e-16) | 1936.7 (p \< 2.2e-16) | 0.64618 (p \< 2.2e-16) | ✅ Yes |
+
+|  |  |  |  |  |
+|---------------|---------------|---------------|---------------|---------------|
+| **Typhoid** | 1515.5 (p \< 2.2e-16) | 1959.6 (p \< 2.2e-16) | 0.40756 (p \< 2.2e-16) | ✅ Yes |

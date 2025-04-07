@@ -1,0 +1,296 @@
+---
+title: "Exploratory Data Analysis"
+author: "Fan jing"
+date: "April 1st , 2025"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+# 1.Overview
+
+In this section will cover the Exploratory Data Analysis (EDA)
+
+# 2.Initial Data Preparation
+
+## 2.1 Install and launch R packages
+
+The project uses p_loads of pacman package to check if the R packages are installed in the computer.
+
+```{r}
+pacman::p_load(tidyverse, ggplot2, ggthemes, plotly,dplyr,purrr,broom,rlang,ggbetweenstats,BiocManager,ggstatsplot)
+```
+
+## 2.2 Import Data
+
+This project will examine a merged dataset from [World Development Indicators (WDI)](https://databank.worldbank.org/reports.aspx?source=2&series=SP.POP.TOTL&country=) from the World Bank, and [Global Burden of diseases result tools](https://vizhub.healthdata.org/gbd-results/) from Institution for Health Metrics Evaluation. Specifically 140 countries from year 2006 to 2021 and organised into UN regions.
+
+```{r}
+cdata <- read_csv("data/final_merged_data.csv")
+
+
+```
+
+## 2.3 Overview of the data
+
+The dataset including 2,240 observations and 13 variables. Each row provides detailed yearly information for a specific country on water access, sanitation, hygiene indicators, population statistics and related health outcomes such as diarrhea, typhoid fever, and acute hepatitis A. The dataset includes both environmental indicators (e.g., water stress, basic drinking water access) and health outcome metrics, making it suitable for time-series and panel data analysis across different World Bank regions.
+
+### Dataset Structure
+
+Use `str()`to check the structure of the data.
+
+```{r}
+str(cdata)
+```
+
+### Column Names in `cdata`
+
+The command `names(cdata)` in R returns a list of all column names in the `cdata` dataframe.
+
+```{r}
+names(cdata)
+```
+
+### Renaming Variable
+
+To simplify and standardize the dataset for analysis, we renamed several lengthy variable names into shorter, more interpretable labels using the `rename()` function.This improves code readability and makes referencing variables in models and visualizations easier.
+
+```{r}
+cdata <- cdata %>%
+  rename(
+    BasicSanitation = `People using at least basic sanitation services (% of population)`,
+    BasicWater = `People using at least basic drinking water services (% of population)`,
+    OpenDefecation = `People practicing open defecation (% of population)`,
+    WaterStress = `Level of water stress: freshwater withdrawal as a proportion of available freshwater resources`,
+    WaterProductivity = `Water productivity, total (constant 2015 US$ GDP per cubic meter of total freshwater withdrawal)`,
+    HepatitisA = `Acute hepatitis A`,
+    Diarrhea = `Diarrheal diseases`,
+    Typhoid = `Typhoid fever`,
+    Region = `World Bank Regions`)
+ 
+
+```
+
+### Creating Year group
+
+In this step, the dataset `cdata` is augmented with a new variable called `year_group` using the `mutate()` and `case_when()` functions from the **dplyr** package. The result is saved as a new dataframe `cdata1`.
+
+```{r}
+cdata1 <- cdata %>%
+  mutate(year_group = case_when(
+    year >= 2006 & year <= 2010 ~ "2006-2010",
+    year >= 2011 & year <= 2015 ~ "2011-2015",
+    year >= 2016 & year <= 2021 ~ "2016-2021",
+    TRUE ~ NA_character_
+  ))
+
+```
+
+# 3.Regional Disparities Across WASH and Health Indicators: A Multi-Variable ANOVA Analysis
+
+This code performs a **batch ANOVA analysis** across multiple WASH and health outcome variables (`variables_to_test`) to examine whether there are **statistically significant regional differences** within each time period (`year_group`).
+
+```{r}
+variables_to_test <- c("BasicSanitation", "BasicWater", "OpenDefecation", 
+                       "WaterStress", "WaterProductivity", 
+                       "Diarrhea", "Typhoid", "HepatitisA")
+
+
+all_aov_results <- map_dfr(variables_to_test, function(var) {
+  cdata1 %>%
+    filter(!is.na(.data[[var]])) %>%
+    group_by(year_group) %>%
+    group_modify(~{
+      model <- aov(reformulate("Region", response = var), data = .x)
+      tidy_result <- tidy(model)
+      tidy_result$variable <- var
+      tidy_result
+    })
+})
+
+```
+
+## 3.1 Violin Plot
+
+This code block defines two functions: `create_comprehensive_plots()` and `save_plots()`. Together, they automate the generation and export of a large set of **statistically annotated visualizations** comparing multiple WASH and health outcome indicators across time periods and regions.
+
+```{r}
+create_comprehensive_plots <- function(data) {
+  # List of variables to plot
+  all_vars <- c("BasicSanitation", "BasicWater", "OpenDefecation", "WaterStress", 
+                "WaterProductivity", "HepatitisA", "Diarrhea", "Typhoid")
+  
+  regions <- unique(data$Region)
+  
+  plot_list <- list()
+  
+  plot_counter <- 1
+  
+  for (var in all_vars) {
+    for (reg in regions) {
+      region_data <- data %>% filter(Region == reg)
+      
+      p <- ggbetweenstats(
+        data = region_data,
+        x = year_group,
+        y = !!sym(var),
+        type = "parametric",
+        messages = FALSE,
+        mean.ci = TRUE,
+        pairwise.comparisons = TRUE,
+        pairwise.display = "significant",
+        title = paste("Comparison of", var, "in", reg),
+        xlab = "Year Group",
+        ylab = var
+      )
+      
+      plot_list[[plot_counter]] <- p
+      
+      print(p)
+      
+      plot_counter <- plot_counter + 1
+    }
+  }
+  
+  return(plot_list)
+}
+
+save_plots <- function(plot_list, output_dir = "comparison_plots") {
+  if (!dir.exists(output_dir)) {
+    dir.create(output_dir)
+  }
+  
+  for (i in seq_along(plot_list)) {
+    ggsave(
+      filename = paste0(output_dir, "/plot_", i, ".png"),
+      plot = plot_list[[i]],
+      width = 10,
+      height = 7,
+      dpi = 300
+    )
+  }
+}
+plots <- create_comprehensive_plots(cdata1)
+```
+
+# 4 Box Plot Visualization of Regional Trends by Year
+
+To examine regional disparities in water, sanitation and hygiene access and health outcomes over time, we generated a series of box plots for key indicators, including basic sanitation, access to drinking water, open defecation, water stress, water productivity, and disease prevalence (Hepatitis A, diarrhea, and typhoid). For each year in the dataset, the data was subset by year, and box plots were created to visualize the distribution of each indicator across different regions. This method provides a clear view of the central tendency, spread, and potential outliers within regions, enabling comparative analysis across both space and time. By using box plots, we were able to identify variations in access and health burdens, detect extreme cases, and observe trends in regional equity on a year-by-year basis.
+
+```{r}
+create_regional_yearly_boxplots <- function(data) {
+  variables <- c("BasicSanitation", "BasicWater", "OpenDefecation", 
+                 "WaterStress", "WaterProductivity", 
+                 "HepatitisA", "Diarrhea", "Typhoid")
+  
+  years <- sort(unique(data$year))
+  
+  for (var in variables) {
+    for (current_year in years) {
+      year_data <- data %>% filter(year == current_year)
+            p <- ggplot(year_data, aes(x = Region, y = !!sym(var))) +
+        geom_boxplot(fill = "skyblue", color = "black", 
+                     outlier.shape = 16, outlier.size = 1.5) +
+        labs(
+          title = paste(var, "By Region in", current_year),
+          x = "Region",
+          y = "Percentage"
+        ) +
+        theme_minimal() +
+        theme(
+          axis.text.x = element_text(angle = 45, hjust = 1),
+          plot.title = element_text(size = 14, face = "bold")
+        )
+      
+      print(p)
+    }
+  }
+}
+
+
+create_regional_yearly_boxplots(cdata)
+```
+
+```         
+```
+
+```{r}
+unique(cdata$Country)
+
+```
+
+# 5. Time Series Visualization of Regional Trends Over Time
+
+To examine how water, sanitation and hygiene indicators and health outcome indicators have changed over time across different regions, we developed a function to generate region-wise time series plots. For each selected variable, the dataset was grouped by year and region, and the annual mean was calculated. These aggregated values were then visualized using line plots, where each line represents a specific region. This method allows for a clear comparison of temporal trends between regions, highlighting disparities, improvements, or stagnation in access to services or disease prevalence. By plotting these trends over time, we can observe not only the overall trajectory of each indicator but also the consistency or volatility of regional performance relative to one another.
+
+```{r}
+create_multi_region_time_series <- function(data) {
+  variables <- c("BasicSanitation", "BasicWater", "OpenDefecation", 
+                 "WaterStress", "WaterProductivity", 
+                 "HepatitisA", "Diarrhea", "Typhoid")
+  
+  for (selected_variable in variables) {
+    df_ts <- data %>%
+      group_by(year, Region) %>%
+      summarise(mean_value = mean(.data[[selected_variable]], na.rm = TRUE)) %>%
+      ungroup()
+    
+    p <- ggplot(df_ts, aes(x = year, y = mean_value, color = Region, group = Region)) +
+      geom_line(size = 1.2) +
+      geom_point(size = 2) +
+      labs(
+        title = paste("Time Series of", selected_variable, "Across Regions"),
+        x = "Year",
+        y = selected_variable
+      ) +
+      theme_minimal() +
+      theme(
+        plot.title = element_text(size = 14, face = "bold"),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        legend.position = "bottom",
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 8)
+      ) +
+      scale_color_brewer(palette = "Set2")  
+    
+    print(p)
+  }
+}
+
+
+create_multi_region_time_series(cdata)
+```
+
+```         
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+# 设置国家和指标
+selected_country <- "Republic of India"
+selected_indicator <- "Diarrhea"
+
+# 准备数据
+df_diarrhea <- cdata %>%
+  filter(Country == selected_country) %>%
+  select(year, !!sym(selected_indicator)) %>%
+  filter(!is.na(.data[[selected_indicator]]))
+
+# 画图
+ggplot(df_diarrhea, aes(x = year, y = .data[[selected_indicator]])) +
+  geom_line(color = "tomato", size = 1.2) +
+  geom_point(color = "tomato", size = 2) +
+  labs(
+    title = paste("Trend of Diarrheal Diseases in", selected_country),
+    x = "Year",
+    y = "Diarrhea (%)"
+  ) +
+  theme_minimal()
+
+```

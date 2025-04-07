@@ -14,12 +14,10 @@ website:
         
       - text: "Prototype"
         menu:
-        - text: "Geospatial Data Analysis_P1"
-          href: "Prototype/Geospatial Data Analysis_P1.html"
-        - text: "Geospatial Data Analysis_P2"
-          href: "Prototype/Geospatial Data Analysis_P2.html"
-        - text: "WASH-Based Health Trend Analysis"
-          href: "Prototype/Forcasting.html"
+        - text: "Exploratory Data Analysis"
+          href: "Prototype/EDA.html"
+        - text: "Panel Data Modeling"
+          href: "Prototype/PML.html"
         - text: "Comfirmatory Data Analysis(CDA)"
           href: "Prototype/CDA.html"
         - text: "Story Board"
