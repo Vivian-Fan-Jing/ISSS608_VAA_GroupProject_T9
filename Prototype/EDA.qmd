@@ -21,7 +21,7 @@ In this section will cover the Exploratory Data Analysis (EDA)
 The project uses p_loads of pacman package to check if the R packages are installed in the computer.
 
 ```{r}
-pacman::p_load(tidyverse, ggplot2, ggthemes, plotly,dplyr,purrr,broom,rlang,ggbetweenstats,BiocManager,ggstatsplot)
+pacman::p_load(tidyverse, ggplot2, ggthemes, plotly,dplyr,purrr,broom,rlang,ggstatsplot)
 ```
 
 ## 2.2 Import Data
